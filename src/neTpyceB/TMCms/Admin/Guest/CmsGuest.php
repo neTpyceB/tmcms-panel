@@ -7,7 +7,7 @@ use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttemptsRepository;
 use neTpyceB\TMCms\Admin\Users;
 use neTpyceB\TMCms\Admin\Users\Object\AdminUser;
 use neTpyceB\TMCms\Admin\Users\Object\AdminUserCollection;
-use neTpyceB\TMCms\Admin\Users\Object\AdminUserGroupCollection;
+use neTpyceB\TMCms\Admin\Users\Entity\AdminUserGroupCollection;
 use neTpyceB\TMCms\Config\Configuration;
 use neTpyceB\TMCms\Config\Settings;
 use neTpyceB\TMCms\Log\App;
