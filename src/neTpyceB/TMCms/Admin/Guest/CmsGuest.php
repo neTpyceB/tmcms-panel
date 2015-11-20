@@ -1,6 +1,6 @@
 <?php
 
-namespace TMCms\Admin\Guest;
+namespace neTpyceB\TMCms\Admin\Guest;
 
 use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttempts;
 use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttemptsRepository;
