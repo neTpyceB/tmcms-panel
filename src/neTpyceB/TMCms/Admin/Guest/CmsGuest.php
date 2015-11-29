@@ -2,8 +2,8 @@
 
 namespace neTpyceB\TMCms\Admin\Guest;
 
-use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttempts;
-use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttemptsRepository;
+use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntity;
+use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntityRepository;
 use neTpyceB\TMCms\Admin\Users;
 use neTpyceB\TMCms\Admin\Users\Object\AdminUser;
 use neTpyceB\TMCms\Admin\Users\Object\AdminUserCollection;
@@ -94,7 +94,7 @@ class CmsGuest
         }
 
         //Check ban and log-in attempts
-        $attempts_repo = new AdminUsersAttemptsRepository();
+        $attempts_repo = new AdminUsersAttemptsEntityRepository();
         $attempts_repo->setWhereIp(IP_LONG);
         $attempts_obj = $attempts_repo->getFirstObjectFromCollection();
 
@@ -146,7 +146,7 @@ class CmsGuest
 
             // Log attempt
             if (!$attempts_obj || !$attempts_obj->getId()) { // Check exists already
-                $attempts_obj = new AdminUsersAttempts();
+                $attempts_obj = new AdminUsersAttemptsEntity();
                 $attempts_obj->setIp(IP_LONG);
             }
             $attempts_obj->setLastAttemptTs(NOW);
