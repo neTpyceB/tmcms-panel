@@ -394,12 +394,6 @@ class CmsFilemanager
             }
             // Set value in opener and close window
             function done() {
-                // If have no window opener
-                if (!window.opener) {
-                    alert('No opener window found');
-                    window.close();
-                }
-
                 // use CKEditor 3.0 integration method
                 if ('<?= (int) isset($_GET['CKEditor']) ?>' == '1') {
                     window.opener.CKEDITOR.tools.callFunction('<?= isset($_GET['CKEditorFuncNum']) ? $_GET['CKEditorFuncNum'] : '' ?>', $('#filename').val());
@@ -422,7 +416,6 @@ class CmsFilemanager
                 // Set value
                 if (el) {
                     el.val($('#filename').val());
-                    window.close();
                 }
             }
 
