@@ -341,6 +341,7 @@ class CmsFilemanager
             </div>
         </div>
         <br>
+        <div style="margin: auto 5px">
         <?php
         // Simple upload form
         echo CmsForm::getInstance()
@@ -350,6 +351,9 @@ class CmsFilemanager
                     ->readonly(true)
             )
         ;
+        ?>
+        </div>
+        <?php
 
         // Get maximum allowed size of chunk of uploaded file
         $max_upload_file = $max_post = Converter::formatIniSize(ini_get('post_max_size'));
