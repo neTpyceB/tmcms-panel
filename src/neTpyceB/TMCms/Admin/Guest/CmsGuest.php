@@ -231,7 +231,7 @@ class CmsGuest
         $default_group_id = 1;
 
         $group_collection = new AdminUserGroupCollection();
-        $group_collection->addWhereIsDefault();
+        $group_collection->setWhereDefault(true);
 
         /** @var AdminUser $user */
         $group = $group_collection->getFirstObjectFromCollection();
