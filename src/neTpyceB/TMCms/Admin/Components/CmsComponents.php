@@ -47,7 +47,7 @@ class CmsComponents
 
             var editor = CKEDITOR.replace('wysiwyg_<?= NOW ?>',
                 {
-                    filebrowserBrowseUrl: '<?= DIR_CMS_URL ?>?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache='. <?= NOW ?>
+                    filebrowserBrowseUrl: '<?= DIR_CMS_URL ?>?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>'
                 }
             );
 
