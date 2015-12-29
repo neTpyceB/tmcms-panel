@@ -1,8 +1,8 @@
 <?php
 
-namespace neTpyceB\TMCms\Admin\Components;
+namespace TMCms\Admin\Components;
 
-use neTpyceB\TMCms\Admin\Structure\Object\StructurePageCollection;
+use TMCms\Admin\Structure\Object\StructurePageCollection;
 use neTpyceB\TMCms\HTML\Cms\CmsTable;
 use neTpyceB\TMCms\HTML\Cms\Column\ColumnTree;
 use neTpyceB\TMCms\Routing\Structure;

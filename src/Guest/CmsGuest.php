@@ -1,13 +1,13 @@
 <?php
 
-namespace neTpyceB\TMCms\Admin\Guest;
+namespace TMCms\Admin\Guest;
 
-use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntity;
-use neTpyceB\TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntityRepository;
+use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntity;
+use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntityRepository;
 use neTpyceB\TMCms\Admin\Users;
-use neTpyceB\TMCms\Admin\Users\Object\AdminUser;
-use neTpyceB\TMCms\Admin\Users\Object\AdminUserCollection;
-use neTpyceB\TMCms\Admin\Users\Entity\AdminUserGroupCollection;
+use TMCms\Admin\Users\Object\AdminUser;
+use TMCms\Admin\Users\Object\AdminUserCollection;
+use TMCms\Admin\Users\Entity\AdminUserGroupCollection;
 use neTpyceB\TMCms\Config\Configuration;
 use neTpyceB\TMCms\Config\Settings;
 use neTpyceB\TMCms\Log\App;

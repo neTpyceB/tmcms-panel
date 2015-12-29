@@ -8,20 +8,14 @@
   "authors": [
     {
       "name": "Vadims Petrusevs",
-      "email": "pvman@inbox.ru",
+      "email": "info@devp.lv",
       "homepage": "http://devp.lv/",
       "role": "Developer"
     }
   ],
   "autoload": {
-    "psr-0": {
-      "neTpyceB\\TMCms": "src"
+    "psr-4": {
+      "TMCms\\Admin\\": "src"
     }
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@bitbucket.org:neTpyceB/tmcms-admin.git"
-    }
-  ]
+  }
 }

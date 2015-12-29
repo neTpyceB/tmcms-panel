@@ -1,8 +1,8 @@
 <?php
 
-namespace neTpyceB\TMCms\Admin\Filemanager;
+namespace TMCms\Admin\Filemanager;
 
-use neTpyceB\TMCms\Admin\Messages;
+use TMCms\Admin\Messages;
 use neTpyceB\TMCms\Files\FileSystem;
 use neTpyceB\TMCms\Files\Image;
 use neTpyceB\TMCms\HTML\Cms\CmsFieldset;

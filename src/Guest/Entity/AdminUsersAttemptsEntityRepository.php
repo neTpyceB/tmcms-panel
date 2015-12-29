@@ -1,6 +1,6 @@
 <?php
 
-namespace neTpyceB\TMCms\Admin\Guest\Entity;
+namespace TMCms\Admin\Guest\Entity;
 
 use neTpyceB\TMCms\Orm\EntityRepository;
 
