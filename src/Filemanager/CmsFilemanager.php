@@ -3,20 +3,20 @@
 namespace TMCms\Admin\Filemanager;
 
 use TMCms\Admin\Messages;
-use neTpyceB\TMCms\Files\FileSystem;
-use neTpyceB\TMCms\Files\Image;
-use neTpyceB\TMCms\HTML\Cms\CmsFieldset;
-use neTpyceB\TMCms\HTML\Cms\CmsForm;
-use neTpyceB\TMCms\HTML\Cms\Element\CmsButton;
-use neTpyceB\TMCms\HTML\Cms\Element\CmsCheckbox;
-use neTpyceB\TMCms\HTML\Cms\Element\CmsHtml;
-use neTpyceB\TMCms\HTML\Cms\Element\CmsInputHidden;
-use neTpyceB\TMCms\HTML\Cms\Element\CmsInputText;
-use neTpyceB\TMCms\HTML\Cms\Element\CmsRadioBox;
-use neTpyceB\TMCms\HTML\Cms\Element\CmsTextarea;
-use neTpyceB\TMCms\Log\App;
-use neTpyceB\TMCms\Strings\Converter;
-use neTpyceB\TMCms\Traits\singletonInstanceTrait;
+use TMCms\Files\FileSystem;
+use TMCms\Files\Image;
+use TMCms\HTML\Cms\CmsFieldset;
+use TMCms\HTML\Cms\CmsForm;
+use TMCms\HTML\Cms\Element\CmsButton;
+use TMCms\HTML\Cms\Element\CmsCheckbox;
+use TMCms\HTML\Cms\Element\CmsHtml;
+use TMCms\HTML\Cms\Element\CmsInputHidden;
+use TMCms\HTML\Cms\Element\CmsInputText;
+use TMCms\HTML\Cms\Element\CmsRadioBox;
+use TMCms\HTML\Cms\Element\CmsTextarea;
+use TMCms\Log\App;
+use TMCms\Strings\Converter;
+use TMCms\Traits\singletonInstanceTrait;
 use ZipArchive;
 
 defined('INC') or exit;

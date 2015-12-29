@@ -3,11 +3,11 @@
 namespace TMCms\Admin\Components;
 
 use TMCms\Admin\Structure\Object\StructurePageCollection;
-use neTpyceB\TMCms\HTML\Cms\CmsTable;
-use neTpyceB\TMCms\HTML\Cms\Column\ColumnTree;
-use neTpyceB\TMCms\Routing\Structure;
-use neTpyceB\TMCms\Templates\Page;
-use neTpyceB\TMCms\Traits\singletonInstanceTrait;
+use TMCms\HTML\Cms\CmsTable;
+use TMCms\HTML\Cms\Column\ColumnTree;
+use TMCms\Routing\Structure;
+use TMCms\Templates\Page;
+use TMCms\Traits\singletonInstanceTrait;
 
 defined('INC') or exit;
 

@@ -2,11 +2,11 @@
 
 namespace TMCms\Admin\Guest\Entity;
 
-use neTpyceB\TMCms\Orm\EntityRepository;
+use TMCms\Orm\EntityRepository;
 
 /**
  * Class AdminUsersAttemptsRepository
- * @package neTpyceB\TMCms\Admin\Guest\Entity
+ * @package TMCms\Admin\Guest\Entity
  *
  * @method setWhereIp(string $ip)
  */

@@ -2,11 +2,11 @@
 
 namespace TMCms\Admin\Guest\Entity;
 
-use neTpyceB\TMCms\Orm\Entity;
+use TMCms\Orm\Entity;
 
 /**
  * Class AdminUsersAttempts
- * @package neTpyceB\TMCms\Admin\Guest\Entity
+ * @package TMCms\Admin\Guest\Entity
  *
  * @method int getFailedAttempts()
  * @method setFailedAttempts(int $ts)

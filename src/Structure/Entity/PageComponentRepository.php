@@ -2,11 +2,11 @@
 
 namespace TMCms\Admin\Structure\Entity;
 
-use neTpyceB\TMCms\Orm\EntityRepository;
+use TMCms\Orm\EntityRepository;
 
 /**
  * Class PageComponentRepository
- * @package neTpyceB\TMCms\Admin\Structure\Entity
+ * @package TMCms\Admin\Structure\Entity
  *
  * @method $this setWherePageId(int $page_id)
  */

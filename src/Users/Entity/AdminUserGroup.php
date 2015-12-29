@@ -2,12 +2,12 @@
 
 namespace TMCms\Admin\Users\Entity;
 
-use neTpyceB\TMCms\Admin\Users;
-use neTpyceB\TMCms\Orm\Entity;
+use TMCms\Admin\Users;
+use TMCms\Orm\Entity;
 
 /**
  * Class AdminUserGroup
- * @package neTpyceB\TMCms\Admin\Users\Object
+ * @package TMCms\Admin\Users\Object
  *
  * @method bool getCanSetPermission()
  * @method bool getFullAccess()

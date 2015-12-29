@@ -2,11 +2,11 @@
 
 namespace TMCms\Admin\Structure\Entity;
 
-use neTpyceB\TMCms\Orm\Entity;
+use TMCms\Orm\Entity;
 
 /**
  * Class PageComponent
- * @package neTpyceB\TMCms\Admin\Structure\Entity
+ * @package TMCms\Admin\Structure\Entity
  */
 class PageComponent extends Entity
 {

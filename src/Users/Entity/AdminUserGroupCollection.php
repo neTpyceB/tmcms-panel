@@ -2,11 +2,11 @@
 
 namespace TMCms\Admin\Users\Entity;
 
-use neTpyceB\TMCms\Orm\EntityRepository;
+use TMCms\Orm\EntityRepository;
 
 /**
  * Class AdminUserGroupCollection
- * @package neTpyceB\TMCms\Admin\Users\Entity
+ * @package TMCms\Admin\Users\Entity
  *
  * @method $this setDefault(bool $flag)
  * @method $this setWhereDefault(bool $flag)

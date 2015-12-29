@@ -4,15 +4,15 @@ namespace TMCms\Admin\Guest;
 
 use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntity;
 use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntityRepository;
-use neTpyceB\TMCms\Admin\Users;
+use TMCms\Admin\Users;
 use TMCms\Admin\Users\Object\AdminUser;
 use TMCms\Admin\Users\Object\AdminUserCollection;
 use TMCms\Admin\Users\Entity\AdminUserGroupCollection;
-use neTpyceB\TMCms\Config\Configuration;
-use neTpyceB\TMCms\Config\Settings;
-use neTpyceB\TMCms\Log\App;
-use neTpyceB\TMCms\Strings\Verify;
-use neTpyceB\TMCms\Traits\singletonInstanceTrait;
+use TMCms\Config\Configuration;
+use TMCms\Config\Settings;
+use TMCms\Log\App;
+use TMCms\Strings\Verify;
+use TMCms\Traits\singletonInstanceTrait;
 
 defined('INC') or exit;
 
