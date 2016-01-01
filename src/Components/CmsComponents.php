@@ -2,7 +2,7 @@
 
 namespace TMCms\Admin\Components;
 
-use TMCms\Admin\Structure\Object\StructurePageCollection;
+use TMCms\Admin\Structure\Entity\StructurePageCollection;
 use TMCms\HTML\Cms\CmsTable;
 use TMCms\HTML\Cms\Column\ColumnTree;
 use TMCms\Routing\Structure;
