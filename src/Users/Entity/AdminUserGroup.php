@@ -13,10 +13,10 @@ use TMCms\Orm\Entity;
  * @method bool getFullAccess()
  * @method string getTitle()
  * @method bool getUndeletable()
- * @method setCanSetPermission(bool $flag)
- * @method setDefault(bool $flag)
- * @method setFullAccess(bool $flag)
- * @method setStructurePermissions(bool $flag)
+ * @method $this setCanSetPermission(bool $flag)
+ * @method $this setDefault(bool $flag)
+ * @method $this setFullAccess(bool $flag)
+ * @method $this setStructurePermissions(bool $flag)
  */
 class AdminUserGroup extends Entity
 {
