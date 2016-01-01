@@ -7,7 +7,7 @@ use TMCms\Orm\Entity;
 
 /**
  * Class AdminUserGroup
- * @package TMCms\Admin\Users\Object
+ * @package TMCms\Admin\Users\Entity
  *
  * @method bool getCanSetPermission()
  * @method bool getFullAccess()
