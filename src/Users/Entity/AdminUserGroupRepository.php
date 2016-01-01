@@ -11,6 +11,6 @@ use TMCms\Orm\EntityRepository;
  * @method $this setDefault(bool $flag)
  * @method $this setWhereDefault(bool $flag)
  */
-class AdminUserGroupCollection extends EntityRepository {
+class AdminUserGroupRepository extends EntityRepository {
     protected $db_table = 'cms_users_groups';
 }

@@ -13,7 +13,7 @@ use TMCms\Orm\EntityRepository;
  * @method $this setWhereLogin(string $login)
  * @method $this setWherePassword(string $password)
  */
-class AdminUserCollection extends EntityRepository
+class AdminUserRepository extends EntityRepository
 {
     protected $db_table = 'cms_users';
 }

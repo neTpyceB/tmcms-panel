@@ -6,8 +6,8 @@ use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntity;
 use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntityRepository;
 use TMCms\Admin\Users;
 use TMCms\Admin\Users\Entity\AdminUser;
-use TMCms\Admin\Users\Entity\AdminUserCollection;
-use TMCms\Admin\Users\Entity\AdminUserGroupCollection;
+use TMCms\Admin\Users\Entity\AdminUserRepository;
+use TMCms\Admin\Users\Entity\AdminUserGroupRepository;
 use TMCms\Config\Configuration;
 use TMCms\Config\Settings;
 use TMCms\Log\App;
@@ -83,7 +83,7 @@ class CmsGuest
     {
         // Clear installation
         if (isset($_GET['reset_system_users'], $_GET['key']) && $_GET['key'] == Configuration::getInstance()->get('cms')['unique_key']) {
-            $user_collection = new AdminUserCollection();
+            $user_collection = new AdminUserRepository();
             $user_collection->deleteObjectCollection();
             back();
         }
@@ -111,7 +111,7 @@ class CmsGuest
         }
 
         // Get user info
-        $user_collection = new AdminUserCollection();
+        $user_collection = new AdminUserRepository();
         $user_collection->setWhereLogin($_POST['login']);
         $user_collection->setWherePassword(Users::getInstance()->generateHash($_POST['password']));
 
@@ -220,7 +220,7 @@ class CmsGuest
         }
 
         // Check user exists
-        $user_collection = new AdminUserCollection();
+        $user_collection = new AdminUserRepository();
         $user_collection->setWhereLogin($_POST['login']);
 
         if ($user_collection->hasAnyObjectInCollection()) {
@@ -230,7 +230,7 @@ class CmsGuest
         // Create new user
         $default_group_id = 1;
 
-        $group_collection = new AdminUserGroupCollection();
+        $group_collection = new AdminUserGroupRepository();
         $group_collection->setWhereDefault(true);
 
         /** @var AdminUser $user */
