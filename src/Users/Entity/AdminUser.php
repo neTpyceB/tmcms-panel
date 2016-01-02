@@ -11,6 +11,9 @@ use TMCms\Orm\Entity;
  * Class AdminUser
  * @package TMCms\Admin\Users\Entity
  *
+ * @method bool getActive()
+ * @method string getEmail()
+ * @method int getGroupId()
  * @method string getLogin()
  * @method string getName()
  * @method string getSurname()

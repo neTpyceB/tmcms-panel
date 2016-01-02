@@ -7,7 +7,7 @@ use TMCms\Orm\EntityRepository;
 /**
  * @method $this setWhereGroupId(int $group_id)
  */
-class GroupAccessCollection extends EntityRepository
+class GroupAccessRepository extends EntityRepository
 {
     protected $db_table = 'cms_users_groups_access';
 }
