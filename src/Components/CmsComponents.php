@@ -2,7 +2,7 @@
 
 namespace TMCms\Admin\Components;
 
-use TMCms\Admin\Structure\Entity\StructurePageCollection;
+use TMCms\Admin\Structure\Entity\StructurePageRepository;
 use TMCms\HTML\Cms\CmsTable;
 use TMCms\HTML\Cms\Column\ColumnTree;
 use TMCms\Routing\Structure;
@@ -158,7 +158,7 @@ class CmsComponents
     {
         $data = [];
 
-        $pages = new StructurePageCollection();
+        $pages = new StructurePageRepository();
         $pages->addOrderByField();
 
         foreach ($pages->getAsArrayOfObjectData() as $v) {
