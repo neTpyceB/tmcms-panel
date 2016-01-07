@@ -7,7 +7,7 @@ defined('INC') or exit;
 use TMCms\Orm\Entity;
 
 /**
- * Class PageComponentCustom
+ * Class PageComponentCustomEntity
  * @package TMCms\Admin\Structure\Entity
  *
  * @method $this setComponent(string $component)
@@ -17,7 +17,7 @@ use TMCms\Orm\Entity;
  * @method $this setTab(string $tab)
  * @method $this setValue(string $value)
  */
-class PageComponentCustom extends Entity
+class PageComponentCustomEntity extends Entity
 {
     protected $db_table = 'cms_pages_components_custom';
 }
