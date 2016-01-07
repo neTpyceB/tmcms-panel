@@ -14,4 +14,25 @@ use TMCms\Orm\EntityRepository;
 class PageClickmapRepository extends EntityRepository
 {
     protected $db_table = 'cms_pages_clickmap';
+    protected $table_structure = [
+        'fields' => [
+            'page_id' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+            'x' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+            'y' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+        ],
+        'indexes' => [
+            'page_id' => [
+                'type' => 'key',
+            ],
+        ],
+    ];
 }
