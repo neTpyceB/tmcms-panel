@@ -13,4 +13,23 @@ use TMCms\Orm\EntityRepository;
 class PageComponentRepository extends EntityRepository
 {
     protected $db_table = 'cms_pages_components';
+    protected $table_structure = [
+        'fields' => [
+            'page_id' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+            'component' => [
+                'type' => 'varchar',
+            ],
+            'data' => [
+                'type' => 'mediumtext',
+            ],
+        ],
+        'indexes' => [
+            'page_id' => [
+                'type' => 'key',
+            ],
+        ],
+    ];
 }

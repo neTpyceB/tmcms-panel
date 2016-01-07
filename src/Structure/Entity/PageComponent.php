@@ -7,6 +7,10 @@ use TMCms\Orm\Entity;
 /**
  * Class PageComponent
  * @package TMCms\Admin\Structure\Entity
+ *
+ * @method string getComponent()
+ * @method string getData()
+ * @method int getPageId()
  */
 class PageComponent extends Entity
 {
