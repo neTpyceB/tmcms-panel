@@ -7,7 +7,7 @@ use TMCms\Orm\EntityRepository;
 /**
  * @method setWhereGroupId(int $group_id)
  */
-class StructurePagePermissionCollection extends EntityRepository
+class StructurePagePermissionRepository extends EntityRepository
 {
     protected $db_table = 'cms_pages_permissions';
 }

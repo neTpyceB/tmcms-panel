@@ -15,6 +15,7 @@ use TMCms\Orm\EntityRepository;
  */
 class PageEntityRepository extends EntityRepository
 {
+    protected $db_table = 'cms_pages';
     protected $table_structure = [
         'fields' => [
             'template_id' => [
