@@ -8,7 +8,8 @@ use TMCms\Orm\EntityRepository;
  * Class PageComponentHistoryRepository
  * @package TMCms\Admin\Structure\Entity
  *
- * @method setWhereVersion(int $version)
+ * @method $this setWherePageId(int $page_id)
+ * @method $this setWhereVersion(int $version)
  */
 class PageComponentHistoryRepository extends EntityRepository
 {

@@ -5,7 +5,7 @@ namespace TMCms\Admin\Structure\Entity;
 use TMCms\Orm\EntityRepository;
 
 /**
- * Class StructurePageRepository
+ * Class PageEntityRepository
  * @package TMCms\Admin\Structure\Entity
  *
  * @method setWhereLocation(string $location)
@@ -13,10 +13,8 @@ use TMCms\Orm\EntityRepository;
  * @method setWhereActive(bool $flag)
  * @method setWhereInMenu(bool $flag)
  */
-class StructurePageRepository extends EntityRepository
+class PageEntityRepository extends EntityRepository
 {
-    protected $db_table = 'cms_pages';
-
     protected $table_structure = [
         'fields' => [
             'template_id' => [
