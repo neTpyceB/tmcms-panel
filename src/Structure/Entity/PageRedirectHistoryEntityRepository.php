@@ -13,30 +13,28 @@ class PageRedirectHistoryEntityRepository extends EntityRepository
                 'type' => 'int',
                 'unsigned' => true,
             ],
-            'user_id' => [
+            'group_id' => [
                 'type' => 'int',
                 'unsigned' => true,
             ],
-            'component' => [
-                'type' => 'varchar',
+            'edit' => [
+                'type' => 'bool',
             ],
-            'data' => [
-                'type' => 'mediumtext',
+            'properties' => [
+                'type' => 'bool',
             ],
-            'ts' => [
-                'type' => 'int',
-                'unsigned' => true,
+            'active' => [
+                'type' => 'bool',
             ],
-            'version' => [
-                'type' => 'int',
-                'unsigned' => true,
+            'delete' => [
+                'type' => 'bool',
             ],
         ],
         'indexes' => [
             'page_id' => [
                 'type' => 'key',
             ],
-            'user_id' => [
+            'group_id' => [
                 'type' => 'key',
             ],
         ],
