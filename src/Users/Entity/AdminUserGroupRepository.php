@@ -13,4 +13,23 @@ use TMCms\Orm\EntityRepository;
  */
 class AdminUserGroupRepository extends EntityRepository {
     protected $db_table = 'cms_users_groups';
+    protected $table_structure = [
+        'fields' => [
+            'title' => [
+                'type' => 'varchar',
+            ],
+            'undeletable' => [
+                'type' => 'bool',
+            ],
+            'can_set_permissions' => [
+                'type' => 'bool',
+            ],
+            'full_access' => [
+                'type' => 'bool',
+            ],
+            'structure_permissions' => [
+                'type' => 'bool',
+            ],
+        ],
+    ];
 }

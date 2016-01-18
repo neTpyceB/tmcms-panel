@@ -16,4 +16,43 @@ use TMCms\Orm\EntityRepository;
 class AdminUserRepository extends EntityRepository
 {
     protected $db_table = 'cms_users';
+    protected $table_structure = [
+        'fields' => [
+            'group_id' => [
+                'type' => 'index',
+            ],
+            'login' => [
+                'type' => 'varchar',
+            ],
+            'name' => [
+                'type' => 'varchar',
+            ],
+            'surname' => [
+                'type' => 'varchar',
+            ],
+            'phone' => [
+                'type' => 'varchar',
+            ],
+            'email' => [
+                'type' => 'varchar',
+            ],
+            'comments' => [
+                'type' => 'text',
+            ],
+            'notes' => [
+                'type' => 'text',
+            ],
+            'lng' => [
+                'type' => 'char',
+                'length' => 2,
+            ],
+            'password' => [
+                'type' => 'char',
+                'length' => 128,
+            ],
+            'active' => [
+                'type' => 'bool',
+            ],
+        ],
+    ];
 }

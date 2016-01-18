@@ -13,6 +13,27 @@ use TMCms\Orm\EntityRepository;
  */
 class UsersMessageRepository extends EntityRepository
 {
+    protected $table_structure = [
+        'fields' => [
+            'from_user_id' => [
+                'type' => 'index',
+            ],
+            'to_user_id' => [
+                'type' => 'index',
+            ],
+            'message' => [
+                'type' => 'text',
+            ],
+            'seen' => [
+                'type' => 'bool',
+            ],
+            'ts' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+        ],
+    ];
+
     public function setWhereOld()
     {
         $this->addWhereFieldIsLower('ts', NOW - 604800); // One week

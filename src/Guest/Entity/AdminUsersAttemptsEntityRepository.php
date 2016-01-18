@@ -13,4 +13,23 @@ use TMCms\Orm\EntityRepository;
 class AdminUsersAttemptsEntityRepository extends EntityRepository
 {
     protected $db_table = 'cms_users_attempts';
+    protected $table_structure = [
+        'fields' => [
+            'ip' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+            'failed_attempts' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+            'last_attempt_ts' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+            'function_name' => [
+                'type' => 'varchar',
+            ],
+        ],
+    ];
 }

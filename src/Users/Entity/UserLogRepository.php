@@ -13,4 +13,41 @@ use TMCms\Orm\EntityRepository;
 class UserLogRepository extends EntityRepository
 {
     protected $db_table = 'cms_users_log';
+    protected $table_structure = [
+        'fields' => [
+            'user_id' => [
+                'type' => 'index',
+            ],
+            'sid' => [
+                'type' => 'char',
+                'length' => 32,
+            ],
+            'agent' => [
+                'type' => 'varchar',
+            ],
+            'p' => [
+                'type' => 'varchar',
+            ],
+            'do' => [
+                'type' => 'varchar',
+            ],
+            'request_uri' => [
+                'type' => 'text',
+            ],
+            'referer' => [
+                'type' => 'text',
+            ],
+            'post' => [
+                'type' => 'mediumtext',
+            ],
+            'ts' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+            'ip_long' => [
+                'type' => 'int',
+                'unsigned' => true,
+            ],
+        ],
+    ];
 }
