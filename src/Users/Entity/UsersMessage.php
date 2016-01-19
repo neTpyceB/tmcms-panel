@@ -21,6 +21,8 @@ use TMCms\Orm\Entity;
  */
 class UsersMessage extends Entity
 {
+    protected $db_table = 'cms_users_messages';
+
     protected function beforeCreate()
     {
         $this->setTs(NOW);

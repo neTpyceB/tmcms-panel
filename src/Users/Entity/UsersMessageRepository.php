@@ -13,6 +13,8 @@ use TMCms\Orm\EntityRepository;
  */
 class UsersMessageRepository extends EntityRepository
 {
+    protected $db_table = 'cms_users_messages';
+
     protected $table_structure = [
         'fields' => [
             'from_user_id' => [
