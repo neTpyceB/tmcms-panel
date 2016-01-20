@@ -7,4 +7,9 @@ use TMCms\Orm\EntityRepository;
 class TranslationRepository extends EntityRepository
 {
     protected $db_table = 'cms_translations';
+    protected $table_structure = [
+        'fields' => [
+
+        ],
+    ];
 }
