@@ -39,6 +39,8 @@ class CmsGuest
             }
         }
 
+        $key = Configuration::getInstance()->get('cms')['unique_key'];
+
         ?>
         <div class="overlay bg-primary"></div>
 
@@ -66,10 +68,10 @@ class CmsGuest
                                 </form>
                             </div>
                         </section>
-                        <p class="text-center text-white">
-                            Copyright &copy;
-                            <span class="mr5"><?= date('Y', NOW) ?></span>
-                            <span><?= CMS_NAME . ' v. ' . CMS_VERSION . ' - <a href="' . CMS_SITE . '">' . CMS_SITE . '</a>' ?></span>
+                        <p class="text-center">
+                            <span><?= $key ? 'Licensed' : 'Unregistered' ?> proprietary software &copy; <?= date('Y', NOW) . ' from ' . CMS_OWNER_COMPANY ?>
+                            <br><br>
+                            <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ') &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="' . CMS_SITE . '">' . CMS_SITE . '</a>' ?></span>
                         </p>
                     </div>
                 </div>
