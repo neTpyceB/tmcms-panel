@@ -58,12 +58,14 @@ class CmsGuest
                             <?php endif; ?>
                             <div class="p15">
                                 <form role="form" action="?p=<?= P ?>&do=_login" method="post">
-                                    <input type="text" class="form-control input-lg mb25" placeholder="Username"
-                                           autofocus name="login">
-                                    <input type="password" class="form-control input-lg mb25" placeholder="Password"
-                                           name="password">
+                                    <div>
+                                        <input type="text" class="form-control input-lg mb25" placeholder="Username" autofocus name="login">
+                                    </div>
+                                    <div>
+                                        <span class="eye"></span>
+                                        <input type="password" class="form-control input-lg mb25" placeholder="Password" name="password">
+                                    </div>
                                     <input type="hidden" name="go" value="<?= SELF ?>">
-
                                     <button class="btn btn-primary btn-lg btn-block" type="submit">Sign in</button>
                                 </form>
                             </div>
@@ -78,6 +80,16 @@ class CmsGuest
 
             </div>
         </div>
+        <script>
+            var $el = document.querySelector('span.eye');
+            var $el_input = document.querySelector('input[name="password"]');
+            $el.onmouseover = function() {
+                $el_input.type = 'text';
+            };
+            $el.onmouseout = function() {
+                $el_input.type = 'password';
+            };
+        </script>
         <?php
     }
 
