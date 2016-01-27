@@ -18,6 +18,7 @@ use TMCms\Orm\Entity;
  * @method string getName()
  * @method string getSurname()
  * @method $this setActive(bool $flag)
+ * @method $this setGroupId(int $group_id)
  * @method $this setLogin(string $login)
  * @method $this setPassword(string $password)
  */

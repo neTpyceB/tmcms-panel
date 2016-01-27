@@ -69,9 +69,9 @@ class CmsGuest
                             </div>
                         </section>
                         <p class="text-center">
-                            <span><?= $key ? 'Licensed' : 'Unregistered' ?> proprietary software &copy; <?= date('Y', NOW) . ' from ' . CMS_OWNER_COMPANY ?>
+                            <span><?= $key ? 'Licensed' : 'Unregistered' ?> proprietary software from <?= CMS_OWNER_COMPANY ?>
                             <br><br>
-                            <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ') &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a target="_blank" href="' . CMS_SITE . '">' . CMS_SITE . '</a>' ?></span>
+                            <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
                         </p>
                     </div>
                 </div>
@@ -166,6 +166,9 @@ class CmsGuest
             go('/cms/?p=home');
         }
 
+
+        $key = Configuration::getInstance()->get('cms')['unique_key'];
+
         ?>
         <div class="overlay bg-primary"></div>
         <div class="center-wrapper">
@@ -202,10 +205,10 @@ class CmsGuest
                                 </form>
                             </div>
                         </section>
-                        <p class="text-center text-white">
-                            Copyright &copy;
-                            <span class="mr5"><?= date('Y', NOW) ?></span>
-                            <span><?= CMS_NAME . ' v. ' . CMS_VERSION . ' - <a href="' . CMS_SITE . '">' . CMS_SITE . '</a>' ?></span>
+                        <p class="text-center">
+                            <span><?= $key ? 'Licensed' : 'Unregistered' ?> proprietary software from <?= CMS_OWNER_COMPANY ?>
+                                <br><br>
+                                <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
                         </p>
                     </div>
                 </div>
