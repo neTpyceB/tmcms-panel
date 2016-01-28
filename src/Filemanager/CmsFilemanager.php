@@ -245,7 +245,9 @@ class CmsFilemanager
                         ->addField('Type of', CmsInputHidden::getInstance('type_of_1'))
                         ->addField('Current', CmsHTML::getInstance('current_name'))
                         ->addField('Current path', CmsInputHidden::getInstance('current_path'))
-                        ->addField('New', CmsInputText::getInstance('new_name')->backup(false));
+                        ->addField('New', CmsInputText::getInstance('new_name')
+                            ->disableBackupBlock()
+                        );
                     ?>
                     <script>
                         $('#con_rename').find('input[type=submit]').click(function() {
@@ -286,8 +288,12 @@ class CmsFilemanager
                         ->setSubmitButton(new CmsButton('Save'))
                         ->addField('Type of', CmsInputHidden::getInstance('type_of_3'))
                         ->addField('Current path', CmsInputHidden::getInstance('file_name'))
-                        ->addField('Content', CmsHTML::getInstance('content_loading')->value('Loading...'))
-                        ->addField('Content', CmsTextarea::getInstance('content')->backup(false)->rows(10));
+                        ->addField('Content', CmsHTML::getInstance('content_loading')
+                            ->setValue('Loading...'))
+                        ->addField('Content', CmsTextarea::getInstance('content')
+                            ->disableBackupBlock()
+                            ->setRowCount(10)
+                        );
                     ?>
                     <script>
                         $('#con_content').find('input[type=submit]').on('click', function() {
@@ -306,7 +312,9 @@ class CmsFilemanager
                         ->enableAjax()
                         ->setAction('?p=' . P . '&do=_edit&action=dircreate&path=' . $dir)
                         ->setSubmitButton(new CmsButton('Create Directory'))
-                        ->addField('Directory name', CmsInputText::getInstance('dirname')->backup(false))
+                        ->addField('Directory name', CmsInputText::getInstance('dirname')
+                            ->disableBackupBlock()
+                        )
                     ?>
                     <script>
                         $('#con_dir_create').find('input[type=submit]').click(function() {
@@ -326,7 +334,9 @@ class CmsFilemanager
                         ->setAction('?p=' . P . '&do=_edit&action=filecreate&path=' . $dir)
                         ->setSubmitButton(new CmsButton('Create File'))
                         ->addField('File name', CmsInputText::getInstance('file_name'))
-                        ->addField('Content', CmsTextarea::getInstance('content')->backup(false)->rows(10));
+                        ->addField('Content', CmsTextarea::getInstance('content')
+                            ->disableBackupBlock()
+                            ->setRowCount(10));
                     ?>
                     <script>
                         $('#con_file_create').find('input[type=submit]').click(function() {
@@ -347,8 +357,8 @@ class CmsFilemanager
         echo CmsForm::getInstance()
             ->addField('Selected file (<a href="" onclick="done(); return false">Set</a>)',
                 CmsInputText::getInstance('filename')
-                    ->backup(false)
-                    ->readonly(true)
+                    ->disableBackupBlock()
+                    ->enableReadOnly()
             )
         ;
         ?>
@@ -364,21 +374,24 @@ class CmsFilemanager
 
         // Modern upload form with multiple file selects and large file uploads
         $upload_form = CmsForm::getInstance()
-            ->setSubmitButton(CmsButton::getInstance('Upload')->id('upload_files'))
+            ->setSubmitButton(CmsButton::getInstance('Upload')
+                ->setElementIdAttribute('upload_files'))
             ->setEnctype(CmsForm::ENCTYPE_MULTIPART)
             ->setAction('?p=' . P . '&do=_upload')
             ->addField('Upload files', CmsHtml::getInstance('file')
-                ->multiple(true)
-                ->value('
+                ->enableMultiple()
+                ->setValue('
         <div id="filelist">
-            <input id="file" type="file" name="file[]" class="form-control" onkeyup="cmsFormCtrlAndKeyUp(event, this);" multiple="">
+            <input id="file" type="file" name="file[]" class="form-control" multiple="">
         </div>
         <div id="container">
             <a id="pickfiles" href="javascript:;" style="display: block; padding-top: 2px; height: 23px; font-size: 13px; text-align: center; border: 1px solid black">Click to select files, or drag files here</a>
         </div>
         <pre id="console" style="display: none"></pre>')
             )
-            ->addField('Extract .zip files', CmsCheckbox::getInstance('extract')->setChecked(true))
+            ->addField('Extract .zip files', CmsCheckbox::getInstance('extract')
+                ->setIsChecked()
+            )
             ->addField('If file exists',
                 CmsRadioBox::getInstance('exists')
                     ->setRadioButtons(['skip' => 'Skip upload', 'overwrite' => 'Overwrite', 'rename' => 'Make new name'])
@@ -1200,9 +1213,17 @@ class CmsFilemanager
         echo CmsForm::getInstance()
             ->setAction('?p=' . P . '&do=_edit_content&path=' . $dir)
             ->setSubmitButton(new CmsButton('Update'))
-            ->addField('Name', CmsHTML::getInstance('')->value(pathinfo($dir, PATHINFO_BASENAME)))
-            ->addField('Name hidden', CmsInputHidden::getInstance('name')->value(pathinfo($dir, PATHINFO_BASENAME)))
-            ->addField('Content', CmsTextarea::getInstance('content')->value(htmlspecialchars(file_get_contents($dir_base), ENT_COMPAT, 'utf-8'))->rows(30));
+            ->addField('Name', CmsHTML::getInstance('')
+                ->setValue(pathinfo($dir, PATHINFO_BASENAME))
+            )
+            ->addField('Name hidden', CmsInputHidden::getInstance('name')
+                ->setValue(pathinfo($dir, PATHINFO_BASENAME))
+            )
+            ->addField('Content', CmsTextarea::getInstance('content')
+                ->setValue(htmlspecialchars(file_get_contents($dir_base), ENT_COMPAT, 'utf-8'))
+                ->setRowCount(30)
+            )
+        ;
     }
 
     /**
@@ -1320,7 +1341,9 @@ class CmsFilemanager
         echo CmsForm::getInstance()
             ->setAction('?p=' . P . '&do=_create_directory&path=' . $dir)
             ->setSubmitButton(new CmsButton('Create'))
-            ->addField('Path', CmsHTML::getInstance('path')->value($dir))
+            ->addField('Path', CmsHTML::getInstance('path')
+                ->setValue($dir)
+            )
             ->addField('Directory name', CmsInputText::getInstance('name'));
     }
 
@@ -1346,15 +1369,21 @@ class CmsFilemanager
      */
     public function create_file()
     {
-        $dir =& $_GET['path'];
+        $dir = $_GET['path'];
         if ($dir[0] == '/') $dir = substr($dir, 1);
 
         echo CmsForm::getInstance()
             ->setAction('?p=' . P . '&do=_create_file&path=' . $dir)
             ->setSubmitButton(new CmsButton('Create'))
-            ->addField('Path', CmsHTML::getInstance('path')->value($dir))
-            ->addField('File name', CmsInputText::getInstance('name')->hint('With extension'))
-            ->addField('File content', CmsTextarea::getInstance('content')->rows(30));
+            ->addField('Path', CmsHTML::getInstance('path')
+                ->setValue($dir)
+            )
+            ->addField('File name', CmsInputText::getInstance('name')
+                ->hint('With extension')
+            )
+            ->addField('File content', CmsTextarea::getInstance('content')
+                ->setRowCount(30)
+            );
     }
 
     /**
