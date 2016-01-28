@@ -59,9 +59,10 @@ class CmsGuest
                             <div class="p15">
                                 <form role="form" action="?p=<?= P ?>&do=_login" method="post">
                                     <div>
-                                        <input type="text" class="form-control input-lg mb25" placeholder="Username" autofocus name="login">
+                                        <input type="text" class="form-control input-lg mb25" placeholder="Username" name="login">
                                     </div>
                                     <div>
+                                        <small>asdfg</small>
                                         <span class="eye"></span>
                                         <input type="password" class="form-control input-lg mb25" placeholder="Password" name="password">
                                     </div>
@@ -81,14 +82,34 @@ class CmsGuest
             </div>
         </div>
         <script>
-            var $el = document.querySelector('span.eye');
-            var $el_input = document.querySelector('input[name="password"]');
-            $el.onmouseover = function() {
-                $el_input.type = 'text';
+            var $eye = document.querySelector('span.eye');
+            var $login = document.querySelector('input[name="login"]');
+            var $password = document.querySelector('input[name="password"]');
+            var $submit = document.querySelector('button[type="submit"]');
+
+            // Show / hide pass
+            $eye.onmouseover = function() {
+                $password.type = 'text';
             };
-            $el.onmouseout = function() {
-                $el_input.type = 'password';
+            $eye.onmouseout = function() {
+                $password.type = 'password';
             };
+
+            // Try auto sign-in
+            setTimeout(function() {
+                if ($login.value != '' && $password.value != '') {
+                    var int_max = 5;
+                    var interval = setInterval(function() {
+                        $submit.innerHTML = 'Auto sign-in ... '+ int_max +' ...';
+                        int_max = int_max - 1;
+                        if (!int_max) {
+                            clearInterval(interval);
+                            $submit.click();
+                        }
+                    }, 1000);
+                }
+            }, 2000);
+
         </script>
         <?php
     }
