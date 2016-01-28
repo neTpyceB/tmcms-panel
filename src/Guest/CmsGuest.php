@@ -62,7 +62,6 @@ class CmsGuest
                                         <input type="text" class="form-control input-lg mb25" placeholder="Username" name="login">
                                     </div>
                                     <div>
-                                        <small>asdfg</small>
                                         <span class="eye"></span>
                                         <input type="password" class="form-control input-lg mb25" placeholder="Password" name="password">
                                     </div>
