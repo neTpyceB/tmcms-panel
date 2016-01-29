@@ -3,13 +3,13 @@
   "type": "library",
   "description": "Admin panel for TMCms",
   "keywords": ["Admin", "CMS", "TMCms"],
-  "homepage": "http://devp.lv/",
+  "homepage": "http://devp.eu/",
   "license": "proprietary",
   "authors": [
     {
       "name": "Vadims Petrusevs",
-      "email": "info@devp.lv",
-      "homepage": "http://devp.lv/",
+      "email": "info@devp.eu",
+      "homepage": "http://devp.eu/",
       "role": "Developer"
     }
   ],
