@@ -3,6 +3,7 @@
 namespace TMCms\Admin\Filemanager;
 
 use TMCms\Admin\Messages;
+use TMCms\Admin\Users;
 use TMCms\Files\FileSystem;
 use TMCms\Files\Image;
 use TMCms\HTML\Cms\CmsFieldset;
@@ -43,7 +44,13 @@ class CmsFilemanager
 
         // Directory to be shown is supplied from url
         $dir = isset($_GET['path']) ? $_GET['path'] : NULL;
-        // If not - set default directory for public files
+
+        // Maybe user hav access only to public folder, so we have to check and change folder
+        if (Users::getInstance()->getGroupData('filemanager_limited') && stripos($dir, DIR_PUBLIC_URL) === false) {
+            $dir = DIR_PUBLIC_URL;
+        }
+
+        // If no dir - set default directory for public files
         if (!$dir) {
             $dir = DIR_PUBLIC_URL;
         }
