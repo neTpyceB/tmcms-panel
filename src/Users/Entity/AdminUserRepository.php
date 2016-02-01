@@ -36,6 +36,9 @@ class AdminUserRepository extends EntityRepository
             'email' => [
                 'type' => 'varchar',
             ],
+            'avatar' => [
+                'type' => 'varchar',
+            ],
             'comments' => [
                 'type' => 'text',
             ],
