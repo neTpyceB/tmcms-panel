@@ -13,8 +13,9 @@ use TMCms\Orm\Entity;
  * @method bool getFullAccess()
  * @method string getTitle()
  * @method bool getUndeletable()
- * @method $this setCanSetPermission(bool $flag)
+ * @method $this setCanSetPermissions(bool $flag)
  * @method $this setDefault(bool $flag)
+ * @method $this setFilemanagerLimited(bool $flag)
  * @method $this setFullAccess(bool $flag)
  * @method $this setStructurePermissions(bool $flag)
  */
@@ -40,7 +41,7 @@ class AdminUserGroup extends Entity
             $can_set_permission = true;
         }
 
-        $this->setCanSetPermission($can_set_permission);
+        $this->setCanSetPermissions($can_set_permission);
 
         return $this;
     }
