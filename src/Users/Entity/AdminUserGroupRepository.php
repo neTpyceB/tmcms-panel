@@ -33,6 +33,9 @@ class AdminUserGroupRepository extends EntityRepository {
             'filemanager_limited' => [
                 'type' => 'bool',
             ],
+            'default' => [
+                'type' => 'bool',
+            ],
         ],
     ];
 }
