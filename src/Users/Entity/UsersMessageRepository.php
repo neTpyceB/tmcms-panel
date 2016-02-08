@@ -33,6 +33,9 @@ class UsersMessageRepository extends EntityRepository
                 'type' => 'int',
                 'unsigned' => true,
             ],
+            'notify' => [
+                'type' => 'bool',
+            ],
         ],
     ];
 
