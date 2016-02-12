@@ -185,4 +185,12 @@ class CmsComponents
 
         die;
     }
+
+    /**
+     * Google Map to select point point and coordinates
+     */
+    public function google_map()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
+    }
 }
