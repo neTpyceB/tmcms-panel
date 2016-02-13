@@ -7,10 +7,10 @@ ob_start();
     }
 </style>
 <div id="map"></div>
-<input type="text" readonly id="coordinates" name="coordinates" class="form-control" onkeyup="update_coords();">
-<input class="btn btn-primary" type="button" onclick="done()" value="Set coordinates">
+<input type="text" readonly id="cms_map_coordinates" name="cms_map_coordinates" class="form-control" onkeyup="update_coords();">
+<input class="btn btn-primary" type="button" onclick="done()" value="Set cms_map_coordinates">
 <script>
-    var $coords = $('#coordinates');
+    var $coords = $('#cms_map_coordinates');
 
     function done() {
         popup_modal.result_element.val($coords.val());
