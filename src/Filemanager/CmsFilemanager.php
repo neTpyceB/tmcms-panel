@@ -1098,11 +1098,16 @@ class CmsFilemanager
         // Extract ZIPs
         if ($extract_zips && pathinfo($filePath, PATHINFO_EXTENSION) === 'zip') {
             // Unzip
-            $zip = new ZipArchive;
-            $zip->open($filePath);
-            $zip->extractTo($targetDir);
-            // Delete archive
-            unlink($filePath);
+            $zip = new ZipArchive();
+            $zip_open_result = $zip->open($filePath);
+            if ($zip_open_result === true) {
+                $zip->extractTo(rtrim($targetDir, '/'));
+                $zip->close();
+                // Delete archive
+                unlink($filePath);
+            } else {
+                dump('ZipArchive failed to open ' . $filePath . '. With error code - ' . $zip_open_result);
+            }
         }
 
         ob_get_clean();
