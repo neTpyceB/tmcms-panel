@@ -94,21 +94,6 @@ class CmsGuest
                 $password.type = 'password';
             };
 
-            // Try auto sign-in
-            setTimeout(function() {
-                if ($login.value != '' && $password.value != '') {
-                    var int_max = 5;
-                    var interval = setInterval(function() {
-                        $submit.innerHTML = 'Auto sign-in ... '+ int_max +' ...';
-                        int_max = int_max - 1;
-                        if (!int_max) {
-                            clearInterval(interval);
-                            $submit.click();
-                        }
-                    }, 1000);
-                }
-            }, 2000);
-
         </script>
         <?php
     }
