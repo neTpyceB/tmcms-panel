@@ -71,9 +71,7 @@ class CmsGuest
                             </div>
                         </section>
                         <p class="text-center">
-                            <span><?= $key ? 'Licensed' : 'Unregistered' ?> proprietary software from <?= CMS_OWNER_COMPANY ?>
-                            <br><br>
-                            <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
+                            <span>This site uses <?= $key ? 'licensed' : 'unregistered' ?> copy of <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
                         </p>
                     </div>
                 </div>
