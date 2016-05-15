@@ -9,7 +9,7 @@ use TMCms\Orm\Entity;
  * Class AdminUserGroup
  * @package TMCms\Admin\Users\Entity
  *
- * @method bool getCanSetPermission()
+ * @method bool getCanSetPermissions()
  * @method bool getFullAccess()
  * @method string getTitle()
  * @method bool getUndeletable()

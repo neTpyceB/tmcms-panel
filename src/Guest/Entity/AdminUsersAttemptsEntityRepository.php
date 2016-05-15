@@ -27,9 +27,6 @@ class AdminUsersAttemptsEntityRepository extends EntityRepository
                 'type' => 'int',
                 'unsigned' => true,
             ],
-            'function_name' => [
-                'type' => 'varchar',
-            ],
         ],
     ];
 }
