@@ -12,6 +12,7 @@ use TMCms\Orm\EntityRepository;
  * @method setWherePid(int $pid)
  * @method setWhereActive(bool $flag)
  * @method setWhereInMenu(bool $flag)
+ * @method setWhereMenuName(string $menu_name)
  */
 class PageEntityRepository extends EntityRepository
 {
@@ -72,6 +73,10 @@ class PageEntityRepository extends EntityRepository
             'lastmod_ts' => [
                 'type' => 'int',
                 'unsigned' => true,
+            ],
+            'menu_name' => [
+                'type' => 'varchar',
+                'default_value' => 'main',
             ],
         ],
         'indexes' => [
