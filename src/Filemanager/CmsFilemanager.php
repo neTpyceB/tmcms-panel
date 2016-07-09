@@ -17,6 +17,7 @@ use TMCms\HTML\Cms\Element\CmsRadioBox;
 use TMCms\HTML\Cms\Element\CmsTextarea;
 use TMCms\Log\App;
 use TMCms\Strings\Converter;
+use TMCms\Strings\UID;
 use TMCms\Traits\singletonInstanceTrait;
 use ZipArchive;
 
@@ -1005,11 +1006,12 @@ class CmsFilemanager
         if ($allowed_extensions) {
             $ext = pathinfo($fileName, PATHINFO_EXTENSION);
             if (!in_array($ext, $allowed_extensions)) {
-                die('1');
+                error('Extension "'. $ext .'" is not allowed');
             }
         }
 
-        $fileName = strtolower($fileName);
+//        $fileName = strtolower($fileName);
+        $fileName = UID::text2uid(Converter::data2words(strtolower($fileName)), 200);
 
         $filePath = $targetDir . $fileName;
 
