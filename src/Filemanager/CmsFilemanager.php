@@ -1011,7 +1011,7 @@ class CmsFilemanager
         }
 
 //        $fileName = strtolower($fileName);
-        $fileName = UID::text2uid(Converter::data2words(strtolower($fileName)), 200);
+        $fileName = Converter::data2words(strtolower($fileName), ['@', '-', '_', '.']);
 
         $filePath = $targetDir . $fileName;
 
