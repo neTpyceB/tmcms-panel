@@ -22,65 +22,96 @@ class CmsComponents
     {
         ob_start();
         ?>
-        <textarea id="wysiwyg_<?= NOW ?>" name="wysiwyg_<?= NOW ?>"></textarea>
-        <input class="btn btn-primary" type="button" onclick="done()" value="Update">
-
-        <script>
-            resize_wysiwyg = function () {
-                var $block = $('.cke_wrapper');
-                var $block_in = $('#cke_contents_wysiwyg_<?= NOW ?>');
-                var $win = $('#modal-popup_inner');
-
-                $block.height($win.height() - 70);
-                $block_in.height($win.height() - 170);
-            };
-
-            function done() {
-                popup_modal.result_element.val(editor.getData());
-                popup_modal.result_element.focus();
-                popup_modal.close();
-                return true;
+        <style>
+            .tinymce-container, .tinymce {
+                height: 100%;
             }
 
-            var value = popup_modal.result_element.val();
-            $('#wysiwyg_<?= NOW ?>').html(value);
+            .mce-btn-group:last-child {
+                float: right;
+                border-left: none;
+            }
+        </style>
+        <div class="tinymce-container">
+            <textarea name="tinymce" class="tinymce" id="tinymce_<?= NOW ?>"></textarea>
+        <script>
+            $(function () {
+                var originalTextarea = $(popup_modal.result_element.selector);
 
-            var editor = CKEDITOR.replace('wysiwyg_<?= NOW ?>',
-                {
-                    filebrowserBrowseUrl: '<?= DIR_CMS_URL ?>?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>'
-                }
-            );
+                tinyMCE.PluginManager.add('stylebuttons', function (editor, url) {
+                    ['pre', 'p', 'code', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(function (name) {
+                        editor.addButton("style-" + name, {
+                            tooltip: "Toggle " + name,
+                            text: name.toUpperCase(),
+                            onClick: function () {
+                                editor.execCommand('mceToggleFormat', false, name);
+                            },
+                            onPostRender: function () {
+                                var self = this, setup = function() {
+                                    editor.formatter.formatChanged(name, function(state) {
+                                        self.active(state);
+                                    });
+                                };
+                                editor.formatter ? setup() : editor.on('init', setup);
+                            }
+                        })
+                    });
+                });
 
-            setInterval(function () {
-                $('.cke_dialog_background_cover').remove();
-            }, 2000);
+                tinyMCE.init({
+                    selector: 'textarea#tinymce_<?= NOW ?>',
+                    element_format: 'html',
+                    relative_urls: false,
+                    image_caption: true,
+                    menubar: false,
+                    statusbar: true,
+                    plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'table', 'image', 'imagetools', 'link', 'hr', 'code', 'save'],
+                    toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-p hr table | alignleft aligncenter alignright alignjustify | bullist numlist | link image code | save close'],
+                    content_css: '<?= DIR_ASSETS_URL . 'stylesheets/admin/tinymce.css' ?>', // TODO: Dynamic content_css loading
+                    setup: function (editor) {
+                        editor.addButton('close', {
+                            text: 'Close',
+                            icon: false,
+                            onclick: function () {
+                                popup_modal.close();
+                            }
+                        });
+                    },
+                    save_onsavecallback: function (editor) {
+                        originalTextarea.val(editor.getContent());
+                    },
+                    file_picker_callback: function (callback, value, meta) {
+                        if (meta.filetype == 'image') {
+                            var modalWindow = $('.mce-window[aria-label="Insert/edit image"]');
 
-            setTimeout(function () {
-                resize_wysiwyg();
-            }, 1000);
-            $(window).resize(function () {
-                resize_wysiwyg();
+                            popup_modal.result_element = modalWindow.find('label:contains("Source")').next().find('input');
+
+                            popup_modal.result_element.focus(function () {
+                                var image = new Image();
+
+                                image.onload = function () {
+                                    modalWindow.find('input.mce-textbox[aria-label="Width"]').val(this.width);
+                                    modalWindow.find('input.mce-textbox[aria-label="Height"]').val(this.height);
+                                };
+
+                                image.src = window.location.protocol + '//' + window.location.host + $(this).val();
+                            });
+
+                            popup_modal.show('?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>', 700, 500);
+                        }
+                    },
+                    formats: {
+                        alignleft: { selector: 'img', styles: { 'float': 'left', 'margin': '0 1rem 1rem 0' } },
+                        alignright: { selector: 'img', styles: { 'float': 'right', 'margin': '0 0 1rem 1rem' } }
+                    }
+                });
+
+                tinyMCE.activeEditor.setContent(originalTextarea.val());
             });
         </script>
-        <br><?php
+        <?php
         echo ob_get_clean();
         die;
-    }
-
-    /**
-     * Action for WYSIWYG, set text in parent input
-     */
-    public function _wysiwyg()
-    {
-        if (!isset($_POST['wysiwyg'])) {
-            return;
-        }
-        ?>
-        <script type="text/javascript">
-            var $el = window.opener.$('#' + window.opener.resultOutputID);
-            $el.val('<?= $_POST['wysiwyg'] ?>').focus();
-            window.close();
-        </script><?php
     }
 
     /**
