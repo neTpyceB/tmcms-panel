@@ -82,38 +82,25 @@ class CmsComponents
                     },
                     file_picker_callback: function (callback, value, meta) {
                         if (meta.filetype == 'image') {
-                            var modalWindow = $('.mce-window[aria-label="Insert/edit image"]');
                             var imageModal = new PopupModal();
 
-                            imageModal.resultElement = modalWindow.find('label:contains("Source")').next().find('input');
+                            imageModal.showWindow('?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>', 700, 500);
+                            imageModal.bindClick('label[for="filename"] > a', function () {
+                                var modalWindow = $('.mce-window[aria-label="Insert/edit image"]');
+                                var imageObject = new Image();
+                                var imagePath = $('#filename').val();
 
-                            imageModal.resultElement.focus(function () {
-                                var image = new Image();
+                                imageObject.onload = function () {
+                                    modalWindow.find('label:contains("Source")').next().find('input').val(imagePath);
 
-                                image.onload = function () {
                                     modalWindow.find('input.mce-textbox[aria-label="Width"]').val(this.width);
                                     modalWindow.find('input.mce-textbox[aria-label="Height"]').val(this.height);
                                 };
 
-                                image.src = window.location.protocol + '//' + window.location.host + $(this).val();
+                                imageObject.src = window.location.protocol + '//' + window.location.host + imagePath;
+
+                                imageModal.closeWindow();
                             });
-
-                            imageModal.showWindow('?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>', 700, 500);
-
-//                            popup_modal.result_element = modalWindow.find('label:contains("Source")').next().find('input');
-//
-//                            popup_modal.result_element.focus(function () {
-//                                var image = new Image();
-//
-//                                image.onload = function () {
-//                                    modalWindow.find('input.mce-textbox[aria-label="Width"]').val(this.width);
-//                                    modalWindow.find('input.mce-textbox[aria-label="Height"]').val(this.height);
-//                                };
-//
-//                                image.src = window.location.protocol + '//' + window.location.host + $(this).val();
-//                            });
-//
-//                            popup_modal.show('?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?//= NOW ?>//', 700, 500);
                         }
                     },
                     formats: {

@@ -413,8 +413,12 @@ class CmsFilemanager
 
         <script>
             // Choose folder or file
-            function setSelectedToInput(o) {
-                $('#filename').val(o.getAttribute('data-path'));
+            function setSelectedToInput(link) {
+                $('a[data-path="' + link.getAttribute('data-path') + '"')
+                    .parents('#modal-popup_inner')
+                    .find('#filename')
+                    .val(link.getAttribute('data-path'));
+
                 return false;
             }
             // Set value in opener and close window
@@ -424,7 +428,6 @@ class CmsFilemanager
                     window.opener.CKEDITOR.tools.callFunction('<?= isset($_GET['CKEditorFuncNum']) ? $_GET['CKEditorFuncNum'] : '' ?>', $('#filename').val());
                     window.close();
                 }
-
                 // Components
                 if (popup_modal.result_element) {
                     popup_modal.result_element.val($('#filename').val()); popup_modal.result_element.focus(); popup_modal.close(); return true;
@@ -797,20 +800,21 @@ class CmsFilemanager
             var filemanager_helpers = {
                 upload_object: null,
                 file_handlers: {},
+                modal: new PopupModal(),
                 removeFile: function(file_id) {
                     var file = filemanager_helpers.file_handlers[file_id];
                     filemanager_helpers.upload_object.removeFile(file);
                     $("#" + file_id).remove();
                 },
                 reloadFiles: function() {
-                    popup_modal.show_loading();
+                    this.modal.showLoading();
                     $('#file_list_zone').load(filemanager_helpers.current_url + '&files_only');
                     setTimeout(function() {
                         events_on_checkboxes();
                         init_context_events_on_files();
                         ajax_toasters.request_new_messages();
                         filemanager_helpers.reinit_context_menues();
-                        popup_modal.hide_loading();
+                        this.modal.hideLoading();
                     }, 100);
                 },
                 current_url: '<?= SELF ?>',
@@ -822,7 +826,7 @@ class CmsFilemanager
                         // Ajax
                         filemanager_helpers.current_url = location;
 
-                        popup_modal.show(location);
+                        this.modal.showWindow(location);
                     }
                 },
                 show_create_directory: function() {
