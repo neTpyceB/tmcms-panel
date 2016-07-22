@@ -36,7 +36,7 @@ class CmsComponents
             <textarea name="tinymce" class="tinymce" id="tinymce_<?= NOW ?>"></textarea>
         <script>
             $(function () {
-                var originalTextarea = $(popup_modal.result_element.selector);
+                var originalTextarea = $('<?= isset($_GET['selector']) ? $_GET['selector'] : '' ?>');
 
                 tinyMCE.PluginManager.add('stylebuttons', function (editor, url) {
                     ['pre', 'p', 'code', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(function (name) {
@@ -57,7 +57,7 @@ class CmsComponents
                         })
                     });
                 });
-
+                console.log('here');
                 tinyMCE.init({
                     selector: 'textarea#tinymce_<?= NOW ?>',
                     element_format: 'html',
@@ -65,7 +65,7 @@ class CmsComponents
                     image_caption: true,
                     menubar: false,
                     statusbar: true,
-                    plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'table', 'image', 'imagetools', 'link', 'hr', 'code', 'save'],
+                    plugins: ['stylebuttons', 'moxiecut', 'textcolor', 'colorpicker', 'table', 'image', 'link', 'hr', 'code', 'save'],
                     toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-p hr table | alignleft aligncenter alignright alignjustify | bullist numlist | link image code | save close'],
                     content_css: '<?= DIR_ASSETS_URL . 'stylesheets/admin/tinymce.css' ?>', // TODO: Dynamic content_css loading
                     setup: function (editor) {
