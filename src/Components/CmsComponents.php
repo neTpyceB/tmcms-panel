@@ -36,7 +36,7 @@ class CmsComponents
             <textarea name="tinymce" class="tinymce" id="tinymce_<?= NOW ?>"></textarea>
         <script>
             $(function () {
-                var originalTextarea = $('<?= isset($_GET['selector']) ? $_GET['selector'] : '' ?>');
+                var originalTextarea = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
 
                 tinyMCE.PluginManager.add('stylebuttons', function (editor, url) {
                     ['pre', 'p', 'code', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(function (name) {
@@ -57,7 +57,7 @@ class CmsComponents
                         })
                     });
                 });
-                console.log('here');
+
                 tinyMCE.init({
                     selector: 'textarea#tinymce_<?= NOW ?>',
                     element_format: 'html',
@@ -65,7 +65,7 @@ class CmsComponents
                     image_caption: true,
                     menubar: false,
                     statusbar: true,
-                    plugins: ['stylebuttons', 'moxiecut', 'textcolor', 'colorpicker', 'table', 'image', 'link', 'hr', 'code', 'save'],
+                    plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'table', 'image', 'link', 'hr', 'code', 'save'],
                     toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-p hr table | alignleft aligncenter alignright alignjustify | bullist numlist | link image code | save close'],
                     content_css: '<?= DIR_ASSETS_URL . 'stylesheets/admin/tinymce.css' ?>', // TODO: Dynamic content_css loading
                     setup: function (editor) {
@@ -73,22 +73,27 @@ class CmsComponents
                             text: 'Close',
                             icon: false,
                             onclick: function () {
-                                popup_modal.close();
+                                $('[id^="' + editor.id + '"]').parents('#modal-popup_inner').trigger('popup:close');
                             }
                         });
+                    },
+                    init_instance_callback: function (editor) {
+                        editor.setContent(originalTextarea.val());
                     },
                     save_onsavecallback: function (editor) {
                         originalTextarea.val(editor.getContent());
                     },
                     file_picker_callback: function (callback, value, meta) {
                         if (meta.filetype == 'image') {
-                            var imageModal = new PopupModal();
+                            var imageModal = new PopupModal({
+                                url: '?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>'
+                            });
 
-                            imageModal.showWindow('?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>', 700, 500);
-                            imageModal.bindClick('label[for="filename"] > a', function () {
+                            imageModal.show();
+                            imageModal.onReturnResult(function (result) {
                                 var modalWindow = $('.mce-window[aria-label="Insert/edit image"]');
                                 var imageObject = new Image();
-                                var imagePath = $('#filename').val();
+                                var imagePath = result;
 
                                 imageObject.onload = function () {
                                     modalWindow.find('label:contains("Source")').next().find('input').val(imagePath);
@@ -98,8 +103,6 @@ class CmsComponents
                                 };
 
                                 imageObject.src = window.location.protocol + '//' + window.location.host + imagePath;
-
-                                imageModal.closeWindow();
                             });
                         }
                     },
@@ -108,8 +111,6 @@ class CmsComponents
                         alignright: { selector: 'img', styles: { 'float': 'right', 'margin': '0 0 1rem 1rem' } }
                     }
                 });
-
-                tinyMCE.activeEditor.setContent(originalTextarea.val());
             });
         </script>
         <?php

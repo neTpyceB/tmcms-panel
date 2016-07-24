@@ -145,7 +145,7 @@ class CmsFilemanager
                             <td>
                                 <input class="cb_hide" type="checkbox" name="<?= $v ?>" value="">
                                 &nbsp;
-                                <a class="dir_context" href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $v ?>" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="filemanager_helpers.loadDirectory(this.href); return false;" data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
+                                <a class="dir_context" href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $v ?>" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="filemanager_helpers.loadDirectory(this); return false;" data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
                             </td>
                             <td></td>
                             <td></td>
@@ -423,28 +423,29 @@ class CmsFilemanager
             }
             // Set value in opener and close window
             function done() {
+                var filenameInput = $('#filename'),
+                    modalWindow = filenameInput.parents('#modal-popup_inner');
+
+                modalWindow.trigger('popup:return_result', [filenameInput.val()]);
+                modalWindow.trigger('popup:close');
+
                 // use CKEditor 3.0 integration method
-                if ('<?= (int) isset($_GET['CKEditor']) ?>' == '1') {
-                    window.opener.CKEDITOR.tools.callFunction('<?= isset($_GET['CKEditorFuncNum']) ? $_GET['CKEditorFuncNum'] : '' ?>', $('#filename').val());
-                    window.close();
-                }
-                // Components
-                if (popup_modal.result_element) {
-                    popup_modal.result_element.val($('#filename').val()); popup_modal.result_element.focus(); popup_modal.close(); return true;
-                }
-
+//                if ('<?//= (int) isset($_GET['CKEditor']) ?>//' == '1') {
+//                    window.opener.CKEDITOR.tools.callFunction('<?//= isset($_GET['CKEditorFuncNum']) ? $_GET['CKEditorFuncNum'] : '' ?>//',filenameInput.val());
+//                    window.close();
+//                }
                 // Does not know which element activated
-                if (!window.opener || typeof window.opener.resultOutputID == 'undefined' || !window.opener.resultOutputID) {
-                    alert('No field in opener window found');
-                    return;
-                }
-
-                var el = opener.$('#' + window.opener.resultOutputID);
-
-                // Set value
-                if (el) {
-                    el.val($('#filename').val());
-                }
+//                if (!window.opener || typeof window.opener.resultOutputID == 'undefined' || !window.opener.resultOutputID) {
+//                    alert('No field in opener window found');
+//                    return;
+//                }
+//
+//                var el = opener.$('#' + window.opener.resultOutputID);
+//
+//                // Set value
+//                if (el) {
+//                    el.val(filenameInput.val());
+//                }
             }
 
             // Bind context menu on files and folder - needs to be launched every page reload
@@ -800,33 +801,29 @@ class CmsFilemanager
             var filemanager_helpers = {
                 upload_object: null,
                 file_handlers: {},
-                modal: new PopupModal(),
                 removeFile: function(file_id) {
                     var file = filemanager_helpers.file_handlers[file_id];
                     filemanager_helpers.upload_object.removeFile(file);
                     $("#" + file_id).remove();
                 },
                 reloadFiles: function() {
-                    this.modal.showLoading();
                     $('#file_list_zone').load(filemanager_helpers.current_url + '&files_only');
                     setTimeout(function() {
                         events_on_checkboxes();
                         init_context_events_on_files();
                         ajax_toasters.request_new_messages();
                         filemanager_helpers.reinit_context_menues();
-                        this.modal.hideLoading();
                     }, 100);
                 },
                 current_url: '<?= SELF ?>',
-                loadDirectory: function(location) {
+                loadDirectory: function (link) {
                     // From CKEditor - in separate window
                     if ('<?= (int) isset($_GET['CKEditor']) ?>' == '1') {
-                        window.location.href = location + '&CKEditor=<?= isset($_GET['CKEditor']) ? $_GET['CKEditor'] : '' ?>&CKEditorFuncNum=<?= isset($_GET['CKEditorFuncNum']) ? $_GET['CKEditorFuncNum'] : '' ?>&langCode=<?= isset($_GET['langCode']) ? $_GET['langCode'] : '' ?>';
+                        window.location.href = link.href + '&CKEditor=<?= isset($_GET['CKEditor']) ? $_GET['CKEditor'] : '' ?>&CKEditorFuncNum=<?= isset($_GET['CKEditorFuncNum']) ? $_GET['CKEditorFuncNum'] : '' ?>&langCode=<?= isset($_GET['langCode']) ? $_GET['langCode'] : '' ?>';
                     } else {
                         // Ajax
-                        filemanager_helpers.current_url = location;
-
-                        this.modal.showWindow(location);
+                        filemanager_helpers.current_url = link.href;
+                        $(link).parents('#modal-popup_inner').trigger('popup:load_content', [link.href]);
                     }
                 },
                 show_create_directory: function() {
