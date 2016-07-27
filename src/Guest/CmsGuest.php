@@ -130,6 +130,7 @@ class CmsGuest
         // Get user info
         $user_collection = new AdminUserRepository();
         $user_collection->setWhereLogin($_POST['login']);
+        $user_collection->setWhereActive(1);
         $user_collection->setWherePassword(Users::getInstance()->generateHash($_POST['password']));
 
         /** @var AdminUser $user */
