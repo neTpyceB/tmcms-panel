@@ -95,7 +95,7 @@ class CmsFilemanager
                 continue;
             }
             $tmp .= $v . '/';
-            $path_links[] = '<a onclick="filemanager_helpers.loadDirectory(this.href); return false;" href="?p=' . P . '&nomenu&path=' . $tmp . '">' . $v . '</a>';
+            $path_links[] = '<a onclick="filemanager_helpers.loadDirectory(this); return false;" href="?p=' . P . '&nomenu&path=' . $tmp . '">' . $v . '</a>';
         }
 
         // Show top bar if we are allowed to view folders
@@ -105,7 +105,7 @@ class CmsFilemanager
             <div style="padding: 10px; position: relative">
                 <a onclick="filemanager_helpers.show_create_directory(); return false;" href="?p=<?= P ?>&do=create_directory&nomenu&path=<?= $dir ?>">Create directory</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                <a href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $path_up ?>" onclick="filemanager_helpers.loadDirectory(this.href); return false;">Go up</a>
+                <a href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $path_up ?>" onclick="filemanager_helpers.loadDirectory(this); return false;">Go up</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 Current path: /<?= implode('/', $path_links) ?>
                 <hr>
@@ -825,6 +825,8 @@ class CmsFilemanager
                         filemanager_helpers.current_url = link.href;
                         $(link).parents('#modal-popup_inner').trigger('popup:load_content', [link.href]);
                     }
+
+                    return false;
                 },
                 show_create_directory: function() {
                     _.con.open();
