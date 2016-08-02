@@ -39,7 +39,10 @@ class CmsGuest
             }
         }
 
-        $key = Configuration::getInstance()->get('cms')['unique_key'];
+        $config = Configuration::getInstance();
+
+        $key = $config->get('cms')['unique_key'];
+        $expose = $config->get('options');
 
         ?>
         <div class="overlay bg-primary"></div>
@@ -70,9 +73,13 @@ class CmsGuest
                                 </form>
                             </div>
                         </section>
-                        <p class="text-center">
-                            <span>This site uses <?= $key ? 'licensed' : 'unregistered' ?> copy of <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
-                        </p>
+                        <?php if (!$expose || !isset($expose['hide_license']) || !$expose['hide_license']): ?>
+                            <p class="text-center">
+                                <span>This site uses <?= $key ? 'licensed' : 'unregistered' ?> copy of <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
+                            </p>
+                        <?php else: ?>
+                            <!--<?= $key ? 'Licensed' : 'Unregistered' ?> copy of <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> - <?= CMS_SITE ?>-->
+                        <?php endif; ?>
                     </div>
                 </div>
 
