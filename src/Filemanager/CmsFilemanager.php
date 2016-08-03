@@ -2,6 +2,8 @@
 
 namespace TMCms\Admin\Filemanager;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use TMCms\Admin\Messages;
 use TMCms\Admin\Users;
 use TMCms\Files\FileSystem;
@@ -114,6 +116,8 @@ class CmsFilemanager
                 Filter by name&nbsp;&nbsp;<input type="text" id="filter_name" placeholder="File or folder name">
                 <hr>
                 <span id="multiple_commands">
+                    <var onclick="multiple.download(this)"><?= __('Download') ?></var>
+                    &nbsp;&nbsp;
                     <var onclick="if (confirm('<?= __('Are you sure?') ?>')) multiple.delete_files()"><?= __('Delete') ?></var>
                     &nbsp;&nbsp;
                     <var onclick="multiple.copy(this)"><?= __('Copy') ?></var>
@@ -710,10 +714,20 @@ class CmsFilemanager
                 delete_files: function () {
                     var items = this.get_selected_item_sources();
 
-                    $.post('?p=filemanager&nomenu&do=_multiple_delete&ajax',
+                    $.post('?p=filemanager&nomenu&do=_multiple_delete&ajax' + Date.now(),
                         {pathes: items},
                         function () {
                             filemanager_helpers.reloadFiles();
+                        });
+                },
+                // Delete files from server
+                download: function () {
+                    var items = this.get_selected_item_sources();
+
+                    $.post('?p=filemanager&nomenu&do=_multiple_download&ajax' + Date.now(),
+                        {pathes: items},
+                        function (link) {
+                            location.href = link;
                         });
                 },
                 // Copy selected items
@@ -732,7 +746,7 @@ class CmsFilemanager
                     // Check copied items
                     var items = storage.get('multiple_copy_items');
                     if (items) {
-                        $.get('?p=filemanager&nomenu&do=_multiple_copy&ajax',
+                        $.get('?p=filemanager&nomenu&do=_multiple_copy&ajax' + Date.now(),
                             {pathes: items, current_path: '<?= $dir ?>'},
                             function () {
                                 filemanager_helpers.reloadFiles();
@@ -1207,6 +1221,72 @@ class CmsFilemanager
         }
 
         exit('1');
+    }
+
+    /**
+     * Action for Downloading files as ZIP file
+     */
+    public function _multiple_download()
+    {
+        ob_get_clean();
+
+        if (!$_REQUEST || !isset($_REQUEST['pathes'])) {
+            return;
+        }
+
+        $paths = $_REQUEST['pathes'];
+
+        $items_to_add = [];
+        foreach ($paths as $v) {
+            // Cut leading slash
+            if (substr($v, 0, 1) == '/') {
+                $v = substr($v, 1);
+            }
+            $items_to_add[] = $v;
+        }
+
+        FileSystem::mkDir(DIR_TEMP);
+
+        $zip_path = DIR_TEMP_URL . UID::uid10() . '.zip';
+
+        $zip = new ZipArchive;
+        $zip->open(DIR_BASE . $zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+        // Add items to current archive
+        foreach ($items_to_add as $v) {
+            $full_path_from = DIR_BASE . $v;
+            if (is_file($full_path_from)) {
+                $zip->addFile($full_path_from, basename($v));
+            } elseif (is_dir($full_path_from)) {
+                // Iterate all files in folder
+                $files = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($full_path_from),
+                    RecursiveIteratorIterator::LEAVES_ONLY
+                );
+
+                foreach ($files as $name => $file)
+                {
+                    // Skip directories (they would be added automatically)
+                    if (!$file->isDir())
+                    {
+                        // Get real and relative path for current file
+                        $filePath = $file->getRealPath();
+                        $relativePath = substr($filePath, strlen($full_path_from) + 1);
+
+                        // Add current file to archive
+                        $zip->addFile($filePath, $relativePath);
+                    }
+                }
+            }
+        }
+
+        $zip->close();
+
+        App::add('Downloaded files as .zip file');
+
+        Messages::sendMessage('Downloaded files as .zip file');
+
+        exit('' . $zip_path);
     }
 
     /**
