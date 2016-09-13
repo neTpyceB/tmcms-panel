@@ -1,6 +1,6 @@
 <?php
 
-namespace TMCms\Log\Entity;
+namespace TMCms\Admin\Tools\Entity;
 
 use TMCms\Orm\Entity;
 

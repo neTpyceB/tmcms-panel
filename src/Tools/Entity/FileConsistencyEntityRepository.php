@@ -1,6 +1,6 @@
 <?php
 
-namespace TMCms\Log\Entity;
+namespace TMCms\Admin\Tools\Entity;
 
 use TMCms\Orm\EntityRepository;
 
@@ -11,7 +11,8 @@ class FileConsistencyEntityRepository extends EntityRepository
     protected $table_structure = [
         'fields' => [
             'hash' => [
-                'type' => 'char'
+                'type' => 'char',
+                'length' => '255'
             ],
             'file' => [
                 'type' => 'varchar'
