@@ -976,7 +976,7 @@ class CmsFilemanager
             }
         }
 
-        Messages::sendMessage('Uploaded');
+        Messages::sendGreenAlert('Uploaded');
 
         back();
     }
@@ -1143,7 +1143,7 @@ class CmsFilemanager
 
         App::add('File ' . $dir . ' deleted');
 
-        Messages::sendMessage('File ' . $dir . ' deleted');
+        Messages::sendGreenAlert('File ' . $dir . ' deleted');
 
         $dir = DIR_BASE . $dir;
         if (is_dir($dir)) {
@@ -1217,7 +1217,7 @@ class CmsFilemanager
 
             App::add('Copied directory "'. $full_path_from .'" to "'. $full_path_to .'');
 
-            Messages::sendMessage('Copied directory "'. $full_path_from .'" to "'. $full_path_to .'');
+            Messages::sendGreenAlert('Copied directory "'. $full_path_from .'" to "'. $full_path_to .'');
         }
 
         exit('1');
@@ -1284,7 +1284,7 @@ class CmsFilemanager
 
         App::add('Downloaded files as .zip file');
 
-        Messages::sendMessage('Downloaded files as .zip file');
+        Messages::sendGreenAlert('Downloaded files as .zip file');
 
         exit('' . $zip_path);
     }
@@ -1345,7 +1345,7 @@ class CmsFilemanager
 
                     App::add('File "' . $_POST['current_path'] . '" renamed to "' . $new_path . '"');
 
-                    Messages::sendMessage('File "' . $_POST['current_path'] . '" renamed to "' . $new_path . '"');
+                    Messages::sendGreenAlert('File "' . $_POST['current_path'] . '" renamed to "' . $new_path . '"');
 
                     break;
                 case 'delete':
@@ -1354,7 +1354,7 @@ class CmsFilemanager
 
                     App::add('File "' . $_POST['remove_path'] . '" deleted');
 
-                    Messages::sendMessage('File "' . $_POST['remove_path'] . '" deleted');
+                    Messages::sendGreenAlert('File "' . $_POST['remove_path'] . '" deleted');
 
                     break;
                 case 'content':
@@ -1363,7 +1363,7 @@ class CmsFilemanager
 
                     App::add('Content of file "' . $_POST['file_name'] . '" edited');
 
-                    Messages::sendMessage('Content of file "' . $_POST['file_name'] . '" edited');
+                    Messages::sendGreenAlert('Content of file "' . $_POST['file_name'] . '" edited');
 
                     break;
             }
@@ -1377,7 +1377,7 @@ class CmsFilemanager
 
                     App::add('Folder "' . $_POST['current_path'] . '" renamed to "' . $new_path . '"');
 
-                    Messages::sendMessage('Folder "' . $_POST['current_path'] . '" renamed to "' . $new_path);
+                    Messages::sendGreenAlert('Folder "' . $_POST['current_path'] . '" renamed to "' . $new_path);
 
                     break;
                 case 'delete':
@@ -1386,7 +1386,7 @@ class CmsFilemanager
 
                     App::add('Folder "' . $_POST['remove_path'] . '" deleted');
 
-                    Messages::sendMessage('Folder "' . $_POST['remove_path'] . '" deleted');
+                    Messages::sendGreenAlert('Folder "' . $_POST['remove_path'] . '" deleted');
 
                     break;
             }
@@ -1402,7 +1402,7 @@ class CmsFilemanager
 
                     App::add('Folder "' . DIR_BASE_URL . $dir . $_POST['dirname'] . '" created');
 
-                    Messages::sendMessage('Folder "' . DIR_BASE_URL . $dir . $_POST['dirname'] . '" created');
+                    Messages::sendGreenAlert('Folder "' . DIR_BASE_URL . $dir . $_POST['dirname'] . '" created');
 
                     break;
                 case 'filecreate':
@@ -1416,7 +1416,7 @@ class CmsFilemanager
 
                     App::add('File "' . $new_path . '" created');
 
-                    Messages::sendMessage('File "' . $new_path . '" created');
+                    Messages::sendGreenAlert('File "' . $new_path . '" created');
 
                     break;
             }
@@ -1456,7 +1456,7 @@ class CmsFilemanager
 
         App::add('Diretory "' . $dir . $_POST['name'] . '" created');
 
-        Messages::sendMessage('Diretory "' . $dir . $_POST['name'] . '" created');
+        Messages::sendGreenAlert('Diretory "' . $dir . $_POST['name'] . '" created');
 
         go('?p=' . P . '&do=show_files&nomenu&path=' . $dir);
     }
@@ -1495,7 +1495,7 @@ class CmsFilemanager
 
         App::add('File "' . $dir . $_POST['name'] . '" created');
 
-        Messages::sendMessage('File "' . $dir . $_POST['name'] . '" created');
+        Messages::sendGreenAlert('File "' . $dir . $_POST['name'] . '" created');
 
         go('?p=' . P . '&do=show_files&nomenu&path=' . $dir);
     }
@@ -1524,7 +1524,7 @@ class CmsFilemanager
 
         App::add('Content of file "' . $_POST['name'] . '" edited');
 
-        Messages::sendMessage('Content of file "' . $_POST['name'] . '" edited');
+        Messages::sendGreenAlert('Content of file "' . $_POST['name'] . '" edited');
 
         $path_to_dir = explode('/', $dir);
         array_pop($path_to_dir);
