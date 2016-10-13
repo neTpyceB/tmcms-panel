@@ -62,7 +62,7 @@ class CmsGuest
                             <div class="p15">
                                 <form role="form" action="?p=<?= P ?>&do=_login" method="post">
                                     <div>
-                                        <input type="text" class="form-control input-lg mb25" placeholder="Username" name="login">
+                                        <input type="text" class="form-control input-lg mb25" placeholder="Username" name="login" autofocus>
                                     </div>
                                     <div>
                                         <span class="eye"></span>

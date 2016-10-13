@@ -26,6 +26,7 @@ class PageEntityRepository extends EntityRepository
             'pid' => [
                 'type' => 'int',
                 'unsigned' => true,
+                'default' => 0,
             ],
             'location' => [
                 'type' => 'varchar',
