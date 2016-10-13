@@ -9,6 +9,7 @@ use TMCms\Orm\EntityRepository;
  * @package TMCms\Admin\Users\Entity
  *
  * @method $this setWhereFromUserId(int $user_id)
+ * @method $this setWhereSeen(int $flag)
  * @method $this setWhereToUserId(int $user_id)
  */
 class UsersMessageRepository extends EntityRepository
