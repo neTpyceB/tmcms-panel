@@ -41,8 +41,8 @@ class CmsGuest
 
         $config = Configuration::getInstance();
 
-        $key = $config->get('cms')['unique_key'];
         $expose = $config->get('options');
+        $hide_license = $expose && isset($expose['hide_license']) && $expose['hide_license'];
 
         ?>
         <div class="overlay bg-primary"></div>
@@ -65,7 +65,6 @@ class CmsGuest
                                         <input type="text" class="form-control input-lg mb25" placeholder="Username" name="login" autofocus>
                                     </div>
                                     <div>
-                                        <span class="eye"></span>
                                         <input type="password" class="form-control input-lg mb25" placeholder="Password" name="password">
                                     </div>
                                     <input type="hidden" name="go" value="<?= SELF ?>">
@@ -73,33 +72,23 @@ class CmsGuest
                                 </form>
                             </div>
                         </section>
-                        <?php if (!$expose || !isset($expose['hide_license']) || !$expose['hide_license']): ?>
+                        <?php if ($hide_license): ?>
+                            <!--
+                        <?php endif; ?>
                             <p class="text-center">
-                                <span>This site uses <?= $key ? 'licensed' : 'unregistered' ?> copy of <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
+                                <span>This site uses <?= CMS_NAME ?> (TMCms v. <?= CMS_VERSION ?>)
+                                    <br>
+                                    <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a>
+                                </span>
                             </p>
-                        <?php else: ?>
-                            <!--<?= $key ? 'Licensed' : 'Unregistered' ?> copy of <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> - <?= CMS_SITE ?>-->
+                        <?php if ($hide_license): ?>
+                            -->
                         <?php endif; ?>
                     </div>
                 </div>
 
             </div>
         </div>
-        <script>
-            var $eye = document.querySelector('span.eye');
-            var $login = document.querySelector('input[name="login"]');
-            var $password = document.querySelector('input[name="password"]');
-            var $submit = document.querySelector('button[type="submit"]');
-
-            // Show / hide pass
-            $eye.onmouseover = function() {
-                $password.type = 'text';
-            };
-            $eye.onmouseout = function() {
-                $password.type = 'password';
-            };
-
-        </script>
         <?php
     }
 
