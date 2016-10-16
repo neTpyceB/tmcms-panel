@@ -12,6 +12,7 @@ use TMCms\Orm\Entity;
  * @package TMCms\Admin\Users\Entity
  *
  * @method bool getActive()
+ * @method string getAvatar()
  * @method string getEmail()
  * @method int getGroupId()
  * @method string getLogin()
