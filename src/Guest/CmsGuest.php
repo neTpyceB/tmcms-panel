@@ -29,8 +29,8 @@ class CmsGuest
     public function _default()
     {
         // Pre-check if login and pass params present in URL. This is possible if log-in process initiated in mobile app
-        if (isset($_GET['login'], $_GET['password_crypted'])) { // This field is only in mobile app
-            $pass = JWT::decode($_GET['login']); // TODO decore correct way with Jwt and key. Here must be pass hash
+        if (isset($_GET['login'], $_GET['password_token'])) { // This field is only in mobile app
+            $pass = JWT::decode($_GET['password_token'], $_GET['login']);
 
             // Check exact user exists
             $user_collection = new AdminUserRepository();
@@ -38,10 +38,11 @@ class CmsGuest
             $user_collection->setWhereActive(1);
             $user_collection->setWherePassword($pass);
 
+            /** @var AdminUser $user */
             $user = $user_collection->getFirstObjectFromCollection();
 
             if ($user) {
-                $this->$this->initLogInProcess($user);
+                $this->initLogInProcess($user);
             }
         }
 
