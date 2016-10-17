@@ -88,7 +88,7 @@ class CmsGuest
                                         <input type="password" class="form-control input-lg mb25" placeholder="Password" name="password">
                                     </div>
                                     <input type="hidden" name="go" value="<?= SELF ?>">
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign in</button>
+                                    <button class="btn btn-primary btn-lg btn-block" style="background-color: #0f0f0f" type="submit">Sign in</button>
                                 </form>
                             </div>
                         </section>
