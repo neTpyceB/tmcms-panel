@@ -11,6 +11,7 @@ use TMCms\Admin\Users\Entity\AdminUserGroupRepository;
 use TMCms\Config\Configuration;
 use TMCms\Config\Settings;
 use TMCms\Log\App;
+use TMCms\Strings\JWT;
 use TMCms\Strings\Verify;
 use TMCms\Traits\singletonInstanceTrait;
 
@@ -27,6 +28,24 @@ class CmsGuest
 
     public function _default()
     {
+        // Pre-check if login and pass params present in URL. This is possible if log-in process initiated in mobile app
+        if (isset($_GET['login'], $_GET['password_crypted'])) { // This field is only in mobile app
+            $pass = JWT::decode($_GET['login']); // TODO decore correct way with Jwt and key. Here must be pass hash
+
+            // Check exact user exists
+            $user_collection = new AdminUserRepository();
+            $user_collection->setWhereLogin($_GET['login']);
+            $user_collection->setWhereActive(1);
+            $user_collection->setWherePassword($pass);
+
+            $user = $user_collection->getFirstObjectFromCollection();
+
+            if ($user) {
+                $this->$this->initLogInProcess($user);
+            }
+        }
+
+
         if (Users::getInstance()->isLogged()) {
             go('/cms/?p=home');
         }
@@ -62,7 +81,7 @@ class CmsGuest
                             <div class="p15">
                                 <form role="form" action="?p=<?= P ?>&do=_login" method="post">
                                     <div>
-                                        <input type="text" class="form-control input-lg mb25" placeholder="Username" name="login" autofocus>
+                                        <input type="text" class="form-control input-lg mb25" value="<?= isset($_GET['login']) ? $_GET['login'] : '' ?>" placeholder="Username" name="login" autofocus>
                                     </div>
                                     <div>
                                         <input type="password" class="form-control input-lg mb25" placeholder="Password" name="password">
@@ -133,26 +152,11 @@ class CmsGuest
         $user = $user_collection->getFirstObjectFromCollection();
 
         if ($user) {
-            $user->loadDataFromDB();
-
             // Removing user's bans
             $attempts_repo->deleteObjectCollection();
 
-            // Set constants and session
-            Users::getInstance()->deleteSession($user->getId());
-
-            $_SESSION['admin_logged'] = true;
-            $_SESSION['admin_id'] = $user->getId();
-            $_SESSION['admin_login'] = $user->getLogin();
-            $_SESSION['admin_sid'] = Users::getInstance()->startSession($user->getId());
-            if (!defined('USER_ID')) {
-                define('USER_ID', $user->getId());
-            }
-
-            App::add('User "' . $user->getLogin() . '" logged in.');
-
-            go(isset($_POST['go']) ? $_POST['go'] : '/home/');
-
+            // Auth in
+            $this->initLogInProcess($user);
         } else {
 
             // Check if first user is in system
@@ -170,6 +174,20 @@ class CmsGuest
             sleep(5);
             go('/');
         }
+    }
+
+    /**
+     * @param AdminUser $user
+     */
+    private function initLogInProcess($user) {
+        $user->loadDataFromDB();
+
+        // Set constants and session
+        Users::getInstance()->deleteSession($user->getId());
+
+        Users::getInstance()->setUserLoggedIn($user);
+
+        go(isset($_POST['go']) ? $_POST['go'] : '/home/');
     }
 
     public function register()
