@@ -40,7 +40,8 @@ ob_start();
         var existing_value = false;
 
         // Current value from input
-        var value = popup_modal.result_element.val();
+        var $el = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
+        var value = $el.val();
 
         if (value) {
             $coords.val(value);
