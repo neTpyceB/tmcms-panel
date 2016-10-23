@@ -47,8 +47,8 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
             });
         },
         done: function(id) {
-            console.log(popup_modal.result_element);
             this.input.val(id);
+            this.input.focus();
             popup_modal.close();
         }
     };
