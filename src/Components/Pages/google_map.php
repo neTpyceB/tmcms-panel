@@ -1,6 +1,9 @@
 <?php
-ob_start();
-?><style>
+if (!isset($_GET['selector']) || !$_GET['selector']) {
+    dump('Input selector not provided');
+}
+?>
+<style>
     #map {
         width: 100%;
         height: 100%;
@@ -13,8 +16,9 @@ ob_start();
     var $coords = $('#cms_map_coordinates');
 
     function done() {
-        popup_modal.result_element.val($coords.val());
-        popup_modal.result_element.focus();
+        var input = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
+        input.val($coords.val());
+        input.focus();
         popup_modal.close();
         return true;
     }
@@ -40,7 +44,8 @@ ob_start();
         var existing_value = false;
 
         // Current value from input
-        var value = popup_modal.result_element.val();
+        var $el = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
+        var value = $el.val();
 
         if (value) {
             $coords.val(value);
@@ -115,6 +120,4 @@ ob_start();
     $(function() {
         initMap();
     });
-</script><?php
-echo ob_get_clean();
-die;
+</script>

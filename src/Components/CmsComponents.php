@@ -34,6 +34,7 @@ class CmsComponents
         </style>
         <div class="tinymce-container">
             <textarea name="tinymce" class="tinymce" id="tinymce_<?= NOW ?>"></textarea>
+        </div>
         <script>
             $(function () {
                 var originalTextarea = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
@@ -225,6 +226,14 @@ class CmsComponents
      * Google Map to select point point and coordinates
      */
     public function google_map()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
+    }
+
+    /**
+     * SVG Map to select polygon from image file
+     */
+    public function svg_map()
     {
         require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
     }
