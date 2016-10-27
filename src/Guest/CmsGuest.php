@@ -2,6 +2,7 @@
 
 namespace TMCms\Admin\Guest;
 
+use Exception;
 use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntity;
 use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntityRepository;
 use TMCms\Admin\Users;
@@ -28,35 +29,40 @@ class CmsGuest
 
     public function _default()
     {
-        // Pre-check if login and pass params present in URL. This is possible if log-in process initiated in mobile app
-        if (isset($_GET['login'], $_GET['password_token'])) { // This field is only in mobile app
-            $pass = JWT::decode($_GET['password_token'], $_GET['login']);
-
-            // Check exact user exists
-            $user_collection = new AdminUserRepository();
-            $user_collection->setWhereLogin($_GET['login']);
-            $user_collection->setWhereActive(1);
-            $user_collection->setWherePassword($pass);
-
-            /** @var AdminUser $user */
-            $user = $user_collection->getFirstObjectFromCollection();
-
-            if ($user) {
-                $this->initLogInProcess($user);
-            }
-        }
-
-
-        if (Users::getInstance()->isLogged()) {
-            go('/cms/?p=home');
-        }
-
         // If only unique access allowed
         if (Settings::getInstance()->get('unique_admin_address')) {
             // No correct key provided?
             if (!isset($_GET['admin_key']) || $_GET['admin_key'] != Configuration::getInstance()->get('cms')['unique_key']) {
                 back();
             }
+        }
+
+        // Authorize user by provided token (used by our mobile application)
+        if (isset($_GET['token'])) {
+            try {
+                $payload = JWT::decode($_GET['token'], date('Y-m-d', NOW), true);
+
+                if ($payload->created_at > strtotime('-5 minutes')) {
+                    $user_collection = new AdminUserRepository();
+                    $user_collection->setWhereLogin($payload->login);
+                    $user_collection->setWherePassword($payload->password);
+                    $user_collection->setWhereActive(1);
+
+                    /** @var AdminUser $user */
+                    $user = $user_collection->getFirstObjectFromCollection();
+
+                    if ($user) {
+                        $this->initLogInProcess($user);
+                    }
+                }
+            } catch (Exception $exception) {
+                // Do nothing, I guess...
+            }
+        }
+
+        // Redirect if user is already logged in
+        if (Users::getInstance()->isLogged()) {
+            go('/cms/?p=home');
         }
 
         $config = Configuration::getInstance();
@@ -179,7 +185,7 @@ class CmsGuest
 
         Users::getInstance()->setUserLoggedIn($user);
 
-        go(isset($_POST['go']) ? $_POST['go'] : '/home/');
+        go(isset($_POST['go']) ? $_POST['go'] : '/cms/?p=home');
     }
 
     public function register()

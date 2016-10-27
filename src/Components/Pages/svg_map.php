@@ -42,7 +42,7 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
             this.svg_element.find('polygon').each(function(k, v) {
                 $el = $(v);
                 $el.click(function() {
-                    svg_imager.done($el.attr('id'));
+                    svg_imager.done($(this).attr('id'));
                 });
             });
         },
