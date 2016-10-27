@@ -42,7 +42,7 @@ class CmsGuest
             try {
                 $payload = JWT::decode($_GET['token'], date('Y-m-d', NOW), true);
 
-                if ($payload->createdAt > strtotime('-5 minutes')) {
+                if ($payload->created_at > strtotime('-5 minutes')) {
                     $user_collection = new AdminUserRepository();
                     $user_collection->setWhereLogin($payload->login);
                     $user_collection->setWherePassword($payload->password);
