@@ -114,15 +114,7 @@ class CmsGuest
 
     public function _login()
     {
-        // Clear installation
-        if (isset($_GET['reset_system_users'], $_GET['key']) && $_GET['key'] == Configuration::getInstance()->get('cms')['unique_key']) {
-            $user_collection = new AdminUserRepository();
-            $user_collection->deleteObjectCollection();
-            back();
-        }
-
         if (!$_POST || !isset($_POST['login'], $_POST['password']) || trim($_POST['login']) == '') {
-            sleep(5);
             go('/');
         }
 
@@ -160,7 +152,7 @@ class CmsGuest
             $this->initLogInProcess($user);
         } else {
 
-            // Check if first user is in system
+            // Check if no user exist in system
             Users::getInstance()->recreateDefaults();
 
             // Log attempt
@@ -172,7 +164,6 @@ class CmsGuest
             $attempts_obj->setFailedAttempts($attempts_obj->getFailedAttempts() + 1);
             $attempts_obj->save();
 
-            sleep(5);
             go('/');
         }
     }
