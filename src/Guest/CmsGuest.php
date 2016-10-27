@@ -194,7 +194,7 @@ class CmsGuest
 
         Users::getInstance()->setUserLoggedIn($user);
 
-        go(isset($_POST['go']) ? $_POST['go'] : '/home/');
+        go(isset($_POST['go']) ? $_POST['go'] : '/cms/?p=home');
     }
 
     public function register()
