@@ -55,3 +55,5 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
 
     svg_imager.init();
 </script>
+<?php
+die;
