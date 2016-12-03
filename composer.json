@@ -2,7 +2,11 @@
   "name": "devp-eu/tmcms-panel",
   "type": "library",
   "description": "Admin panel for TMCms",
-  "keywords": ["Admin", "CMS", "TMCms"],
+  "keywords": [
+    "Admin panel",
+    "CMS",
+    "TMCms"
+  ],
   "homepage": "http://devp.eu/",
   "license": "proprietary",
   "authors": [
@@ -13,6 +17,9 @@
       "role": "Developer"
     }
   ],
+  "suggest": {
+    "devp-eu/tmcms-core": "dev-master"
+  },
   "autoload": {
     "psr-4": {
       "TMCms\\Admin\\": "src"
