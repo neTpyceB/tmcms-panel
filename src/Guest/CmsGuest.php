@@ -14,6 +14,8 @@ use TMCms\Config\Settings;
 use TMCms\Log\App;
 use TMCms\Strings\JWT;
 use TMCms\Strings\Verify;
+use TMCms\Templates\PageHead;
+use TMCms\Templates\PageTail;
 use TMCms\Traits\singletonInstanceTrait;
 
 defined('INC') or exit;
@@ -70,52 +72,175 @@ class CmsGuest
         $expose = $config->get('options');
         $hide_license = $expose && isset($expose['hide_license']) && $expose['hide_license'];
 
-        ?>
-        <div class="overlay bg-primary"></div>
+        PageHead::getInstance()
+            ->addClassToBody('login')
+            ->addCssUrl('cms/css/login-soft.css')
+        ;
 
-        <div class="center-wrapper">
-            <div class="center-content">
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-                        <section class="panel bg-white no-b">
-                            <?php if (Settings::get('allow_registration')): ?>
-                                <ul class="switcher-dash-action">
-                                    <li class="active"><a href="" onclick="return false" class="selected">Sign in</a>
-                                    </li>
-                                    <li><a href="?p=<?= P ?>&do=register" class="">New account</a></li>
-                                </ul>
-                            <?php endif; ?>
-                            <div class="p15">
-                                <form role="form" action="?p=<?= P ?>&do=_login" method="post">
-                                    <div>
-                                        <input type="text" class="form-control input-lg mb25" value="<?= isset($_GET['login']) ? $_GET['login'] : '' ?>" placeholder="Username" name="login" autofocus>
-                                    </div>
-                                    <div>
-                                        <input type="password" class="form-control input-lg mb25" placeholder="Password" name="password">
-                                    </div>
-                                    <input type="hidden" name="go" value="<?= SELF ?>">
-                                    <button class="btn btn-primary btn-lg btn-block" style="background-color: #0f0f0f" type="submit">Sign in</button>
-                                </form>
-                            </div>
-                        </section>
-                        <?php if ($hide_license): ?>
-                            <!--
-                        <?php endif; ?>
-                            <p class="text-center">
-                                <span>This site uses <?= CMS_NAME ?> (TMCms v. <?= CMS_VERSION ?>)
-                                    <br>
-                                    <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a>
-                                </span>
-                            </p>
-                        <?php if ($hide_license): ?>
-                            -->
-                        <?php endif; ?>
+        PageTail::getInstance()
+            ->addJsUrl('cms/layout/scripts/login-soft.js')
+            ->addJs('
+                Login.init();
+            ')
+        ;
+
+        // Logo image and link
+        $logo= '';
+        if (array_key_exists('logo', Configuration::getInstance()->get('cms'))) {
+            $logo = Configuration::getInstance()->get('cms')['logo'];
+        }
+        $logo_link = DIR_CMS_URL;
+        if (array_key_exists('logo_link', Configuration::getInstance()->get('cms'))) {
+            $logo_link = Configuration::getInstance()->get('cms')['logo_link'];
+        }
+
+        // Registration form
+        $registration_allowed = Settings::get('allow_registration');
+        ?>
+
+        <?php if ($logo): ?>
+            <div class="logo">
+                <a href="<?= $logo_link ?>">
+                    <img src="<?= $logo ?>" alt="">
+                </a>
+            </div>
+        <?php endif; ?>
+        <div class="content">
+            <form class="login-form" action="?p=<?= P ?>&do=_login" method="post">
+                <?php if (isset($_GET['registered'])): ?>
+                    <h3 class="form-title">User created. Contact admins to activate your account.</h3>
+                    <script>
+                        setTimeout(function() {
+                            window.location = window.history.back();
+                        }, 3000);
+                    </script>';
+                <?php endif; ?>
+
+                <h3 class="form-title">Login to your account</h3>
+                <div class="alert alert-danger display-hide">
+                    <button class="close" data-close="alert"></button>
+                    <span>Enter any username and password.</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Username</label>
+                    <div class="input-icon">
+                        <i class="fa fa-user"></i>
+                        <input class="form-control placeholder-no-fix" type="text" autofocus placeholder="Username" name="login" <?= isset($_GET['login']) ? $_GET['login'] : '' ?>>
                     </div>
                 </div>
-
-            </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Password</label>
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        <input class="form-control placeholder-no-fix" type="password" placeholder="Password" name="password">
+                    </div>
+                </div>
+                <input type="hidden" name="go" value="<?= SELF ?>">
+                <div class="forget-password">
+                    <h4>Forgot your password ?</h4>
+                    <p>no worries, click <a href="javascript:;" id="forget-password">
+                            here </a>
+                        to reset your password.
+                    </p>
+                </div>
+                <?php if ($registration_allowed): ?>
+                    <div class="create-account">
+                        <p>Don't have an account yet?&nbsp;
+                            <a href="javascript:;" id="register-btn">Create an account </a>
+                        </p>
+                    </div>
+                <?php endif; ?>
+            </form>
+            <form class="forget-form" action="?p=<?= P ?>&do=_reset_password" method="post">
+                <h3>Forget Password ?</h3>
+                <p>Enter your e-mail address below to reset your password.</p>
+                <div class="form-group">
+                    <div class="input-icon">
+                        <i class="fa fa-envelope"></i>
+                        <input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="back-btn" class="btn">
+                        <i class="m-icon-swapleft"></i> Back </button>
+                    <button type="submit" class="btn blue pull-right">
+                        Submit <i class="m-icon-swapright m-icon-white"></i>
+                    </button>
+                </div>
+            </form>
+            <?php if ($registration_allowed): ?>
+                <form class="register-form" action="?p=<?= P ?>&do=_register" method="post">
+                    <h3>Sign Up</h3>
+                    <p>
+                        Enter your personal details below:
+                    </p>
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Full Name</label>
+                        <div class="input-icon">
+                            <i class="fa fa-font"></i>
+                            <input class="form-control placeholder-no-fix" type="text" placeholder="Full Name" name="name"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Email</label>
+                        <div class="input-icon">
+                            <i class="fa fa-envelope"></i>
+                            <input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Phone</label>
+                        <div class="input-icon">
+                            <i class="fa fa-envelope"></i>
+                            <input class="form-control placeholder-no-fix" type="text" placeholder="Phone" name="phone"/>
+                        </div>
+                    </div>
+                    <p>
+                        Enter your account details below:
+                    </p>
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Username</label>
+                        <div class="input-icon">
+                            <i class="fa fa-user"></i>
+                            <input class="form-control placeholder-no-fix" type="text" placeholder="Username" name="login">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Password</label>
+                        <div class="input-icon">
+                            <i class="fa fa-lock"></i>
+                            <input class="form-control placeholder-no-fix" type="password" id="register_password" placeholder="Password" name="password"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
+                        <div class="controls">
+                            <div class="input-icon">
+                                <i class="fa fa-check"></i>
+                                <input class="form-control placeholder-no-fix" type="password" placeholder="Re-type Your Password" name="rpassword"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button id="register-back-btn" type="button" class="btn">
+                            <i class="m-icon-swapleft"></i>Back
+                        </button>
+                        <button type="submit" id="register-submit-btn" class="btn blue pull-right">
+                            Sign Up <i class="m-icon-swapright m-icon-white"></i>
+                        </button>
+                    </div>
+                </form>
+            <?php endif; ?>
         </div>
-        <?php
+        <?php if ($hide_license): ?>
+            <!--
+        <?php endif; ?>
+        <div class="copyright">
+            2007 - <?= Y ?> &copy; <?= CMS_NAME ?> | <a href="<?= CMS_SITE ?>" target="_blank"><?= CMS_SITE ?></a>
+        </div>
+        <?php if ($hide_license): ?>
+            -->
+        <?php endif;
     }
 
     public function _login()
@@ -188,63 +313,6 @@ class CmsGuest
         go(isset($_POST['go']) ? $_POST['go'] : '/cms/?p=home');
     }
 
-    public function register()
-    {
-        if (Users::getInstance()->isLogged() || !Settings::get('allow_registration')) {
-            go('/cms/?p=home');
-        }
-
-
-        $key = Configuration::getInstance()->get('cms')['unique_key'];
-
-        ?>
-        <div class="overlay bg-primary"></div>
-        <div class="center-wrapper">
-            <div class="center-content">
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-                        <section class="panel bg-white no-b">
-
-                            <?php
-                            if (isset($_GET['registered'])) {
-                                echo 'New user registered. Administrators will contact you.
-                                <script>
-                                    setTimeout(function() {
-                                        window.location = ' . DIR_CMS_URL . ';
-                                    }, 5000);
-                                </script>';
-                                return;
-                            } ?>
-
-                            <ul class="switcher-dash-action">
-                                <li><a href="?p=<?= P ?>&do=login" class="selected">Sign in</a></li>
-                                <li class="active"><a href="" onclick="return false" class="">New account</a></li>
-                            </ul>
-                            <div class="p15">
-                                <form role="form" action="?p=<?= P ?>&do=_register" method="post">
-                                    <input type="text" class="form-control input-lg mb25"
-                                           placeholder="Choose a username" autofocus name="login">
-                                    <input type="text" class="form-control input-lg mb25" placeholder="Email address"
-                                           name="email">
-                                    <input type="password" class="form-control input-lg mb25" placeholder="Password"
-                                           name="password">
-
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign up</button>
-                                </form>
-                            </div>
-                        </section>
-                        <p class="text-center">
-                            <span><?= $key ? 'Licensed' : 'Unregistered' ?> proprietary software from <?= CMS_OWNER_COMPANY ?>
-                                <br><br>
-                                <?= CMS_NAME . ' (TMCms v. ' . CMS_VERSION . ')' ?> <a target="_blank" href="<?= CMS_SITE ?>"><?= CMS_SITE ?></a></span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-
     public function _register()
     {
         if (!$_POST || !isset($_POST['login'], $_POST['email'], $_POST['password']) || trim($_POST['login']) == '') {
@@ -286,6 +354,10 @@ class CmsGuest
         // TODO send email to new user with confirmation link
         // TODO make "restore password"
 
-        go('?p=' . P . '&do=register&registered');
+        go(SELF, ['registered' => 1]);
+    }
+
+    public function _reset_password() {
+        die('Not allowed'); // TODO
     }
 }
