@@ -100,8 +100,8 @@ class CmsGuest
 
         <?php if ($logo): ?>
             <div class="logo">
-                <a href="<?= $logo_link ?>">
-                    <img src="<?= $logo ?>" alt="">
+                <a href="<?= $logo_link ?>" target="_blank">
+                    <img src="<?= $logo ?>" alt="DEVP Web Development">
                 </a>
             </div>
         <?php endif; ?>
