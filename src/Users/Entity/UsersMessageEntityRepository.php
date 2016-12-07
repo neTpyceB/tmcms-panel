@@ -8,11 +8,12 @@ use TMCms\Orm\EntityRepository;
  * Class UsersMessageRepository
  * @package TMCms\Admin\Users\Entity
  *
+ * @method $this setSeen(int $flag)
  * @method $this setWhereFromUserId(int $user_id)
  * @method $this setWhereSeen(int $flag)
  * @method $this setWhereToUserId(int $user_id)
  */
-class UsersMessageRepository extends EntityRepository
+class UsersMessageEntityRepository extends EntityRepository
 {
     protected $db_table = 'cms_users_messages';
 

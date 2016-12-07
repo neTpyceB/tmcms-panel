@@ -20,7 +20,7 @@ use TMCms\Orm\Entity;
  * @method $this setTs(int $int)
  * @method $this setSeen(bool $flag)
  */
-class UsersMessage extends Entity
+class UsersMessageEntity extends Entity
 {
     protected $db_table = 'cms_users_messages';
 

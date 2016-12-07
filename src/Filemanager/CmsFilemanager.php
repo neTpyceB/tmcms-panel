@@ -412,7 +412,7 @@ class CmsFilemanager
         ;
 
         // Render textarea with form
-        echo CmsFieldset::getInstance('', $upload_form, false, false, false, false);
+        echo $upload_form;
         ?>
 
         <script>
