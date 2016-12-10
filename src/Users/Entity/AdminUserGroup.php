@@ -29,16 +29,16 @@ class AdminUserGroup extends Entity
      */
     protected function beforeSave()
     {
-        $can_set_permission = false;
+        $can_set_permission = 0;
 
         // If user is super-admin with all privileges granted
         if ($this->is_superadmin) {
-            $can_set_permission = true;
+            $can_set_permission = 1;
         }
 
         // If current group is allowed to set permissions
         if ($this->getField('can_set_permissions') && Users::getInstance()->getGroupData('can_set_permissions')) {
-            $can_set_permission = true;
+            $can_set_permission = 1;
         }
 
         $this->setCanSetPermissions($can_set_permission);
