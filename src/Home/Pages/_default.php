@@ -22,7 +22,6 @@ $user = new AdminUser(USER_ID);
 BreadCrumbs::getInstance()
     ->addCrumb(__(ucfirst(P)))
     ->addCrumb(__('Main'))
-    ->addNotes('Your note: ' . $user->getNotes())
     ->addAlerts('You are logged in as "'. $user->getLogin() .'", please log out if this is not you.')
 ;
 
