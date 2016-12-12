@@ -193,7 +193,6 @@ class CmsComponents
     public function pages()
     {
         $data = [];
-
         $pages = new PageEntityRepository();
         $pages->addOrderByField();
 
@@ -203,12 +202,21 @@ class CmsComponents
                 $v['title'] = '<strong>' . $v['title'] . '</strong>';
             }
             // Make link
-            $v['title'] = '<a style="cursor:pointer" onclick="popup_modal.result_element.val(\'' . Structure::getPathById($v['id'], false) . '\'); popup_modal.result_element.focus(); popup_modal.close(); return false;">' . $v['title'] . ' (' . $v['location'] . ')</a>';
+            $v['title'] = '<a style="cursor:pointer" onclick="sitemapSelectPageId(\'' . Structure::getPathById($v['id'], false) . '\'); return false;">' . $v['title'] . ' (' . $v['location'] . ')</a>';
 
             $data[] = $v;
         }
 
         ob_clean();
+        ?>
+        <script>
+            function sitemapSelectPageId(page_id) {
+                var modalWindow = $('#modal-popup_inner');
+                modalWindow.trigger('popup:return_result', [page_id]);
+                modalWindow.trigger('popup:close');
+            }
+        </script>
+        <?php
         echo CmsTable::getInstance()
             ->addData($data)
             ->disablePager()

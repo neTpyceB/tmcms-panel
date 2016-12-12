@@ -50,12 +50,12 @@ class AdminUser extends Entity
         $res->deleteObjectCollection();
 
         // AdminUser messages - received
-        $res = new UsersMessageRepository();
+        $res = new UsersMessageEntityRepository();
         $res->setWhereToUserId($this->getId());
         $res->deleteObjectCollection();
 
         // AdminUser messages - sent
-        $res = new UsersMessageRepository();
+        $res = new UsersMessageEntityRepository();
         $res->setWhereFromUserId($this->getId());
         $res->deleteObjectCollection();
 
