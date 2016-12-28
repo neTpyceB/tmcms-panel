@@ -135,6 +135,11 @@ class CmsGuest
                         <input class="form-control placeholder-no-fix" type="password" placeholder="Password" name="password">
                     </div>
                 </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn blue">
+                        Login <i class="m-icon-swapright m-icon-white"></i>
+                    </button>
+                </div>
                 <input type="hidden" name="go" value="<?= SELF ?>">
                 <div class="forget-password">
                     <h4>Forgot your password ?</h4>
