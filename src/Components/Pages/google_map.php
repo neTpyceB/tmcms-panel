@@ -121,3 +121,5 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
         initMap();
     });
 </script>
+<?php
+die;
