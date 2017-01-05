@@ -215,6 +215,7 @@ class CmsFilemanager
         <?php
         // Simple upload form
         echo CmsForm::getInstance()
+            ->disableFullView()
             ->addField('Selected file (<a href="" onclick="done(); return false">Set</a>)',
                 CmsInputText::getInstance('filename')
                     ->disableBackupBlock()
@@ -234,6 +235,7 @@ class CmsFilemanager
 
         // Modern upload form with multiple file selects and large file uploads
         $upload_form = CmsForm::getInstance()
+            ->disableFullView()
             ->setSubmitButton(CmsButton::getInstance('Upload')
                 ->setElementIdAttribute('upload_files'))
             ->setEnctype(CmsForm::ENCTYPE_MULTIPART)
@@ -953,6 +955,7 @@ class CmsFilemanager
 
 
         echo CmsForm::getInstance()
+            ->disableFullView()
             ->setAction('?p=' . P . '&do=_edit_content&path=' . $dir)
             ->setSubmitButton(new CmsButton('Update'))
             ->addField('Name', CmsHTML::getInstance('')
@@ -1081,6 +1084,7 @@ class CmsFilemanager
         }
 
         echo CmsForm::getInstance()
+            ->disableFullView()
             ->setAction('?p=' . P . '&do=_create_directory&path=' . $dir)
             ->setSubmitButton(new CmsButton('Create'))
             ->addField('Path', CmsHTML::getInstance('path')
@@ -1115,6 +1119,7 @@ class CmsFilemanager
         if ($dir[0] == '/') $dir = substr($dir, 1);
 
         echo CmsForm::getInstance()
+            ->disableFullView()
             ->setAction('?p=' . P . '&do=_create_file&path=' . $dir)
             ->setSubmitButton(new CmsButton('Create'))
             ->addField('Path', CmsHTML::getInstance('path')
