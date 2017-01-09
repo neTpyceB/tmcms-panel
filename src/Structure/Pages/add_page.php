@@ -6,6 +6,7 @@ use TMCms\HTML\Cms\CmsForm;
 use TMCms\HTML\Cms\CmsTabs;
 use TMCms\HTML\Cms\Element\CmsButton;
 use TMCms\HTML\Cms\Element\CmsCheckbox;
+use TMCms\HTML\Cms\Element\CmsCheckboxList;
 use TMCms\HTML\Cms\Element\CmsInputText;
 use TMCms\HTML\Cms\Element\CmsRow;
 use TMCms\HTML\Cms\Element\CmsSelect;
@@ -13,6 +14,7 @@ use TMCms\HTML\Cms\Element\CmsTextarea;
 use TMCms\HTML\Cms\Widget\Custom;
 use TMCms\HTML\Cms\Widget\FileManager;
 use TMCms\HTML\Cms\Widget\SitemapPages;
+use TMCms\Routing\Languages;
 use TMCms\Routing\Structure;
 use \TMCms\Strings\UID;
 
@@ -51,6 +53,8 @@ if (isset($_GET['from_id']) && ctype_digit((string)$_GET['from_id'])) {
 
 $pages = ['---'] + Structure::getPagesAsTreeForSelects();
 
+$lngs = Languages::getPairs();
+unset($lngs[LNG]);
 
 $form1 = CmsForm::getInstance()
     ->addData($data)
@@ -69,13 +73,20 @@ $form1 = CmsForm::getInstance()
             ->setModalPopupAjaxUrl('?p='. P .'&do=pages_parent_tree&nomenu&id=pid')
         )
         ->setSelected(isset($_GET['pid']) ? (int)$_GET['pid'] : '')
-        ->setHintText('Under which branch this Page will be located'))
+        ->setHintText('Under which branch this Page will be located')
+    )
     ->addField('Title', CmsInputText::getInstance('title')
         ->validateRequired()
-        ->setHintText('Page title for browser heading'))
+        ->setHintText('Page title for browser heading')
+    )
     ->addField('Location', CmsInputText::getInstance('location')
         ->validateRequired()
-        ->setHintText('Part of URL'))
+        ->setHintText('Part of URL')
+    )
+    ->addField('Duplicate', CmsCheckboxList::getInstance('duplicates')
+        ->setCheckboxes($lngs)
+        ->setHintText('Duplicate new page in other languages, if branch is available')
+    )
    ->outputTagForm(false)
 ;
 
