@@ -177,6 +177,13 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                     // Current data of input
                     $field->value($field_data['value']);
 
+                    if ($field_origin['type'] == 'checkbox') {
+                        if ($field_data['value'] == '1') {
+                            $field->setChecked(1);
+                            $field->value(1);
+                        }
+                    }
+
                     $all_fields[$field_name] = array('name' => $origin_field_data[$key_name]['title'], 'field' => $field);
                 }
 
@@ -225,7 +232,7 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                     $all_fields = $sorted;
 
                     // Create block with fields and data
-                    $form->addFieldBlock('&nbsp;&nbsp;' . ($i + 1) . '&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;' . $order_links . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $block_name, $all_fields, true);
+                    $form->addFieldBlock('&nbsp;&nbsp;' . ($i + 1) . '&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;' . $order_links . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $block_name, $all_fields);
                     $i++;
                 }
             }
