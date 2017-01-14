@@ -148,7 +148,7 @@ class CmsFilemanager
                             <td>
                                 <input class="cb_hide" type="checkbox" name="<?= $v ?>" value="">
                                 &nbsp;
-                                <a class="dir_context" href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $v ?>" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="filemanager_helpers.loadDirectory(this); return false;" data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
+                                <a oncontextmenu="context_menus.folders(this); return false;" class="dir_context" href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $v ?>" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="filemanager_helpers.loadDirectory(this); return false;" data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
                             </td>
                             <td></td>
                             <td></td>
@@ -185,7 +185,7 @@ class CmsFilemanager
                         <td>
                             <input class="cb_hide" type="checkbox" name="<?= $v ?>" value="">
                             &nbsp;
-                            <a class="file_context<?= $type_by_extension ?>" href="" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="done();"
+                            <a oncontextmenu="context_menus.files(this); return false;" class="file_context<?= $type_by_extension ?>" href="" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="done();"
                                 <?php if ($type_by_extension == '_img'): ?>
                                     onmouseover="$('#filemanager_current_image').attr('src', '<?= $v ?>').show()"
                                     onmouseout="$('#filemanager_current_image').attr('src', '<?= DIR_CMS_IMAGES_URL ?>_.gif').hide()"
@@ -516,6 +516,44 @@ class CmsFilemanager
                         // Delete new from ajaxed data
                         $('.contextMenu').not('body > .contextMenu').remove();
                     }
+                }
+            };
+
+            var context_menus = {
+                folders: function(el) {
+                    return false;
+                    // TODO
+
+                    $el = $(el);
+                    var items = "{'0': {'name': 'Add Subpage', 'href': '?p=structure&do=add_page&pid=1', 'confirm': 0, 'popup': 0},'1': {'name': 'Copy Page', 'href': '?p=structure&do=add_page&pid=1', 'confirm': 0, 'popup': 0},'2': {'name': 'Copy Branch', 'href': '?p=structure&do=copy_branch&from_id=1', 'confirm': 0, 'popup': 0},'3': {'name': 'Edit Content', 'href': '?p=structure&do=edit_components&id=1', 'confirm': 0, 'popup': 0},'4': {'name': 'Content History', 'href': '?p=structure&do=page_history&id=1', 'confirm': 0, 'popup': 0},'5': {'name': 'Custom Components', 'href': '?p=structure&do=customs&id=1', 'confirm': 0, 'popup': 0},'6': {'name': 'Properties', 'href': '?p=structure&do=edit_page&id=1', 'confirm': 0, 'popup': 0},'7': {'name': 'Preview on site', 'href': '?p=structure&do=_view_page_on_frontend&id=1', 'confirm': 0, 'popup': 1},'8': {'name': 'Visual Edit', 'href': '?p=structure&do=_visual_edit&id=1', 'confirm': 0, 'popup': 1},'9': {'name': 'Clickmap', 'href': '?p=structure&do=_view_page_on_frontend&clickmap&id=1', 'confirm': 0, 'popup': 1},'10': {'name': 'Delete', 'href': '?p=structure&do=_delete_page&id=1', 'confirm': 1, 'popup': 0}}";
+
+                    items = items.replace(/'/g, '"');
+                    items = JSON.parse(items);
+
+                    $.contextMenu({
+                        selector: '#' + $el.attr('id'),
+                        callback: function(key, options) {
+                            var params = options.items[key];
+                            if (typeof params.confirm != 'undefined' && params.confirm) {
+                                if (!confirm('<?= __('Are you sure?') ?>')) {
+                                    return false;
+                                }
+                            }
+
+                            if (typeof params.href != 'undefined') {
+                                if (typeof params.popup != 'undefined' && params.popup) {
+                                    window.open(params.href);
+                                } else {
+                                    window.location = params.href;
+                                }
+                            }
+                        },
+                        items: items
+                    });
+                },
+                files: function(el) {
+                    cms_data.context_menu_items(el);
+                    return false;
                 }
             };
 
