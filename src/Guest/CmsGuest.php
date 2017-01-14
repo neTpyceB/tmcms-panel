@@ -251,7 +251,7 @@ class CmsGuest
     public function _login()
     {
         if (!$_POST || !isset($_POST['login'], $_POST['password']) || trim($_POST['login']) == '') {
-            go('/');
+            back();
         }
 
         //Check ban and log-in attempts
@@ -300,7 +300,7 @@ class CmsGuest
             $attempts_obj->setFailedAttempts($attempts_obj->getFailedAttempts() + 1);
             $attempts_obj->save();
 
-            go('/');
+            back();
         }
     }
 
