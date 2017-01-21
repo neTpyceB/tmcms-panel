@@ -148,12 +148,12 @@ class CmsFilemanager
                             <td>
                                 <input class="cb_hide" type="checkbox" name="<?= $v ?>" value="">
                                 &nbsp;
-                                <a oncontextmenu="context_menus.folders(this); return false;" class="dir_context" href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $v ?>" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="filemanager_helpers.loadDirectory(this); return false;" data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
+                                <a oncontextmenu="context_menus.folders(this); return false;" id="folder_<?= $k ?>" class="dir_context" href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $v ?>" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="filemanager_helpers.loadDirectory(this); return false;" data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
                             </td>
                             <td></td>
                             <td></td>
                             <td align="center">
-                                <a href="?p=<?= P ?>&do=_delete&path=<?= $v ?>" onclick="filemanager_helpers.delete_files('<?= $v ?>'); return false;">x</a>
+                                <a href="?p=<?= P ?>&do=_delete&path=<?= $v ?>" onclick="if (confirm('<?= __('Are you sure?') ?>')) filemanager_helpers.delete_files('<?= $v ?>'); return false;">x</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -195,7 +195,7 @@ class CmsFilemanager
                         <td></td>
                         <td><?= Converter::formatDataSize(filesize(DIR_BASE . $v)) ?></td>
                         <td align="center">
-                            <a href="?p=<?= P ?>&do=_delete&path=<?= $v ?>" onclick="filemanager_helpers.delete_files('<?= $v ?>'); return false;">x</a>
+                            <a href="?p=<?= P ?>&do=_delete&path=<?= $v ?>" onclick="if (confirm('<?= __('Are you sure?') ?>')) filemanager_helpers.delete_files('<?= $v ?>'); return false;">x</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -500,8 +500,6 @@ class CmsFilemanager
                     $('#con_file_create').show();
                 },
                 delete_files: function(path) {
-                    if (!confirm('<?= __('Are you sure?') ?>')) return false;
-
                     $.get("?p=<?= P ?>&do=_delete&path="+ path, {
                         'path': path
                     }, function () {
@@ -509,6 +507,7 @@ class CmsFilemanager
                     });
                 },
                 reinit_context_menues: function() {
+                    return; // TODO remove entirely
                     // Move all contextMenues to the BODY element - to calculate proper CSS
                     if ($('body > .contextMenu').length < 1) {
                         $('.contextMenu').appendTo(document.body);
@@ -521,14 +520,27 @@ class CmsFilemanager
 
             var context_menus = {
                 folders: function(el) {
-                    return false;
-                    // TODO
-
-                    $el = $(el);
-                    var items = "{'0': {'name': 'Add Subpage', 'href': '?p=structure&do=add_page&pid=1', 'confirm': 0, 'popup': 0},'1': {'name': 'Copy Page', 'href': '?p=structure&do=add_page&pid=1', 'confirm': 0, 'popup': 0},'2': {'name': 'Copy Branch', 'href': '?p=structure&do=copy_branch&from_id=1', 'confirm': 0, 'popup': 0},'3': {'name': 'Edit Content', 'href': '?p=structure&do=edit_components&id=1', 'confirm': 0, 'popup': 0},'4': {'name': 'Content History', 'href': '?p=structure&do=page_history&id=1', 'confirm': 0, 'popup': 0},'5': {'name': 'Custom Components', 'href': '?p=structure&do=customs&id=1', 'confirm': 0, 'popup': 0},'6': {'name': 'Properties', 'href': '?p=structure&do=edit_page&id=1', 'confirm': 0, 'popup': 0},'7': {'name': 'Preview on site', 'href': '?p=structure&do=_view_page_on_frontend&id=1', 'confirm': 0, 'popup': 1},'8': {'name': 'Visual Edit', 'href': '?p=structure&do=_visual_edit&id=1', 'confirm': 0, 'popup': 1},'9': {'name': 'Clickmap', 'href': '?p=structure&do=_view_page_on_frontend&clickmap&id=1', 'confirm': 0, 'popup': 1},'10': {'name': 'Delete', 'href': '?p=structure&do=_delete_page&id=1', 'confirm': 1, 'popup': 0}}";
-
-                    items = items.replace(/'/g, '"');
-                    items = JSON.parse(items);
+                    var $el = $(el);
+                    var items = {
+                        0: {
+                            'name': 'Open folder',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.loadDirectory(el);
+                            }
+                        },
+                        4: {
+                            'name': 'Delete folder',
+                            'href': '',
+                            'confirm': 1,
+                            'popup': 0,
+                            'js': function() {
+                                filemanager_helpers.delete_files($el.data('path'));
+                            }
+                        }
+                    };
 
                     $.contextMenu({
                         selector: '#' + $el.attr('id'),
@@ -547,9 +559,15 @@ class CmsFilemanager
                                     window.location = params.href;
                                 }
                             }
+
+                            if (typeof params.js != 'undefined' && params.js) {
+                                params.js();
+                            }
                         },
                         items: items
                     });
+
+                    return false;
                 },
                 files: function(el) {
                     cms_data.context_menu_items(el);
