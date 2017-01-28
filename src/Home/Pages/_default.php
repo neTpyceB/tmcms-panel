@@ -22,7 +22,7 @@ $user = new AdminUser(USER_ID);
 BreadCrumbs::getInstance()
     ->addCrumb(__(ucfirst(P)))
     ->addCrumb(__('Main'))
-    ->addAlerts('You are logged in as "'. $user->getLogin() .'", please log out if this is not you.')
+//    ->addAlerts('You are logged in as "'. $user->getLogin() .'", please log out if this is not you.')
 ;
 
 echo \TMCms\HTML\Cms\CmsFormHelper::outputForm(NULL, [
