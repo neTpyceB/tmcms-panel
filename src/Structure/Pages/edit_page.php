@@ -80,9 +80,6 @@ $form1 = CmsForm::getInstance()
     ->addField('Title', CmsInputText::getInstance('title')
         ->validateRequired()
         ->setHintText('Page title for browser heading'))
-    ->addField('Location', CmsInputText::getInstance('location')
-        ->validateRequired()
-        ->setHintText('Part of URL'))
     ->outputTagForm(false)
 ;
 
