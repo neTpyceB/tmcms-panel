@@ -77,6 +77,14 @@ class CmsGuest
             ->addCssUrl('cms/css/login-soft.css')
         ;
 
+        $cms_cnf = $config->get('cms');
+        if(array_key_exists('login', $cms_cnf) && array_key_exists('slides', $cms_cnf['login'])){
+            $login_slides = $cms_cnf['login']['slides'];
+            PageTail::getInstance()
+                ->addJs('
+                var login_slides = '.json_encode($login_slides).';
+                ');
+        }
         PageTail::getInstance()
             ->addJsUrl('cms/layout/scripts/login-soft.js')
             ->addJs('
@@ -86,12 +94,15 @@ class CmsGuest
 
         // Logo image and link
         $logo= '';
-        if (array_key_exists('logo', Configuration::getInstance()->get('cms'))) {
-            $logo = Configuration::getInstance()->get('cms')['logo'];
+        if (array_key_exists('login', $cms_cnf) && array_key_exists('logo', $cms_cnf['login'])) {
+            $logo = $cms_cnf['login']['logo'];
+        }
+        if (!$logo && array_key_exists('logo', $cms_cnf)) {
+            $logo = $cms_cnf['logo'];
         }
         $logo_link = DIR_CMS_URL;
-        if (array_key_exists('logo_link', Configuration::getInstance()->get('cms'))) {
-            $logo_link = Configuration::getInstance()->get('cms')['logo_link'];
+        if (array_key_exists('logo_link', $cms_cnf)) {
+            $logo_link = $cms_cnf['logo_link'];
         }
 
         // Registration form
