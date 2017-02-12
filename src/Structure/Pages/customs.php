@@ -281,3 +281,30 @@ echo CmsForm::getInstance()
     ->setSubmitButton(CmsButton::getInstance('Update Page Components'))
     ->addField('', CmsRow::getInstance('form')->value($tabs_to_render))
 ;
+?>
+<script>
+    // Set all checkboxex checked property
+    $('input[type=checkbox]').each(function (k, v) {
+        var $el = $(v);
+        if ($el.attr('checked') == 'checked') {
+            $el.attr('checked', 'checked');
+            $el.prop('checked', true);
+            $el.attr('value', '1');
+        } else {
+            $el.removeAttr('checked');
+            $el.prop('checked', false);
+        }
+    });
+    // Set all checkboxex checked property
+    $('input[type=checkbox]').on('click', function () {
+        var $el = $(this);
+        if ($el.attr('checked') == 'checked') {
+            $el.attr('checked', 'checked');
+            $el.prop('checked', true);
+            $el.attr('value', '1');
+        } else {
+            $el.removeAttr('checked');
+            $el.prop('checked', false);
+        }
+    });
+</script>

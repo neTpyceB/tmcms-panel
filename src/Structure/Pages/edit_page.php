@@ -2,9 +2,9 @@
 
 use TMCms\Config\Settings;
 use TMCms\HTML\BreadCrumbs;
+use TMCms\HTML\Cms\CmsForm;
 use TMCms\HTML\Cms\CmsTabs;
 use TMCms\HTML\Cms\Element\CmsButton;
-use TMCms\HTML\Cms\CmsForm;
 use TMCms\HTML\Cms\Element\CmsCheckbox;
 use TMCms\HTML\Cms\Element\CmsInputText;
 use TMCms\HTML\Cms\Element\CmsRow;
@@ -14,7 +14,7 @@ use TMCms\HTML\Cms\Widget\Custom;
 use TMCms\HTML\Cms\Widget\FileManager;
 use TMCms\HTML\Cms\Widget\SitemapPages;
 use TMCms\Routing\Languages;
-use \TMCms\Routing\Structure;
+use TMCms\Routing\Structure;
 
 defined('INC') or exit;
 
@@ -110,7 +110,6 @@ $form3 = CmsForm::getInstance()
     ->disableFullView()
     ->addField('Go level down', CmsCheckbox::getInstance('go_level_down')
         ->setHintText('Insensibly loads first page in this branch')
-        ->enableSwitchStyled()
     )
     ->addField('Redirect URL', CmsInputText::getInstance('redirect_url')
         ->setWidget(new SitemapPages)
@@ -123,7 +122,6 @@ $form3 = CmsForm::getInstance()
         ->setHintText('Use HTML file as a template for Page')
     )
     ->addField('Transparent GET', CmsCheckbox::getInstance('transparent_get')
-        ->enableSwitchStyled()
         ->setHintText('Used by Developers, transcribe URL parameters to $_GET parameters')
     )
     ->addField('String Label', CmsInputText::getInstance('string_label')
