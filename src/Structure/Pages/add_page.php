@@ -53,8 +53,8 @@ if (isset($_GET['from_id']) && ctype_digit((string)$_GET['from_id'])) {
 
 $pages = ['---'] + Structure::getPagesAsTreeForSelects();
 
-$lngs = Languages::getPairs();
-unset($lngs[LNG]);
+$to_copy_lngs = Languages::getPairs();
+unset($to_copy_lngs[LNG]);
 
 $form1 = CmsForm::getInstance()
     ->addData($data)
@@ -83,11 +83,14 @@ $form1 = CmsForm::getInstance()
         ->validateRequired()
         ->setHintText('Part of URL')
     )
-    ->addField('Duplicate', CmsCheckboxList::getInstance('duplicates')
-        ->setCheckboxes($lngs)
-        ->setHintText('Duplicate new page in other languages, if branch is available')
-    )
-   ->outputTagForm(false)
+    ->outputTagForm(false);
+if ($to_copy_lngs) {
+    $form1
+        ->addField('Duplicate', CmsCheckboxList::getInstance('duplicates')
+            ->setCheckboxes($to_copy_lngs)
+            ->setHintText('Duplicate new page in other languages, if branch is available')
+        );
+}
 ;
 
 $form2 = CmsForm::getInstance()
