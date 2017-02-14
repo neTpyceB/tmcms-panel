@@ -277,8 +277,9 @@ if (!$tabs_to_render->getTabs()) {
 }
 
 echo CmsForm::getInstance()
+    ->showSubmitOnTop(true)
     ->setAction('?p='. P .'&do=_customs&id='. $id)
-    ->setSubmitButton(CmsButton::getInstance('Update Page Components'))
+    ->setSubmitButton(CmsButton::getInstance('Update All'))
     ->addField('', CmsRow::getInstance('form')->value($tabs_to_render))
 ;
 ?>
