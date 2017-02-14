@@ -14,6 +14,8 @@ use TMCms\Routing\Entity\PageComponentsDisabledEntityRepository;
  */
 class PageEntity extends Entity
 {
+    protected $db_table = 'cms_pages';
+
     protected function beforeDelete()
     {
         $disabled = new PageComponentsDisabledEntityRepository();
