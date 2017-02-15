@@ -6,7 +6,7 @@ use TMCms\HTML\BreadCrumbs;
 use TMCms\HTML\Cms\CmsForm;
 use TMCms\HTML\Cms\Columns;
 use TMCms\HTML\Cms\Element\CmsHtml;
-use \TMCms\Strings\Converter;
+use TMCms\Strings\Converter;
 
 defined('INC') or exit;
 
@@ -49,7 +49,7 @@ echo '<div>Details</div>';
 $form = CmsForm::getInstance();
 
 foreach (q_assoc("SHOW STATUS") as $q) {
-	$form->addField(str_replace ('_', ' ', $q['Variable_name']), CmsHtml::getInstance($q['Variable_name'])->value($q['Value']));
+    $form->addField(str_replace('_', ' ', $q['Variable_name']), CmsHtml::getInstance($q['Variable_name'])->setValue($q['Value']));
 }
 
 echo $form;

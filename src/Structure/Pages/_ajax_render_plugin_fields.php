@@ -2,9 +2,9 @@
 
 use TMCms\Files\Finder;
 use TMCms\HTML\Cms\CmsForm;
-use \TMCms\Strings\Converter;
-use TMCms\Templates\RenderComponentHelper;
+use TMCms\Strings\Converter;
 use TMCms\Templates\Plugin;
+use TMCms\Templates\RenderComponentHelper;
 
 defined('INC') or exit;
 
@@ -69,7 +69,7 @@ if ($selected) {
 
         // Current data of input
         if (isset($data[$component_name])) {
-            $field->value($data[$component_name]);
+            $field->setValue($data[$component_name]);
         }
 
         // Add to form
