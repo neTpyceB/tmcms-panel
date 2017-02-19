@@ -9,6 +9,7 @@ use TMCms\Admin\Users;
 use TMCms\Files\FileSystem;
 use TMCms\Files\Image;
 use TMCms\HTML\Cms\CmsForm;
+use TMCms\HTML\Cms\CmsFormHelper;
 use TMCms\HTML\Cms\Element\CmsButton;
 use TMCms\HTML\Cms\Element\CmsCheckbox;
 use TMCms\HTML\Cms\Element\CmsHtml;
@@ -101,26 +102,34 @@ class CmsFilemanager
             $path_links[] = '<a onclick="filemanager_helpers.loadDirectory(this); return false;" href="?p=' . P . '&nomenu&path=' . $tmp . '">' . $v . '</a>';
         }
 
+        // Forms
+        ?>
+        <div id="con_container" style="padding: 10px; border: 1px solid green; margin: 10px; display: none"></div>
+        <a href="" onclick="_.con.close(); return false;" id="con_container_close"
+           style="position: absolute; top: 15px; right: 20px; z-index: 15; display: none">X</a>
+        <?php
+
         // Show top bar if we are allowed to view folders
         if (!$files_only && !$for_reload):
             ?>
             <!--suppress JSUnresolvedFunction -->
             <div style="padding: 10px; position: relative">
-                <a onclick="filemanager_helpers.show_create_directory(); return false;" href="?p=<?= P ?>&do=create_directory&nomenu&path=<?= $dir ?>">Create directory</a>
+                <a href="" onclick="filemanager_helpers.show_create_directory(); return false;">Create folder</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <a href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $path_up ?>" onclick="filemanager_helpers.loadDirectory(this); return false;">Go up</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 Current path: /<?= implode('/', $path_links) ?>
                 <hr>
-                <a onclick="filemanager_helpers.show_create_file(); return false;" href="?p=<?= P ?>&do=create_file&nomenu&path=<?= $dir ?>">Create file</a>
+                <var onclick="filemanager_helpers.show_create_file(); return false;"
+                     href="?p=<?= P ?>&do=create_file&nomenu&path=<?= $dir ?>">Create file</var>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 Filter by name&nbsp;&nbsp;<input type="text" id="filter_name" placeholder="File or folder name">
                 <hr>
                 <span id="multiple_commands">
-                    <var class="btn" onclick="multiple.download()"><?= __('Download') ?></var>
+                    <a href="" onclick="multiple.download(); return false"><?= __('Download') ?></a>
                     &nbsp;&nbsp;
-                    <var class="btn"
-                         onclick="if (confirm('<?= __('Are you sure?') ?>')) multiple.delete_files()"><?= __('Delete') ?></var>
+                    <a href=""
+                       onclick="if (confirm('<?= __('Are you sure?') ?>')) {multiple.delete_files()}; return false;"><?= __('Delete') ?></a>
                     &nbsp;&nbsp;
                     <var onclick="multiple.copy(this)"><?= __('Copy') ?></var>
                     &nbsp;&nbsp;
@@ -289,14 +298,23 @@ class CmsFilemanager
             var _ = {
                 con: {
                     close: function () {
-                        $('#con_bg_in').hide().width(400).height(200).css('margin-left', -200);
-                        $('#con_bg, #con_bg_in, #con_rename, #con_file_create, #con_dir_create').hide();
+                        $('#con_container').hide();
+                        $('#con_container_close').hide();
                     },
                     open: function () {
-                        var $w = $(window);
-                        var w_h = $w.height();
-                        $('#con_bg').show().width('100%').height(w_h);
-                        $('#con_bg_in').show();
+                        $('#con_container').show();
+                        $('#con_container_close').show();
+                    },
+                    request_view: function (path) {
+                        $.ajax({
+                            url: path + '&ajax&cache=' + Date.now(),
+                            type: 'GET',
+                            success: function (data) {
+                                $('#con_container').html(data);
+                                $('#button_to_not_ajaxify').hide();
+                                filemanager_helpers.reloadFiles();
+                            }
+                        });
                     }
                 }
             };
@@ -363,7 +381,7 @@ class CmsFilemanager
                 delete_files: function () {
                     var items = this.get_selected_item_sources();
 
-                    $.post('?p=filemanager&nomenu&do=_multiple_delete&ajax' + Date.now(),
+                    $.post('?p=filemanager&nomenu&do=_multiple_delete&ajax&cache=' + Date.now(),
                         {pathes: items},
                         function () {
                             filemanager_helpers.reloadFiles();
@@ -374,7 +392,7 @@ class CmsFilemanager
                     var items = this.get_selected_item_sources();
 
                     $.ajax({
-                        url: '?p=filemanager&nomenu&do=_multiple_download&ajax' + Date.now(),
+                        url: '?p=filemanager&nomenu&do=_multiple_download&ajax&cache=' + Date.now(),
                         type: 'POST',
                         dataType: 'JSON',
                         data: {
@@ -407,7 +425,7 @@ class CmsFilemanager
                     // Check copied items
                     var items = storage.get('multiple_copy_items');
                     if (items) {
-                        $.get('?p=filemanager&nomenu&do=_multiple_copy&ajax' + Date.now(),
+                        $.get('?p=filemanager&nomenu&do=_multiple_copy&ajax&cache=' + Date.now(),
                             {pathes: items, current_path: '<?= $dir ?>'},
                             function () {
                                 filemanager_helpers.reloadFiles();
@@ -486,7 +504,6 @@ class CmsFilemanager
                     setTimeout(function() {
                         events_on_checkboxes();
                         ajax_toasters.request_new_messages();
-                        filemanager_helpers.reinit_context_menues();
                     }, 100);
                 },
                 current_url: '<?= SELF ?>',
@@ -503,9 +520,9 @@ class CmsFilemanager
                     return false;
                 },
                 show_create_directory: function() {
+                    _.con.close();
                     _.con.open();
-                    $('#con_file_create').hide();
-                    $('#con_dir_create').show();
+                    _.con.request_view('?p=<?= P ?>&do=create_directory&nomenu&path=<?= $dir ?>');
                 },
                 show_create_file: function() {
                     _.con.open();
@@ -518,16 +535,6 @@ class CmsFilemanager
                     }, function () {
                         filemanager_helpers.reloadFiles();
                     });
-                },
-                reinit_context_menues: function() {
-                    return; // TODO remove entirely
-                    // Move all contextMenues to the BODY element - to calculate proper CSS
-                    if ($('body > .contextMenu').length < 1) {
-                        $('.contextMenu').appendTo(document.body);
-                    } else {
-                        // Delete new from ajaxed data
-                        $('.contextMenu').not('body > .contextMenu').remove();
-                    }
                 }
             };
 
@@ -589,7 +596,6 @@ class CmsFilemanager
             };
 
             uploader.init();
-            filemanager_helpers.reinit_context_menues();
         </script><?php
 
         if (IS_AJAX_REQUEST) {
@@ -1171,14 +1177,25 @@ class CmsFilemanager
             $dir = substr($dir, 1);
         }
 
-        echo CmsForm::getInstance()
-            ->disableFullView()
-            ->setAction('?p=' . P . '&do=_create_directory&path=' . $dir)
-            ->setSubmitButton(new CmsButton('Create'))
-            ->addField('Path', CmsHTML::getInstance('path')
-                ->setValue($dir)
-            )
-            ->addField('Directory name', CmsInputText::getInstance('name'));
+        echo CmsFormHelper::outputForm(NULL, [
+            'action' => '?p=' . P . '&do=_create_directory&path=' . $dir,
+            'ajax' => true,
+            'full' => false,
+            'fields' => [
+                'path' => [
+                    'type' => 'hidden',
+                    'value' => $dir
+                ],
+                'name' => [
+                    'title' => __('Directory name'),
+                ],
+            ],
+            'button' => __('Create'),
+        ]);
+
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
     }
 
     /**
@@ -1187,15 +1204,24 @@ class CmsFilemanager
     public function _create_directory()
     {
         $dir = $_GET['path'];
-        if ($dir && $dir[0] == '/') $dir = substr($dir, 1);
+        if ($dir && $dir[0] == '/') {
+            $dir = substr($dir, 1);
+        }
+
+        if (is_dir(DIR_BASE . $dir . $_POST['name'])) {
+            Messages::sendRedAlert('Folder "' . $dir . $_POST['name'] . '" exists');
+            die('Folder exists');
+        }
 
         FileSystem::mkDir(DIR_BASE . $dir . $_POST['name']);
 
-        App::add('Diretory "' . $dir . $_POST['name'] . '" created');
+        App::add('Folder "' . $dir . $_POST['name'] . '" created');
 
-        Messages::sendGreenAlert('Diretory "' . $dir . $_POST['name'] . '" created');
+        Messages::sendGreenAlert('Folder "' . $dir . $_POST['name'] . '" created');
 
-        go('?p=' . P . '&do=show_files&nomenu&path=' . $dir);
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
     }
 
     /**
