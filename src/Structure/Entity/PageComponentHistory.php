@@ -9,6 +9,7 @@ use TMCms\Orm\Entity;
  * @package TMCms\Admin\Structure\Entity
  *
  * @method string getData()
+ * @method int getVersion()
  */
 class PageComponentHistory extends Entity
 {

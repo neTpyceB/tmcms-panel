@@ -10,7 +10,10 @@ use TMCms\Routing\Entity\PageComponentsDisabledEntityRepository;
  * @package TMCms\Admin\Structure\Entity
  *
  * @method bool getActive()
+ * @method int getPid()
  * @method string getLocation()
+ *
+ * @method $this setPid(int $pid)
  */
 class PageEntity extends Entity
 {
@@ -33,7 +36,6 @@ class PageEntity extends Entity
         $clickmap = new PageClickmapRepository();
         $clickmap->setWherePageId($this->getId());
         $clickmap->deleteObjectCollection();
-
 
         parent::beforeDelete();
     }

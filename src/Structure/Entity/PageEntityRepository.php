@@ -8,11 +8,12 @@ use TMCms\Orm\EntityRepository;
  * Class PageEntityRepository
  * @package TMCms\Admin\Structure\Entity
  *
- * @method setWhereLocation(string $location)
- * @method setWherePid(int $pid)
- * @method setWhereActive(bool $flag)
- * @method setWhereInMenu(bool $flag)
- * @method setWhereMenuName(string $menu_name)
+ * @method $this setWhereLocation(string $location)
+ * @method $this setWherePid(int $pid)
+ * @method $this setWhereActive(bool $flag)
+ * @method $this setWhereInMenu(bool $flag)
+ * @method $this setWhereMenuName(string $menu_name)
+ * @method $this setWhereStringLabel(string $label)
  */
 class PageEntityRepository extends EntityRepository
 {
