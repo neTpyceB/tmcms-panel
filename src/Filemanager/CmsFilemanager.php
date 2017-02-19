@@ -115,7 +115,7 @@ class CmsFilemanager
                 Filter by name&nbsp;&nbsp;<input type="text" id="filter_name" placeholder="File or folder name">
                 <hr>
                 <span id="multiple_commands">
-                    <var onclick="multiple.download(this)"><?= __('Download') ?></var>
+                    <var class="btn" onclick="multiple.download()"><?= __('Download') ?></var>
                     &nbsp;&nbsp;
                     <var onclick="if (confirm('<?= __('Are you sure?') ?>')) multiple.delete_files()"><?= __('Delete') ?></var>
                     &nbsp;&nbsp;
@@ -372,11 +372,23 @@ class CmsFilemanager
                 download: function () {
                     var items = this.get_selected_item_sources();
 
-                    $.post('?p=filemanager&nomenu&do=_multiple_download&ajax' + Date.now(),
-                        {pathes: items},
-                        function (link) {
-                            location.href = link;
-                        });
+                    $.ajax({
+                        url: '?p=filemanager&nomenu&do=_multiple_download&ajax' + Date.now(),
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {
+                            pathes: items
+                        },
+                        success: function (data) {
+                            // Show error
+                            if (data.result != 1) {
+                                toastr.error(data.message);
+                                return;
+                            }
+                            // Download file
+                            location.href = data.zip_path;
+                        }
+                    });
                 },
                 // Copy selected items
                 copy: function (el) {
@@ -937,6 +949,12 @@ class CmsFilemanager
             return;
         }
 
+        $res = [
+            'result' => 0,
+            'message' => '',
+            'zip_path' => '',
+        ];
+
         $paths = $_REQUEST['pathes'];
 
         $items_to_add = [];
@@ -950,10 +968,11 @@ class CmsFilemanager
 
         FileSystem::mkDir(DIR_TEMP);
 
-        $zip_path = DIR_TEMP_URL . UID::uid10() . '.zip';
+        $zip_path = DIR_TEMP_URL . NOW . '_' . UID::uid10() . '.zip';
 
         $zip = new ZipArchive;
         $zip->open(DIR_BASE . $zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $res['zip_path'] = $zip_path;
 
         // Add items to current archive
         foreach ($items_to_add as $v) {
@@ -983,13 +1002,21 @@ class CmsFilemanager
             }
         }
 
-        $zip->close();
+        try {
+            $zip->close();
+        } catch (\Exception $e) {
+            $res['message'] = $e->getMessage();
+        }
+
+        $res['result'] = 1;
 
         App::add('Downloaded files as .zip file');
 
         Messages::sendGreenAlert('Downloaded files as .zip file');
 
-        exit('' . $zip_path);
+        echo json_encode($res, JSON_OBJECT_AS_ARRAY);
+
+        exit;
     }
 
     /**
