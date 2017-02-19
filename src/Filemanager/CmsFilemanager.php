@@ -36,6 +36,8 @@ class CmsFilemanager
         // We can show only files if user is locked to current folder
         $files_only = isset($_GET['files_only']);
 
+        $for_reload = isset($_GET['for_reload']);
+
         // We can set range of allowed file extensions to be uploaded
         $allowed_extensions = isset($_GET['allowed_extensions']) ? explode(',', $_GET['allowed_extensions']) : [];
 
@@ -100,7 +102,7 @@ class CmsFilemanager
         }
 
         // Show top bar if we are allowed to view folders
-        if (!$files_only):
+        if (!$files_only && !$for_reload):
             ?>
             <!--suppress JSUnresolvedFunction -->
             <div style="padding: 10px; position: relative">
@@ -117,7 +119,8 @@ class CmsFilemanager
                 <span id="multiple_commands">
                     <var class="btn" onclick="multiple.download()"><?= __('Download') ?></var>
                     &nbsp;&nbsp;
-                    <var onclick="if (confirm('<?= __('Are you sure?') ?>')) multiple.delete_files()"><?= __('Delete') ?></var>
+                    <var class="btn"
+                         onclick="if (confirm('<?= __('Are you sure?') ?>')) multiple.delete_files()"><?= __('Delete') ?></var>
                     &nbsp;&nbsp;
                     <var onclick="multiple.copy(this)"><?= __('Copy') ?></var>
                     &nbsp;&nbsp;
@@ -132,7 +135,7 @@ class CmsFilemanager
 
         <div style="min-height: 350px; overflow-y: auto; padding: 10px" id="file_list_zone">
             <table cellspacing="0" cellpadding="0" style="line-height:20px">
-                <?php if (!$files_only): ?>
+                <?php if (!$files_only || $for_reload): ?>
                     <tr>
                         <td width="100%"></td>
                         <td></td>
@@ -202,9 +205,7 @@ class CmsFilemanager
             </table>
 
 
-
-
-            <?php if ($files_only) {
+            <?php if ($files_only || $for_reload) {
                 // Stop further rendering if we can locked to see only files
                 echo ob_get_clean();
                 die;
@@ -481,7 +482,7 @@ class CmsFilemanager
                     $("#" + file_id).remove();
                 },
                 reloadFiles: function() {
-                    $('#file_list_zone').load(filemanager_helpers.current_url + '&files_only');
+                    $('#file_list_zone').load(filemanager_helpers.current_url + '&for_reload');
                     setTimeout(function() {
                         events_on_checkboxes();
                         ajax_toasters.request_new_messages();
@@ -886,6 +887,10 @@ class CmsFilemanager
                 FileSystem::remdir(DIR_BASE . $v);
             }
         }
+
+        Messages::sendGreenAlert('Deleted from server');
+
+        exit('1');
     }
 
     /**
