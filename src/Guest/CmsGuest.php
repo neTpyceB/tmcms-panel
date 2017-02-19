@@ -2,7 +2,6 @@
 
 namespace TMCms\Admin\Guest;
 
-use Exception;
 use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntity;
 use TMCms\Admin\Guest\Entity\AdminUsersAttemptsEntityRepository;
 use TMCms\Admin\Users;
@@ -11,8 +10,6 @@ use TMCms\Admin\Users\Entity\AdminUserRepository;
 use TMCms\Admin\Users\Entity\AdminUserGroupRepository;
 use TMCms\Config\Configuration;
 use TMCms\Config\Settings;
-use TMCms\Log\App;
-use TMCms\Strings\JWT;
 use TMCms\Strings\Verify;
 use TMCms\Templates\PageHead;
 use TMCms\Templates\PageTail;
@@ -36,29 +33,6 @@ class CmsGuest
             // No correct key provided?
             if (!isset($_GET['admin_key']) || $_GET['admin_key'] != Configuration::getInstance()->get('cms')['unique_key']) {
                 back();
-            }
-        }
-
-        // Authorize user by provided token (used by our mobile application)
-        if (isset($_GET['token'])) {
-            try {
-                $payload = JWT::decode($_GET['token'], date('Y-m-d', NOW), true);
-
-                if ($payload->created_at > strtotime('-5 minutes')) {
-                    $user_collection = new AdminUserRepository();
-                    $user_collection->setWhereLogin($payload->login);
-                    $user_collection->setWherePassword($payload->password);
-                    $user_collection->setWhereActive(1);
-
-                    /** @var AdminUser $user */
-                    $user = $user_collection->getFirstObjectFromCollection();
-
-                    if ($user) {
-                        $this->initLogInProcess($user);
-                    }
-                }
-            } catch (Exception $exception) {
-                // Do nothing, I guess...
             }
         }
 
