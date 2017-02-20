@@ -190,15 +190,15 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                 if ($all_fields) {
 
                     // Link to order blocks
-                    $order_links = '<a href="?p='. P .'&do=_customs_delete&page_id='. $q['id'] .'&component='. $component_name .'&tab='. $element_name .'&order='. $i .'" class="nounderline" onclick="return confirm(\'Are you sure?\')">x</a>&nbsp;&nbsp;&nbsp;';
+                    $order_links = '<a href="?p=' . P . '&do=_customs_delete&page_id=' . $q['id'] . '&component=' . $component_name . '&tab=' . $element_name . '&order=' . $i . '" class="nounderline" onclick="return confirm(\'Are you sure?\')"><i class="fa fa-trash-o"></i></a>&nbsp;&nbsp;&nbsp;';
 
                     if ($i) { // Not first
-                        $order_links .= '<a href="?p='. P .'&do=_customs_order&page_id='. $q['id'] .'&component='. $component_name .'&tab='. $element_name .'&order='. $i .'&direct=up" class="nounderline">↑</a>&nbsp;&nbsp;&nbsp;';
+                        $order_links .= '<a href="?p=' . P . '&do=_customs_order&page_id=' . $q['id'] . '&component=' . $component_name . '&tab=' . $element_name . '&order=' . $i . '&direct=up" class="nounderline"><i class="fa fa-long-arrow-up"></i></a>&nbsp;&nbsp;&nbsp;';
                     } else {
                         $order_links .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                     }
                     if ($i != ($count_of_existing_data - 1)) { // Not last
-                        $order_links .= '<a href="?p='. P .'&do=_customs_order&page_id='. $q['id'] .'&component='. $component_name .'&tab='. $element_name .'&order='. $i .'&direct=down" class="nounderline">↓</a>&nbsp;&nbsp;&nbsp;';
+                        $order_links .= '<a href="?p=' . P . '&do=_customs_order&page_id=' . $q['id'] . '&component=' . $component_name . '&tab=' . $element_name . '&order=' . $i . '&direct=down" class="nounderline"><i class="fa fa-long-arrow-down"></i></a>&nbsp;&nbsp;&nbsp;';
                     } else {
                         $order_links .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                     }
