@@ -12,6 +12,9 @@ use TMCms\Routing\Entity\PageComponentsDisabledEntityRepository;
  * @method bool getActive()
  * @method int getPid()
  * @method string getLocation()
+ * @method string getStringLabel()
+ * @method string getTitle()
+ * @method int getTemplateId()
  *
  * @method $this setPid(int $pid)
  */

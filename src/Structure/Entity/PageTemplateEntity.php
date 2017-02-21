@@ -8,6 +8,8 @@ use TMCms\Orm\Entity;
  * Class PageTemplateEntity
  * @package TMCms\Admin\Structure\Entity
  *
+ * @method string getFile()
+ *
  * @method $this setFile(string $file)
  */
 class PageTemplateEntity extends Entity
