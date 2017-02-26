@@ -118,6 +118,8 @@ class CmsFilemanager
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <a href="?p=<?= P ?>&do=filemanager&nomenu&path=<?= $path_up ?>" onclick="filemanager_helpers.loadDirectory(this); return false;">Go up</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="fa fa-repeat" onclick="filemanager_helpers.reloadFiles(); return false;"></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
                 Current path: /<?= implode('/', $path_links) ?>
                 <hr>
                 <var onclick="filemanager_helpers.show_create_file(); return false;"
@@ -519,6 +521,11 @@ class CmsFilemanager
 
                     return false;
                 },
+                editDirectoryName: function (directory_path) {
+                    _.con.close();
+                    _.con.open();
+                    _.con.request_view('?p=<?= P ?>&do=edit_directory&nomenu&path=' + directory_path);
+                },
                 show_create_directory: function() {
                     _.con.close();
                     _.con.open();
@@ -551,6 +558,15 @@ class CmsFilemanager
                                 filemanager_helpers.loadDirectory(el);
                             }
                         },
+                        2: {
+                            'name': 'Edit folder name',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.editDirectoryName($el.data('path'));
+                            }
+                        },
                         4: {
                             'name': 'Delete folder',
                             'href': '',
@@ -572,10 +588,11 @@ class CmsFilemanager
                                 }
                             }
 
-                            if (typeof params.href != 'undefined') {
+                            if (typeof params.href != 'undefined' && params.href) {
                                 if (typeof params.popup != 'undefined' && params.popup) {
                                     window.open(params.href);
                                 } else {
+                                    alert(params.href);
                                     window.location = params.href;
                                 }
                             }
@@ -1180,6 +1197,7 @@ class CmsFilemanager
         echo CmsFormHelper::outputForm(NULL, [
             'action' => '?p=' . P . '&do=_create_directory&path=' . $dir,
             'ajax' => true,
+            'ajax_callback' => 'filemanager_helpers.reloadFiles();',
             'full' => false,
             'fields' => [
                 'path' => [
@@ -1187,10 +1205,10 @@ class CmsFilemanager
                     'value' => $dir
                 ],
                 'name' => [
-                    'title' => __('Directory name'),
+                    'title' => __('Folder name'),
                 ],
             ],
-            'button' => __('Create'),
+            'button' => __('Create Folder'),
         ]);
 
         if (IS_AJAX_REQUEST) {
@@ -1198,26 +1216,101 @@ class CmsFilemanager
         }
     }
 
-    /**
-     * Action for Create directory
-     */
     public function _create_directory()
     {
-        $dir = $_GET['path'];
-        if ($dir && $dir[0] == '/') {
+        $folder = DIR_BASE . $_POST['path'] . $_POST['name'];
+
+        // Check exists
+        if (file_exists($folder)) {
+            Messages::sendRedAlert('Folder "' . $_POST['name'] . '" already exists');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        // Create new
+        FileSystem::mkDir(DIR_BASE . $_POST['path'] . $_POST['name']);
+        Messages::sendGreenAlert('Folder "' . $_POST['name'] . '" created');
+
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
+    }
+
+    /**
+     * Edit Directory name
+     */
+    public function edit_directory()
+    {
+        $dir =& $_GET['path'];
+        if ($dir[0] == '/') {
             $dir = substr($dir, 1);
         }
 
-        if (is_dir(DIR_BASE . $dir . $_POST['name'])) {
-            Messages::sendRedAlert('Folder "' . $dir . $_POST['name'] . '" exists');
-            die('Folder exists');
+        echo CmsFormHelper::outputForm(NULL, [
+            'action' => '?p=' . P . '&do=_edit_directory&path=' . $dir,
+            'ajax' => true,
+            'ajax_callback' => 'filemanager_helpers.reloadFiles();',
+            'full' => false,
+            'fields' => [
+                'original' => [
+                    'type' => 'hidden',
+                    'value' => $dir
+                ],
+                'new' => [
+                    'title' => __('Directory name'),
+                    'value' => basename($dir),
+                ],
+            ],
+            'button' => __('Rename Folder'),
+        ]);
+
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
+    }
+
+    public function _edit_directory()
+    {
+        if (!FileSystem::checkFileName($_POST['new'])) {
+            Messages::sendRedAlert('Wrong folder name');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
         }
 
-        FileSystem::mkDir(DIR_BASE . $dir . $_POST['name']);
+        $original = DIR_BASE . $_POST['original'];
 
-        App::add('Folder "' . $dir . $_POST['name'] . '" created');
+        // Check exists base
+        if (!file_exists($original)) {
+            Messages::sendRedAlert('Base folder "' . $_POST['original'] . '" not found');
 
-        Messages::sendGreenAlert('Folder "' . $dir . $_POST['name'] . '" created');
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        // Check exists target
+        $tmp = array_filter(explode(DIRECTORY_SEPARATOR, $original));
+        // Change the last element of path
+        $keys = array_keys($tmp);
+        $last_key = end($keys);
+        $tmp[$last_key] = $_POST['new'];
+        $new_path = '/' . implode('/', $tmp) . '/';
+
+        if (file_exists($new_path)) {
+            Messages::sendRedAlert('Folder "' . $_POST['new'] . '" exists');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        // Rename folder
+        rename($original, $new_path);
+        Messages::sendGreenAlert('Folder renamed to "' . $_POST['new'] . '"');
 
         if (IS_AJAX_REQUEST) {
             die;
