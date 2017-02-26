@@ -3,9 +3,15 @@
 namespace TMCms\Admin\Components;
 
 use TMCms\Admin\Structure\Entity\PageEntityRepository;
+use TMCms\Files\Finder;
 use TMCms\HTML\Cms\CmsTable;
+use TMCms\HTML\Cms\CmsTabs;
+use TMCms\HTML\Cms\Column\ColumnData;
 use TMCms\HTML\Cms\Column\ColumnTree;
+use TMCms\Orm\Entity;
+use TMCms\Orm\EntityRepository;
 use TMCms\Routing\Structure;
+use TMCms\Strings\Converter;
 use TMCms\Templates\Page;
 use TMCms\Traits\singletonInstanceTrait;
 
@@ -202,7 +208,7 @@ class CmsComponents
                 $v['title'] = '<strong>' . $v['title'] . '</strong>';
             }
             // Make link
-            $v['title'] = '<a style="cursor:pointer" onclick="sitemapSelectPageId(\'' . Structure::getPathById($v['id'], false) . '\'); return false;">' . $v['title'] . ' (' . $v['location'] . ')</a>';
+            $v['title'] = '<a style="cursor:pointer" onclick="selectLinkForSitemap(\'' . Structure::getPathById($v['id'], false) . '\'); return false;">' . $v['title'] . ' (' . $v['location'] . ')</a>';
 
             $data[] = $v;
         }
@@ -210,14 +216,14 @@ class CmsComponents
         ob_clean();
         ?>
         <script>
-            function sitemapSelectPageId(page_id) {
+            function selectLinkForSitemap(page_id) {
                 var modalWindow = $('#modal-popup_inner');
                 modalWindow.trigger('popup:return_result', [page_id]);
                 modalWindow.trigger('popup:close');
             }
         </script>
         <?php
-        echo CmsTable::getInstance()
+        $structure_table = CmsTable::getInstance()
             ->addData($data)
             ->disablePager()
             ->addColumn(ColumnTree::getInstance('id')
@@ -225,6 +231,41 @@ class CmsComponents
                 ->setShowKey('title')
                 ->allowHtml()
             );
+
+        $tabs = new CmsTabs;
+        $tabs->addTab('Structure', $structure_table, true);
+
+        foreach (Finder::getInstance()->getEntitiesWithSitemapLinks() as $entity) {
+            $entity_class = get_class($entity);
+            $repo_class = $entity_class . 'Repository';
+            /** @var EntityRepository $entity_repository */
+            $entity_repository = new $repo_class;
+
+            if (method_exists($entity_repository, 'getLinksForSitemap')) {
+                // May be implemented in repository
+                $table = $entity_repository->getLinksForSitemap();
+            } else {
+                // Or auto generated with entities
+                $data = [];
+                /** @var Entity $obj */
+                foreach ($entity_repository->getAsArrayOfObjects() as $obj) {
+                    $data[] = [
+                        'link' => '<a style="cursor:pointer" onclick="selectLinkForSitemap(\'' . $obj->getLinkForSitemap() . '\'); return false;">' . $obj->getLinkForSitemap() . '</a>',
+                    ];
+                }
+
+                $table = CmsTable::getInstance()
+                    ->addData($data)
+                    ->disablePager()
+                    ->addColumn(ColumnData::getInstance('link')
+                        ->allowHtml()
+                    );
+            }
+
+            $tabs->addTab(rtrim(Converter::classWithNamespaceToUnqualifiedShort($entity), 'Entity'), $table);
+        }
+
+        echo $tabs;
         echo ob_get_clean();
 
         die;

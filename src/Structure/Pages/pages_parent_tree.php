@@ -18,13 +18,13 @@ foreach (q_assoc_iterator('SELECT `id`, `pid`, `title`, `active`, `in_menu`, `lo
         $v['title'] = '<strong>'. $v['title'] .'</strong>';
     }
     // Add select event
-	$v['title'] = '<a style="cursor:pointer" onclick="sitemapSelectPageId(' . $v['id'] . '); return false;">'. $v['title'] .' ('. $v['location'] .')</a>';
+    $v['title'] = '<a style="cursor:pointer" onclick="selectLinkForSitemap(' . $v['id'] . '); return false;">' . $v['title'] . ' (' . $v['location'] . ')</a>';
 	$data[] = $v;
 }
 
 ?>
 <script>
-    function sitemapSelectPageId(page_id) {
+    function selectLinkForSitemap(page_id) {
         var modalWindow = $('#modal-popup_inner');
         modalWindow.trigger('popup:return_result', [page_id]);
         modalWindow.trigger('popup:close');
