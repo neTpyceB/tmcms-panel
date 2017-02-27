@@ -308,7 +308,7 @@ class CmsFilemanager
             var _ = {
                 con: {
                     close: function () {
-                        $('#con_container').hide();
+                        $('#con_container').hide().html(' ');
                         $('#con_container_close').hide();
                     },
                     open: function () {
@@ -556,6 +556,11 @@ class CmsFilemanager
                     _.con.close();
                     _.con.open();
                     _.con.request_view('?p=<?= P ?>&do=edit_file&nomenu&path=' + file_path);
+                },
+                editFileContent: function (file_path) {
+                    _.con.close();
+                    _.con.open();
+                    _.con.request_view('?p=<?= P ?>&do=edit_file_content&nomenu&path=' + file_path);
                 }
             };
 
@@ -649,17 +654,17 @@ class CmsFilemanager
                         }
                     };
 
-//                    if ($el.data('text-editable') == "1") {
-//                        items[3] = {
-//                            'name': 'Edit file content',
-//                            'href': '',
-//                            'confirm': 0,
-//                            'popup': 0,
-//                            'js': function () {
-//                                filemanager_helpers.editFileContent($el.data('path'));
-//                            }
-//                        };
-//                    }
+                    if ($el.data('text-editable') == "1") {
+                        items[3] = {
+                            'name': 'Edit file content',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.editFileContent($el.data('path'));
+                            }
+                        };
+                    }
 
                     $.contextMenu({
                         selector: '#' + $el.attr('id'),
@@ -1127,143 +1132,6 @@ class CmsFilemanager
     }
 
     /**
-     * Edit contents and name of file
-     */
-    public function edit()
-    {
-        $dir =& $_GET['path'];
-        if ($dir[0] == '/') {
-            $dir = substr($dir, 1);
-        }
-        $dir_base = DIR_BASE . $dir;
-        $ext = pathinfo($dir, PATHINFO_EXTENSION);
-
-        $ext_allowed_for_edit = ['txt', 'html', 'php', 'js', 'htaccess', 'css', 'xml', ''];
-        if (!in_array($ext, $ext_allowed_for_edit)) {
-            error('File content can not be edited');
-        }
-
-
-        echo CmsForm::getInstance()
-            ->disableFullView()
-            ->setAction('?p=' . P . '&do=_edit_content&path=' . $dir)
-            ->setSubmitButton(new CmsButton('Update'))
-            ->addField('Name', CmsHTML::getInstance('')
-                ->setValue(pathinfo($dir, PATHINFO_BASENAME))
-            )
-            ->addField('Name hidden', CmsInputHidden::getInstance('name')
-                ->setValue(pathinfo($dir, PATHINFO_BASENAME))
-            )
-            ->addField('Content', CmsTextarea::getInstance('content')
-                ->setValue(htmlspecialchars(file_get_contents($dir_base), ENT_COMPAT, 'utf-8'))
-                ->setRowCount(30)
-            )
-        ;
-    }
-
-    /**
-     * Action for Edit file or folder
-     */
-    public function _edit()
-    {
-        $dir =& $_GET['path'];
-        if (isset($dir[0]) && $dir[0] == '/') {
-            $dir = substr($dir, 1);
-        }
-
-        $type = isset($_POST['type_of_1']) ? $_POST['type_of_1'] : (isset($_POST['type_of_2']) ? $_POST['type_of_2'] : (isset($_POST['type_of_3']) ? $_POST['type_of_3'] : false));
-
-        if ($type == 'file') { // Files
-            switch ($_GET['action']) {
-                case 'rename':
-                    if ($_POST['current_path'][0] == '/') $_POST['current_path'] = substr($_POST['current_path'], 1);
-                    $new_path = DIR_BASE . $dir . $_POST['new_name'];
-                    if (file_exists($new_path)) error('File "' . htmlspecialchars($_POST['new_name'], ENT_QUOTES) . '" already exists');
-                    rename(DIR_BASE . $_POST['current_path'], $new_path);
-
-                    App::add('File "' . $_POST['current_path'] . '" renamed to "' . $new_path . '"');
-
-                    Messages::sendGreenAlert('File "' . $_POST['current_path'] . '" renamed to "' . $new_path . '"');
-
-                    break;
-                case 'delete':
-                    if ($_POST['remove_path'][0] == '/') $_POST['remove_path'] = substr($_POST['remove_path'], 1);
-                    if (is_file(DIR_BASE . $_POST['remove_path'])) unlink(DIR_BASE . $_POST['remove_path']);
-
-                    App::add('File "' . $_POST['remove_path'] . '" deleted');
-
-                    Messages::sendGreenAlert('File "' . $_POST['remove_path'] . '" deleted');
-
-                    break;
-                case 'content':
-                    if ($_POST['file_name'][0] == '/') $_POST['file_name'] = substr($_POST['file_name'], 1);
-                    file_put_contents(DIR_BASE . $_POST['file_name'], $_POST['content']);
-
-                    App::add('Content of file "' . $_POST['file_name'] . '" edited');
-
-                    Messages::sendGreenAlert('Content of file "' . $_POST['file_name'] . '" edited');
-
-                    break;
-            }
-        } elseif ($type == 'folder') { // folders
-            switch ($_GET['action']) {
-                case 'rename':
-                    if ($_POST['current_path'][0] == '/') $_POST['current_path'] = substr($_POST['current_path'], 1);
-                    $new_path = DIR_BASE . $dir . $_POST['new_name'];
-                    if (file_exists($new_path)) error('Folder "' . htmlspecialchars($_POST['new_name'], ENT_QUOTES) . '" already exists');
-                    rename(DIR_BASE . $_POST['current_path'], $new_path);
-
-                    App::add('Folder "' . $_POST['current_path'] . '" renamed to "' . $new_path . '"');
-
-                    Messages::sendGreenAlert('Folder "' . $_POST['current_path'] . '" renamed to "' . $new_path);
-
-                    break;
-                case 'delete':
-                    if ($_POST['remove_path'][0] == '/') $_POST['remove_path'] = substr($_POST['remove_path'], 1);
-                    FileSystem::remDir(DIR_BASE . $_POST['remove_path'], $_POST['leave_folder']);
-
-                    App::add('Folder "' . $_POST['remove_path'] . '" deleted');
-
-                    Messages::sendGreenAlert('Folder "' . $_POST['remove_path'] . '" deleted');
-
-                    break;
-            }
-        } elseif (!$type) { // New file or folder
-            switch ($_GET['action']) {
-                case 'dircreate':
-                    if (!isset($_POST['dirname']) || !FileSystem::checkFileName($_POST['dirname'])) return;
-
-                    $new_path = DIR_BASE . $dir . $_POST['dirname'];
-                    if (file_exists($new_path)) error('Folder "' . htmlspecialchars($_POST['dirname'], ENT_QUOTES) . '" already exists');
-
-                    FileSystem::mkDir($new_path);
-
-                    App::add('Folder "' . DIR_BASE_URL . $dir . $_POST['dirname'] . '" created');
-
-                    Messages::sendGreenAlert('Folder "' . DIR_BASE_URL . $dir . $_POST['dirname'] . '" created');
-
-                    break;
-                case 'filecreate':
-                    if (!isset($_POST['file_name'], $_POST['content']) || !FileSystem::checkFileName($_POST['file_name'])) return;
-
-                    $new_path = DIR_BASE . $dir . $_POST['file_name'];
-                    if (file_exists($new_path)) error('File "' . htmlspecialchars($_POST['file_name'], ENT_QUOTES) . '" already exists');
-
-                    FileSystem::mkDir(DIR_BASE . $dir);
-                    file_put_contents($new_path, $_POST['content']);
-
-                    App::add('File "' . $new_path . '" created');
-
-                    Messages::sendGreenAlert('File "' . $new_path . '" created');
-
-                    break;
-            }
-        }
-
-        back();
-    }
-
-    /**
      * Create Directory
      */
     public function create_directory()
@@ -1318,6 +1186,7 @@ class CmsFilemanager
 
         // Create new
         FileSystem::mkDir(DIR_BASE . $_POST['path'] . $_POST['name']);
+        App::add('Folder "' . $_POST['name'] . '" created');
         Messages::sendGreenAlert('Folder "' . $_POST['name'] . '" created');
 
         if (IS_AJAX_REQUEST) {
@@ -1397,6 +1266,7 @@ class CmsFilemanager
 
         // Rename folder
         rename($original, $new_path);
+        App::add('Folder renamed to "' . $_POST['new'] . '"');
         Messages::sendGreenAlert('Folder renamed to "' . $_POST['new'] . '"');
 
         if (IS_AJAX_REQUEST) {
@@ -1463,7 +1333,6 @@ class CmsFilemanager
         }
 
         file_put_contents(DIR_BASE . $dir . $_POST['name'], '');
-
         App::add('File "' . $dir . $_POST['name'] . '" created');
         Messages::sendGreenAlert('File "' . $dir . $_POST['name'] . '" created');
 
@@ -1544,6 +1413,7 @@ class CmsFilemanager
 
         // Rename folder
         rename($original, $new_path);
+        App::add('File renamed to "' . $_POST['new'] . '"');
         Messages::sendGreenAlert('File renamed to "' . $_POST['new'] . '"');
 
         if (IS_AJAX_REQUEST) {
@@ -1554,32 +1424,64 @@ class CmsFilemanager
     /**
      * Open file, get it's content
      */
-    public function _get_file_content()
+    public function edit_file_content()
     {
-        ob_clean();
-        echo file_get_contents(DIR_BASE . $_GET['path']);
-        die;
+        $path =& $_GET['path'];
+        if ($path[0] == '/') {
+            $path = substr($path, 1);
+        }
+
+        echo CmsFormHelper::outputForm(NULL, [
+            'action' => '?p=' . P . '&do=_edit_file_content&path=' . $path,
+            'ajax' => true,
+            'ajax_callback' => '_.con.close();',
+            'full' => false,
+            'fields' => [
+                'name' => [
+                    'type' => 'html',
+                    'value' => $path
+                ],
+                'path' => [
+                    'type' => 'hidden',
+                    'value' => $path
+                ],
+                'content' => [
+                    'type' => 'textarea',
+                    'rows' => 10,
+                    'title' => __('File content'),
+                    'value' => file_get_contents(DIR_BASE . $path),
+                ],
+            ],
+            'button' => __('Update File Content'),
+        ]);
+
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
     }
 
     /**
      * Action for Edit contents
      */
-    public function _edit_content()
+    public function _edit_file_content()
     {
-        $dir =& $_GET['path'];
-        if (isset($dir[0]) && $dir[0] == '/') $dir = substr($dir, 1);
+        $path = DIR_BASE . $_POST['path'];
 
-        if (!is_file(DIR_BASE . $dir)) error('Not a file');
+        // Check exists base
+        if (!file_exists($path)) {
+            Messages::sendRedAlert('Base file "' . $_POST['path'] . '" not found');
 
-        file_put_contents(DIR_BASE . $dir, $_POST['content']);
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
 
-        App::add('Content of file "' . $_POST['name'] . '" edited');
+        file_put_contents($path, $_POST['content']);
+        App::add('Content of file "' . $_POST['path'] . '" edited');
+        Messages::sendGreenAlert('File content updated');
 
-        Messages::sendGreenAlert('Content of file "' . $_POST['name'] . '" edited');
-
-        $path_to_dir = explode('/', $dir);
-        array_pop($path_to_dir);
-
-        go('?p=' . P . '&do=show_files&nomenu&path=' . implode('/', $path_to_dir) . '/');
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
     }
 }
