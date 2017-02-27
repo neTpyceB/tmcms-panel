@@ -1340,7 +1340,7 @@ class CmsFilemanager
         echo CmsFormHelper::outputForm(NULL, [
             'action' => '?p=' . P . '&do=_create_file&path=' . $dir,
             'ajax' => true,
-            'ajax_callback' => 'filemanager_helpers.reloadFiles();',
+            'ajax_callback' => 'filemanager_helpers.reloadFiles(); _.con.close();',
             'full' => false,
             'fields' => [
                 'path' => [
@@ -1369,7 +1369,7 @@ class CmsFilemanager
             $dir = substr($dir, 1);
         }
 
-        if (!FileSystem::checkFileName($_POST['new'])) {
+        if (!FileSystem::checkFileName($_POST['name'])) {
             Messages::sendRedAlert('Wrong file name');
 
             if (IS_AJAX_REQUEST) {
