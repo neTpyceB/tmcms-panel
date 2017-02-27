@@ -137,7 +137,7 @@ class CmsFilemanager
                     <a href="" onclick="multiple.copy(this)"><?= __('Copy') ?></a>
                     &nbsp;&nbsp;
                     <a href="" id="multiple_paste" style="display:none;"
-                       onclick="multiple.paste(this)"><?= __('Paste') ?></ahref>
+                       onclick="multiple.paste(this)"><?= __('Paste') ?></a>
                     <hr>
                 </span>
                 <div style="position: absolute; top: 0; right: 0; width: 300px; z-index: 10">
