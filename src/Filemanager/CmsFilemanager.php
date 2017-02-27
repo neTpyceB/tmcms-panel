@@ -200,12 +200,18 @@ class CmsFilemanager
                         <td>
                             <input class="cb_hide" type="checkbox" name="<?= $v ?>" value="">
                             &nbsp;
-                            <a oncontextmenu="context_menus.files(this); return false;" class="file_context<?= $type_by_extension ?>" href="" onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="done();"
+                            <a oncontextmenu="context_menus.files(this); return false;" id="file_<?= $k ?>"
+                               class="file_context<?= $type_by_extension ?>" href=""
+                               onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="done();"
                                 <?php if ($type_by_extension == '_img'): ?>
                                     onmouseover="$('#filemanager_current_image').attr('src', '<?= $v ?>').show()"
                                     onmouseout="$('#filemanager_current_image').attr('src', '<?= DIR_CMS_IMAGES_URL ?>_.gif').hide()"
                                 <?php endif; ?>
-                                data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
+
+                                <?php if ($type_by_extension == '_text'): ?>
+                                    data-text-editable="1"
+                                <?php endif; ?>
+                               data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
                         </td>
                         <td></td>
                         <td><?= Converter::formatDataSize(filesize(DIR_BASE . $v)) ?></td>
@@ -497,6 +503,7 @@ class CmsFilemanager
             var filemanager_helpers = {
                 upload_object: null,
                 file_handlers: {},
+                current_url: '<?= SELF ?>',
                 removeFile: function(file_id) {
                     var file = filemanager_helpers.file_handlers[file_id];
                     filemanager_helpers.upload_object.removeFile(file);
@@ -509,7 +516,6 @@ class CmsFilemanager
                         ajax_toasters.request_new_messages();
                     }, 100);
                 },
-                current_url: '<?= SELF ?>',
                 loadDirectory: function (link) {
                     // From CKEditor - in separate window
                     if ('<?= (int) isset($_GET['CKEditor']) ?>' == '1') {
@@ -609,7 +615,72 @@ class CmsFilemanager
                     return false;
                 },
                 files: function(el) {
-                    cms_data.context_menu_items(el);
+                    var $el = $(el);
+                    var items = {
+                        0: {
+                            'name': 'Download file',
+                            'href': $el.data('path'),
+                            'confirm': 0,
+                            'popup': 1
+                        },
+//                        2: {
+//                            'name': 'Edit file name',
+//                            'href': '',
+//                            'confirm': 0,
+//                            'popup': 0,
+//                            'js': function () {
+//                                filemanager_helpers.editFileName($el.data('path'));
+//                            }
+//                        },
+                        4: {
+                            'name': 'Delete file',
+                            'href': '',
+                            'confirm': 1,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.delete_files($el.data('path'));
+                            }
+                        }
+                    };
+
+                    if ($el.data('text-editable') == "1") {
+                        items[3] = {
+                            'name': 'Edit file content',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.editFileContent($el.data('path'));
+                            }
+                        };
+                    }
+
+                    $.contextMenu({
+                        selector: '#' + $el.attr('id'),
+                        callback: function (key, options) {
+                            var params = options.items[key];
+                            if (typeof params.confirm != 'undefined' && params.confirm) {
+                                if (!confirm('<?= __('Are you sure?') ?>')) {
+                                    return false;
+                                }
+                            }
+
+                            if (typeof params.href != 'undefined' && params.href) {
+                                if (typeof params.popup != 'undefined' && params.popup) {
+                                    window.open(params.href);
+                                } else {
+                                    alert(params.href);
+                                    window.location = params.href;
+                                }
+                            }
+
+                            if (typeof params.js != 'undefined' && params.js) {
+                                params.js();
+                            }
+                        },
+                        items: items
+                    });
+
                     return false;
                 }
             };
