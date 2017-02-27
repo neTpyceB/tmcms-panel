@@ -134,9 +134,10 @@ class CmsFilemanager
                     <a href=""
                        onclick="if (confirm('<?= __('Are you sure?') ?>')) {multiple.delete_files()}; return false;"><?= __('Delete') ?></a>
                     &nbsp;&nbsp;
-                    <var onclick="multiple.copy(this)"><?= __('Copy') ?></var>
+                    <a href="" onclick="multiple.copy(this)"><?= __('Copy') ?></a>
                     &nbsp;&nbsp;
-                    <var id="multiple_paste" style="display:none;" onclick="multiple.paste(this)"><?= __('Paste') ?></var>
+                    <a href="" id="multiple_paste" style="display:none;"
+                       onclick="multiple.paste(this)"><?= __('Paste') ?></ahref>
                     <hr>
                 </span>
                 <div style="position: absolute; top: 0; right: 0; width: 300px; z-index: 10">
