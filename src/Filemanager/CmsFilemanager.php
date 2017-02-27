@@ -17,6 +17,7 @@ use TMCms\HTML\Cms\Element\CmsInputHidden;
 use TMCms\HTML\Cms\Element\CmsInputText;
 use TMCms\HTML\Cms\Element\CmsRadioBox;
 use TMCms\HTML\Cms\Element\CmsTextarea;
+use TMCms\HTML\Cms\Filter\Hidden;
 use TMCms\Log\App;
 use TMCms\Strings\Converter;
 use TMCms\Strings\UID;
@@ -122,8 +123,8 @@ class CmsFilemanager
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 Current path: /<?= implode('/', $path_links) ?>
                 <hr>
-                <var onclick="filemanager_helpers.show_create_file(); return false;"
-                     href="?p=<?= P ?>&do=create_file&nomenu&path=<?= $dir ?>">Create file</var>
+                <a onclick="filemanager_helpers.show_create_file(); return false;"
+                   href="?p=<?= P ?>&do=create_file&nomenu&path=<?= $dir ?>">Create file</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 Filter by name&nbsp;&nbsp;<input type="text" id="filter_name" placeholder="File or folder name">
                 <hr>
@@ -535,6 +536,7 @@ class CmsFilemanager
                     _.con.open();
                     $('#con_dir_create').hide();
                     $('#con_file_create').show();
+                    _.con.request_view('?p=<?= P ?>&do=create_file&nomenu&path=<?= $dir ?>');
                 },
                 delete_files: function(path) {
                     $.get("?p=<?= P ?>&do=_delete&path="+ path, {
@@ -1197,7 +1199,7 @@ class CmsFilemanager
         echo CmsFormHelper::outputForm(NULL, [
             'action' => '?p=' . P . '&do=_create_directory&path=' . $dir,
             'ajax' => true,
-            'ajax_callback' => 'filemanager_helpers.reloadFiles();',
+            'ajax_callback' => 'filemanager_helpers.reloadFiles(); _.con.close();',
             'full' => false,
             'fields' => [
                 'path' => [
@@ -1219,6 +1221,14 @@ class CmsFilemanager
     public function _create_directory()
     {
         $folder = DIR_BASE . $_POST['path'] . $_POST['name'];
+
+        if (!FileSystem::checkFileName($_POST['name'])) {
+            Messages::sendRedAlert('Wrong folder name');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
 
         // Check exists
         if (file_exists($folder)) {
@@ -1251,7 +1261,7 @@ class CmsFilemanager
         echo CmsFormHelper::outputForm(NULL, [
             'action' => '?p=' . P . '&do=_edit_directory&path=' . $dir,
             'ajax' => true,
-            'ajax_callback' => 'filemanager_helpers.reloadFiles();',
+            'ajax_callback' => 'filemanager_helpers.reloadFiles(); _.con.close();',
             'full' => false,
             'fields' => [
                 'original' => [
@@ -1322,22 +1332,31 @@ class CmsFilemanager
      */
     public function create_file()
     {
-        $dir = $_GET['path'];
-        if ($dir[0] == '/') $dir = substr($dir, 1);
+        $dir =& $_GET['path'];
+        if ($dir[0] == '/') {
+            $dir = substr($dir, 1);
+        }
 
-        echo CmsForm::getInstance()
-            ->disableFullView()
-            ->setAction('?p=' . P . '&do=_create_file&path=' . $dir)
-            ->setSubmitButton(new CmsButton('Create'))
-            ->addField('Path', CmsHTML::getInstance('path')
-                ->setValue($dir)
-            )
-            ->addField('File name', CmsInputText::getInstance('name')
-                ->hint('With extension')
-            )
-            ->addField('File content', CmsTextarea::getInstance('content')
-                ->setRowCount(30)
-            );
+        echo CmsFormHelper::outputForm(NULL, [
+            'action' => '?p=' . P . '&do=_create_file&path=' . $dir,
+            'ajax' => true,
+            'ajax_callback' => 'filemanager_helpers.reloadFiles();',
+            'full' => false,
+            'fields' => [
+                'path' => [
+                    'type' => 'hidden',
+                    'value' => $dir
+                ],
+                'name' => [
+                    'title' => __('File name'),
+                ],
+            ],
+            'button' => __('Create File'),
+        ]);
+
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
     }
 
     /**
@@ -1346,15 +1365,34 @@ class CmsFilemanager
     public function _create_file()
     {
         $dir =& $_GET['path'];
-        if ($dir[0] == '/') $dir = substr($dir, 1);
+        if ($dir[0] == '/') {
+            $dir = substr($dir, 1);
+        }
 
-        if (!file_exists(DIR_BASE . $dir . $_POST['name'])) file_put_contents(DIR_BASE . $dir . $_POST['name'], $_POST['content']);
+        if (!FileSystem::checkFileName($_POST['new'])) {
+            Messages::sendRedAlert('Wrong file name');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        if (file_exists(DIR_BASE . $dir . $_POST['name'])) {
+            Messages::sendRedAlert('File "' . $_POST['name'] . '" exists');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        file_put_contents(DIR_BASE . $dir . $_POST['name'], '');
 
         App::add('File "' . $dir . $_POST['name'] . '" created');
-
         Messages::sendGreenAlert('File "' . $dir . $_POST['name'] . '" created');
 
-        go('?p=' . P . '&do=show_files&nomenu&path=' . $dir);
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
     }
 
     /**
