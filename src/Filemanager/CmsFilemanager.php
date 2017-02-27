@@ -137,15 +137,16 @@ class CmsFilemanager
                     <var onclick="multiple.copy(this)"><?= __('Copy') ?></var>
                     &nbsp;&nbsp;
                     <var id="multiple_paste" style="display:none;" onclick="multiple.paste(this)"><?= __('Paste') ?></var>
+                    <hr>
                 </span>
-                <hr>
                 <div style="position: absolute; top: 0; right: 0; width: 300px; z-index: 10">
                     <img width="300" id="filemanager_current_image" style="display: none" src="<?= DIR_CMS_IMAGES_URL ?>_.gif">
                 </div>
             </div>
         <?php endif; ?>
 
-        <div style="min-height: 350px; overflow-y: auto; padding: 10px" id="file_list_zone">
+        <div style="min-height: 350px; overflow-y: auto; padding: 10px; border-top: 2px solid #000;"
+             id="file_list_zone">
             <table cellspacing="0" cellpadding="0" style="line-height:20px">
                 <?php if (!$files_only || $for_reload): ?>
                     <tr>
@@ -230,7 +231,7 @@ class CmsFilemanager
             } ?>
         </div>
         <br>
-        <div style="margin: auto 5px">
+        <div style="margin: auto 5px; border-bottom: 2px solid #000;">
         <?php
         // Simple upload form
         echo CmsForm::getInstance()
@@ -550,6 +551,11 @@ class CmsFilemanager
                     }, function () {
                         filemanager_helpers.reloadFiles();
                     });
+                },
+                editFileName: function (file_path) {
+                    _.con.close();
+                    _.con.open();
+                    _.con.request_view('?p=<?= P ?>&do=edit_file&nomenu&path=' + file_path);
                 }
             };
 
@@ -623,15 +629,15 @@ class CmsFilemanager
                             'confirm': 0,
                             'popup': 1
                         },
-//                        2: {
-//                            'name': 'Edit file name',
-//                            'href': '',
-//                            'confirm': 0,
-//                            'popup': 0,
-//                            'js': function () {
-//                                filemanager_helpers.editFileName($el.data('path'));
-//                            }
-//                        },
+                        2: {
+                            'name': 'Edit file name',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.editFileName($el.data('path'));
+                            }
+                        },
                         4: {
                             'name': 'Delete file',
                             'href': '',
@@ -643,17 +649,17 @@ class CmsFilemanager
                         }
                     };
 
-                    if ($el.data('text-editable') == "1") {
-                        items[3] = {
-                            'name': 'Edit file content',
-                            'href': '',
-                            'confirm': 0,
-                            'popup': 0,
-                            'js': function () {
-                                filemanager_helpers.editFileContent($el.data('path'));
-                            }
-                        };
-                    }
+//                    if ($el.data('text-editable') == "1") {
+//                        items[3] = {
+//                            'name': 'Edit file content',
+//                            'href': '',
+//                            'confirm': 0,
+//                            'popup': 0,
+//                            'js': function () {
+//                                filemanager_helpers.editFileContent($el.data('path'));
+//                            }
+//                        };
+//                    }
 
                     $.contextMenu({
                         selector: '#' + $el.attr('id'),
@@ -1460,6 +1466,85 @@ class CmsFilemanager
 
         App::add('File "' . $dir . $_POST['name'] . '" created');
         Messages::sendGreenAlert('File "' . $dir . $_POST['name'] . '" created');
+
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
+    }
+
+    /**
+     * Edit file name
+     */
+    public function edit_file()
+    {
+        $dir =& $_GET['path'];
+        if ($dir[0] == '/') {
+            $dir = substr($dir, 1);
+        }
+
+        echo CmsFormHelper::outputForm(NULL, [
+            'action' => '?p=' . P . '&do=_edit_file&path=' . $dir,
+            'ajax' => true,
+            'ajax_callback' => 'filemanager_helpers.reloadFiles(); _.con.close();',
+            'full' => false,
+            'fields' => [
+                'original' => [
+                    'type' => 'hidden',
+                    'value' => $dir
+                ],
+                'new' => [
+                    'title' => __('File name'),
+                    'value' => basename($dir),
+                ],
+            ],
+            'button' => __('Rename File'),
+        ]);
+
+        if (IS_AJAX_REQUEST) {
+            die;
+        }
+    }
+
+    public function _edit_file()
+    {
+        if (!FileSystem::checkFileName($_POST['new'])) {
+            Messages::sendRedAlert('Wrong file name');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        $original = DIR_BASE . $_POST['original'];
+
+        // Check exists base
+        if (!file_exists($original)) {
+            Messages::sendRedAlert('Base file "' . $_POST['original'] . '" not found');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        // Check exists target
+        $tmp = array_filter(explode(DIRECTORY_SEPARATOR, $original));
+        // Change the last element of path
+        $keys = array_keys($tmp);
+        $last_key = end($keys);
+        $tmp[$last_key] = $_POST['new'];
+        $new_path = '/' . implode('/', $tmp);
+
+        if (file_exists($new_path)) {
+            Messages::sendRedAlert('File "' . $_POST['new'] . '" exists');
+
+            if (IS_AJAX_REQUEST) {
+                die;
+            }
+        }
+
+        // Rename folder
+        rename($original, $new_path);
+        Messages::sendGreenAlert('File renamed to "' . $_POST['new'] . '"');
 
         if (IS_AJAX_REQUEST) {
             die;
