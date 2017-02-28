@@ -16,12 +16,7 @@ class TranslationRepository extends EntityRepository
     protected $db_table = 'cms_translations';
     protected $table_structure = [
         'fields' => [
-            'entity' => [
-                'type' => 'varchar',
-            ],
-            'entity_id' => [
-                'type' => 'ts',
-            ],
+
         ],
     ];
 }
