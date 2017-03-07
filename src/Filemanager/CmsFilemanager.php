@@ -562,6 +562,11 @@ class CmsFilemanager
                     _.con.close();
                     _.con.open();
                     _.con.request_view('?p=<?= P ?>&do=edit_file_content&nomenu&path=' + file_path);
+                },
+                editMetaData: function (file_path) {
+                    _.con.close();
+                    _.con.open();
+                    _.con.request_view('?p=<?= P ?>&do=edit_meta_data&nomenu&path=' + file_path);
                 }
             };
 
@@ -594,6 +599,15 @@ class CmsFilemanager
                             'popup': 0,
                             'js': function() {
                                 filemanager_helpers.delete_files($el.data('path'));
+                            }
+                        },
+                        5: {
+                            'name': 'Edit meta data',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.editMetaData($el.data('path'));
                             }
                         }
                     };
@@ -651,6 +665,15 @@ class CmsFilemanager
                             'popup': 0,
                             'js': function () {
                                 filemanager_helpers.delete_files($el.data('path'));
+                            }
+                        },
+                        5: {
+                            'name': 'Edit meta data',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.editMetaData($el.data('path'));
                             }
                         }
                     };
@@ -1420,6 +1443,19 @@ class CmsFilemanager
         if (IS_AJAX_REQUEST) {
             die;
         }
+    }
+
+    /**
+     * Edit file name
+     */
+    public function edit_meta_data()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
+    }
+
+    public function _edit_meta_data()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
     }
 
     /**
