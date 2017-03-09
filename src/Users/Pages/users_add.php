@@ -7,4 +7,4 @@ defined('INC') or exit;
 BreadCrumbs::getInstance()
     ->addCrumb(__('Add User'));
 
-echo $this->__users_form();
+echo $this->__users_add_edit_form();
