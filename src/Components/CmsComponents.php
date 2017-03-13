@@ -36,6 +36,7 @@ class CmsComponents
             .mce-btn-group:last-child {
                 float: right;
                 border-left: none;
+                border-left: none;
             }
         </style>
         <div class="tinymce-container">
