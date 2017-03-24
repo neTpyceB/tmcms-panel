@@ -289,7 +289,7 @@ class CmsFilemanager
         <script>
             // Choose folder or file
             function setSelectedToInput(link) {
-                $('a[data-path="' + link.getAttribute('data-path') + '"')
+                $('a[data-path="' + link.getAttribute('data-path') + '"]')
                     .parents('#modal-popup_inner')
                     .find('#filename')
                     .val(link.getAttribute('data-path'));
