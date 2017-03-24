@@ -352,9 +352,9 @@ class CmsFilemanager
             $('#filter_name').focus().keyup(function (el) {
                 var value = el.target.value;
                 if (!value.length) {
-                    $('a[data-name').closest('tr').show();
+                    $('a[data-name]').closest('tr').show();
                 } else {
-                    $('a[data-name').closest('tr').hide();
+                    $('a[data-name]').closest('tr').hide();
                 }
 
                 $('a[data-name*="' + value + '"]').closest('tr').show();
