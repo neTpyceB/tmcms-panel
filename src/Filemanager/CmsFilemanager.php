@@ -289,7 +289,7 @@ class CmsFilemanager
         <script>
             // Choose folder or file
             function setSelectedToInput(link) {
-                $('a[data-path="' + link.getAttribute('data-path') + '"')
+                $('a[data-path="' + link.getAttribute('data-path') + '"]')
                     .parents('#modal-popup_inner')
                     .find('#filename')
                     .val(link.getAttribute('data-path'));
@@ -352,9 +352,9 @@ class CmsFilemanager
             $('#filter_name').focus().keyup(function (el) {
                 var value = el.target.value;
                 if (!value.length) {
-                    $('a[data-name').closest('tr').show();
+                    $('a[data-name]').closest('tr').show();
                 } else {
-                    $('a[data-name').closest('tr').hide();
+                    $('a[data-name]').closest('tr').hide();
                 }
 
                 $('a[data-name*="' + value + '"]').closest('tr').show();
