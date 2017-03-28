@@ -20,40 +20,43 @@ class PageEntityRepository extends EntityRepository
     protected $db_table = 'cms_pages';
     protected $table_structure = [
         'fields' => [
-            'template_id' => [
+            'template_id'     => [
                 'type' => 'int',
                 'unsigned' => true,
             ],
-            'pid' => [
+            'pid'             => [
                 'type' => 'int',
                 'unsigned' => true,
                 'default' => 0,
             ],
-            'location' => [
+            'location'        => [
                 'type' => 'varchar',
             ],
-            'string_label' => [
+            'string_label'    => [
                 'type' => 'varchar',
             ],
-            'title' => [
+            'title'           => [
                 'type' => 'varchar',
             ],
-            'keywords' => [
+            'browser_title'   => [
+                'type' => 'varchar',
+            ],
+            'keywords'        => [
                 'type' => 'text',
             ],
-            'description' => [
+            'description'     => [
                 'type' => 'text',
             ],
-            'is_lng_page' => [
+            'is_lng_page'     => [
                 'type' => 'bool',
             ],
-            'in_menu' => [
+            'in_menu'         => [
                 'type' => 'bool',
             ],
-            'active' => [
+            'active'          => [
                 'type' => 'bool',
             ],
-            'file_cache' => [
+            'file_cache'      => [
                 'type' => 'bool',
             ],
             'transparent_get' => [

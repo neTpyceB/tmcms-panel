@@ -1,5 +1,6 @@
 <?php
 
+use TMCms\Admin\Structure\Entity\PageEntity;
 use TMCms\Config\Settings;
 use TMCms\HTML\BreadCrumbs;
 use TMCms\HTML\Cms\CmsForm;
@@ -52,15 +53,18 @@ WHERE `p`.`id` = "'. $id .'"
 
 $pages = ['---'] + Structure::getPagesAsTreeForSelects();
 
-$data = q_assoc_row('SELECT * FROM `cms_pages` WHERE `id` = "'. $id .'"');
-if (ctype_digit((string)$data['redirect_url'])) {
-	$redirect_url = Structure::getPathById($data['redirect_url']);
-	if ($redirect_url && $redirect_url != $data['redirect_url']) $data['redirect_url'] = $redirect_url;
+$page = new PageEntity($id);
+
+if (ctype_digit((string)$page->getRedirectUrl())) {
+    $redirect_url = Structure::getPathById($page->getRedirectUrl());
+    if ($redirect_url && $redirect_url != $page->getRedirectUrl()) {
+        $page->setRedirectUrl($redirect_url);
+    }
 	unset($redirect_url);
 }
 
 $form1 = CmsForm::getInstance()
-    ->addData($data)
+    ->addData($page)
     ->disableFullView()
     ->addField('Template', CmsSelect::getInstance('template_id')
         ->setOptions($templates)
@@ -83,7 +87,7 @@ $form1 = CmsForm::getInstance()
     ->outputTagForm(false)
 ;
 
-if ($data['pid']) {
+if ($page->getPid()) {
     $form1->addField('Location', CmsInputText::getInstance('location')
         ->validateRequired()
         ->setHintText('Part of URL')
@@ -98,15 +102,16 @@ if ($data['pid']) {
 }
 
 $form2 = CmsForm::getInstance()
-    ->addData($data)
+    ->addData($page)
     ->disableFullView()
-    ->addField('META Keywords', CmsTextarea::getInstance('keywords'))
-    ->addField('META Description', CmsTextarea::getInstance('description'))
+    ->addField('Title', CmsTextarea::getInstance('browser_title')->setHintText('Title for browser tab'))
+    ->addField('Keywords', CmsTextarea::getInstance('keywords'))
+    ->addField('Description', CmsTextarea::getInstance('description'))
     ->outputTagForm(false)
 ;
 
 $form3 = CmsForm::getInstance()
-    ->addData($data)
+    ->addData($page)
     ->disableFullView()
     ->addField('Go level down', CmsCheckbox::getInstance('go_level_down')
         ->setHintText('Insensibly loads first page in this branch')
@@ -147,12 +152,12 @@ $breadcrumbs = BreadCrumbs::getInstance()
 ;
 
 foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
-	$lng_page_id = Structure::getIdByLabel($data['string_label'], $short);
-	if ($data['id'] == $lng_page_id) {
+    $lng_page_id = Structure::getIdByLabel($page->getStringLabel(), $short);
+    if ($id == $lng_page_id) {
 		continue; // Skip current opened page
 	}
 	if ($lng_page_id) {
-		$breadcrumbs->addCrumb('[' . $short . ' version]', str_replace('&id=' . $data['id'], '', SELF) . '&id='. $lng_page_id);
+        $breadcrumbs->addCrumb('[' . $short . ' version]', str_replace('&id=' . $id, '', SELF) . '&id=' . $lng_page_id);
 	}
 }
 
@@ -174,7 +179,7 @@ $breadcrumbs->addAction('Components', '?p=structure&do=edit_components&id=' . $p
 echo CmsForm::getInstance()
     ->enableAjax()
     ->setFormTitle('Edit page properties')
-    ->addData($data)
+    ->addData($page)
     ->setAction('?p='. P .'&do=_edit_page&id='. $id)
     ->setSubmitButton(CmsButton::getInstance(__('Update')))
 	->setCancelButton(CmsButton::getInstance(__('Cancel')))

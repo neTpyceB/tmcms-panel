@@ -10,13 +10,15 @@ use TMCms\Routing\Entity\PageComponentsDisabledEntityRepository;
  * @package TMCms\Admin\Structure\Entity
  *
  * @method bool getActive()
- * @method int getPid()
  * @method string getLocation()
+ * @method int getPid()
+ * @method string getRedirectUrl()
  * @method string getStringLabel()
- * @method string getTitle()
  * @method int getTemplateId()
+ * @method string getTitle()
  *
  * @method $this setPid(int $pid)
+ * @method $this setRedirectUrl(string $url)
  */
 class PageEntity extends Entity
 {
