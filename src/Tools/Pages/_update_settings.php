@@ -26,10 +26,12 @@ $checkboxes = [
     'error_404_find_in_structure',
     'error_404_go_to_main',
     'error_404_show_default_page',
+    'skip_lng_in_generated_links',
+    'skip_lng_redirect_to_same_page',
+    'lng_by_session',
     'lng_by_cookie',
     'lng_by_http_header',
     'lng_by_ip',
-    'lng_by_session',
     'permanent_redirects',
     'save_location_change_history',
 ];
