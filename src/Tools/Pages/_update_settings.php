@@ -22,6 +22,7 @@ $checkboxes = [
     'show_language_selector_flags',
     'autogenerate_sitemap_xml',
     'clickmap',
+    'error_404_convert_transparent_get',
     'guess_broken_path',
     'error_404_find_in_structure',
     'error_404_go_to_main',
