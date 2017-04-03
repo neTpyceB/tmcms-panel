@@ -81,9 +81,10 @@ $form1 = CmsForm::getInstance()
         )
         ->setSelected(isset($_GET['pid']) ? (int)$_GET['pid'] : '')
         ->setHintText('Under which branch this Page will be located'))
-    ->addField('Title', CmsInputText::getInstance('title')
+    ->addField('Menu Title', CmsInputText::getInstance('title')
         ->validateRequired()
-        ->setHintText('Page title for browser heading'))
+//        ->setHintText('Page title for browser heading')
+    )
     ->outputTagForm(false)
 ;
 
@@ -91,6 +92,7 @@ if ($page->getPid()) {
     $form1->addField('Location', CmsInputText::getInstance('location')
         ->validateRequired()
         ->setHintText('Part of URL')
+        ->setUid('title')
     );
 } else {
     $languages = array_keys(Languages::getPairs());
@@ -98,6 +100,7 @@ if ($page->getPid()) {
     $form1->addField('Location', CmsSelect::getInstance('location')
         ->setOptions(array_combine($languages, $languages))
         ->setHintText('Part of URL')
+        ->setUid('title')
     );
 }
 
@@ -105,8 +108,8 @@ $form2 = CmsForm::getInstance()
     ->addData($page)
     ->disableFullView()
     ->addField('Title', CmsTextarea::getInstance('browser_title')->setHintText('Title for browser tab'))
-    ->addField('Keywords', CmsTextarea::getInstance('keywords'))
     ->addField('Description', CmsTextarea::getInstance('description'))
+    ->addField('Keywords', CmsTextarea::getInstance('keywords'))
     ->outputTagForm(false)
 ;
 
