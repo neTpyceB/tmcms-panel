@@ -100,7 +100,7 @@ if ($page->getPid()) {
     $form1->addField('Location', CmsSelect::getInstance('location')
         ->setOptions(array_combine($languages, $languages))
         ->setHintText('Part of URL')
-        ->setUid('title')
+//        ->setUid('title')
     );
 }
 
