@@ -47,7 +47,7 @@ $form = CmsForm::getInstance()
     )
     ->addFieldBlock('Middleware',
         [
-            ['name' => 'Throttle limit', 'field' => CmsInputNumber::getInstance('middleware_throttle_limit')->setHintText('Limit of requests per minute from one client')],
+            ['name' => 'Throttle limit', 'field' => CmsInputNumber::getInstance('middleware_throttle_limit')->setHintText('Limit of requests per minute from one client. Leave empty or set zero to disable.')],
         ]
     )
     ->addFieldBlock('Logs',
