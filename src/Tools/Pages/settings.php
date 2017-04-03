@@ -13,9 +13,6 @@ use TMCms\Routing\Languages;
 defined('INC') or exit;
 
 $data = Settings::getInstance()->init(true);
-if (isset($data['allowed_ips'])) {
-    $data['allowed_ips'] = str_replace(',', "\n", $data['allowed_ips']);
-}
 
 BreadCrumbs::getInstance()
     ->addCrumb(ucfirst(P))
