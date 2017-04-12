@@ -5,7 +5,6 @@ use TMCms\Admin\Structure\Entity\PageComponentHistoryRepository;
 use TMCms\Admin\Structure\Entity\PageComponentRepository;
 use TMCms\Admin\Structure\Entity\PageEntity;
 use TMCms\Admin\Structure\Entity\PageTemplateEntity;
-use TMCms\Config\Settings;
 use TMCms\Files\Finder;
 use TMCms\HTML\BreadCrumbs;
 use TMCms\HTML\Cms\CmsForm;
@@ -39,12 +38,8 @@ $template = new PageTemplateEntity($page->getTemplateId());
 // Usual components
 $data = q_pairs('SELECT `component`, `data` FROM `cms_pages_components` WHERE `page_id` = "' . $id . '"');
 
-$can_be_disabled = Settings::get('disablable_components');
-
-$disabled = [];
-if ($can_be_disabled) {
-    $disabled = Structure::getDisabled($id);
-}
+$disabled = Structure::getDisabledComponents($id);
+$cached = Structure::getCachedComponents($id);
 
 $need_to_load_plugin_scripts = false;
 
@@ -60,14 +55,19 @@ $component_helper->setData($data);
 foreach ($editable_elements as $v) {
     $fields = [];
 
-    if ($can_be_disabled) {
-        // Column for disabled
-        $field = CmsCheckbox::getInstance('disabled_elements[' . $v['class'] . ']');
-        if (in_array($v['class'], $disabled)) {
-            $field->setChecked(true);
-        }
-        $fields[] = ['name' => 'Disable component', 'field' => $field];
+    // Column for disabled
+    $field = CmsCheckbox::getInstance('disabled_elements[' . $v['class'] . ']');
+    if (in_array($v['class'], $disabled)) {
+        $field->setChecked(true);
     }
+    $fields[] = ['name' => 'Disable component', 'field' => $field];
+
+    // Column for cached
+    $field = CmsCheckbox::getInstance('cached_elements[' . $v['class'] . ']');
+    if (in_array($v['class'], $cached)) {
+        $field->setChecked(true);
+    }
+    $fields[] = ['name' => 'Hard cache component', 'field' => $field];
 
     // Show editable fields
     switch ($v['type']) {
