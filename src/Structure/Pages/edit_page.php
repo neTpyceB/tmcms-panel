@@ -107,9 +107,9 @@ if ($page->getPid()) {
 $form2 = CmsForm::getInstance()
     ->addData($page)
     ->disableFullView()
-    ->addField('Title', CmsTextarea::getInstance('browser_title')->setHintText('Title for browser tab'))
-    ->addField('Description', CmsTextarea::getInstance('description'))
-    ->addField('Keywords', CmsTextarea::getInstance('keywords'))
+    ->addField('Browser Title', CmsInputText::getInstance('browser_title')->setHintText('Title for browser tab'))
+    ->addField('META Description', CmsTextarea::getInstance('description'))
+    ->addField('META Keywords', CmsTextarea::getInstance('keywords'))
     ->outputTagForm(false)
 ;
 
