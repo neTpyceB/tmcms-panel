@@ -73,8 +73,8 @@ class CmsComponents
                     image_caption: true,
                     menubar: false,
                     statusbar: true,
-                    plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'table', 'image', 'link', 'hr', 'code', 'paste', 'save'],
-                    toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-h2 style-h3 style-p hr | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist | table link image code | save close'],
+                    plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'media', 'table', 'contextmenu', 'image', 'link', 'hr', 'code', 'paste', 'save'],
+                    toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-h2 style-h3 style-p hr | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist | table link image media code | save close'],
                     content_css: '<?= DIR_ASSETS_URL . 'stylesheets/admin/tinymce.css' ?>', // TODO: Dynamic content_css loading
                     setup: function (editor) {
                         editor.addButton('close', {
