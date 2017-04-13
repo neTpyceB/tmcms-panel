@@ -5,19 +5,24 @@ namespace TMCms\Admin\Filemanager\Entity;
 use TMCms\Orm\EntityRepository;
 
 /**
- * Class FileMetaEntityRepository
+ * Class FilePropertyEntityRepository
  * @package TMCms\Admin\Filemanager\Entity
  *
+ * @method $this setWhereKey(string $key)
  * @method $this setWherePath(string $path)
  */
-class FileMetaEntityRepository extends EntityRepository
+class FilePropertyEntityRepository extends EntityRepository
 {
+    protected $db_table = 'cms_file_properties';
     protected $table_structure = [
         'fields' => [
-            'path' => [
+            'path'  => [
                 'type' => 'text',
             ],
-            'data' => [
+            'key'   => [
+                'type' => 'varchar',
+            ],
+            'value' => [
                 'type' => 'text',
             ],
         ],

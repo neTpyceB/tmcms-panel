@@ -29,7 +29,7 @@ $permissions->deleteObjectCollection();
 
 // Set full access if provided
 $group = new AdminUserGroup($id);
-$group->setFullAccess(isset($_POST['all_permissions']));
+$group->setFullAccess((int)isset($_POST['all_permissions']));
 $group->save();
 
 // Skip other permission if have full access

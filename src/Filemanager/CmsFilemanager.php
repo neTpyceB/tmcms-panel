@@ -4,6 +4,8 @@ namespace TMCms\Admin\Filemanager;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use TMCms\Admin\Filemanager\Entity\FilePropertyEntity;
+use TMCms\Admin\Filemanager\Entity\FilePropertyEntityRepository;
 use TMCms\Admin\Messages;
 use TMCms\Admin\Users;
 use TMCms\Files\FileSystem;
@@ -602,7 +604,7 @@ class CmsFilemanager
                             }
                         },
                         5: {
-                            'name': 'Edit meta data',
+                            'name': 'Edit folder properties',
                             'href': '',
                             'confirm': 0,
                             'popup': 0,
@@ -668,7 +670,7 @@ class CmsFilemanager
                             }
                         },
                         5: {
-                            'name': 'Edit meta data',
+                            'name': 'Edit file properties',
                             'href': '',
                             'confirm': 0,
                             'popup': 0,
@@ -988,9 +990,11 @@ class CmsFilemanager
         $dir =& $_GET['path'];
         if ($dir[0] == '/') $dir = substr($dir, 1);
 
-        App::add('File ' . $dir . ' deleted');
-
-        Messages::sendGreenAlert('File ' . $dir . ' deleted');
+        // Delete all file properties
+        /** @var FilePropertyEntity $properties */
+        $properties = new FilePropertyEntityRepository;
+        $properties->setWherePath($dir);
+        $properties->deleteObjectCollection();
 
         $dir = DIR_BASE . $dir;
         if (is_dir($dir)) {
@@ -998,6 +1002,9 @@ class CmsFilemanager
         } elseif (is_file($dir)) {
             unlink($dir);
         }
+
+        App::add('File ' . $dir . ' deleted');
+        Messages::sendGreenAlert('File ' . $dir . ' deleted');
 
         back();
     }
@@ -1012,6 +1019,12 @@ class CmsFilemanager
         }
 
         foreach ($_POST['pathes'] as $v) {
+            // Delete all properties
+            /** @var FilePropertyEntity $properties */
+            $properties = new FilePropertyEntityRepository;
+            $properties->setWherePath($v);
+            $properties->deleteObjectCollection();
+
             if (is_file(DIR_BASE . $v)) {
                 unlink(DIR_BASE . $v);
             } else {
@@ -1019,7 +1032,8 @@ class CmsFilemanager
             }
         }
 
-        Messages::sendGreenAlert('Deleted from server');
+        App::add('Deleted multiple files');
+        Messages::sendGreenAlert('Deleted');
 
         exit('1');
     }

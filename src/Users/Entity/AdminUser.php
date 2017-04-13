@@ -16,6 +16,7 @@ use TMCms\Orm\Entity;
  * @method string getEmail()
  * @method int getGroupId()
  * @method string getLogin()
+ * @method string getLng()
  * @method string getName()
  * @method string getNotes()
  * @method string getSurname()
@@ -23,11 +24,17 @@ use TMCms\Orm\Entity;
  * @method $this setActive(bool $flag)
  * @method $this setGroupId(int $group_id)
  * @method $this setLogin(string $login)
+ * @method $this setLng(string $language_code)
  * @method $this setPassword(string $password)
  */
 class AdminUser extends Entity
 {
     protected $db_table = 'cms_users';
+
+    public function hashPassword()
+    {
+        $this->setPassword(Users::getInstance()->generateHash($this->getPassword()));
+    }
 
     /**
      * @return string
@@ -35,11 +42,6 @@ class AdminUser extends Entity
     public function getPassword()
     {
         return $this->getField('password');
-    }
-
-    public function hashPassword()
-    {
-        $this->setPassword(Users::getInstance()->generateHash($this->getPassword()));
     }
 
     protected function beforeDelete()
