@@ -66,7 +66,7 @@ class CmsComponents
                     });
                 });
 
-                tinyMCE.init({
+                var tinymce_options = {
                     selector: 'textarea#tinymce_<?= NOW ?>',
                     element_format: 'html',
                     relative_urls: false,
@@ -118,7 +118,11 @@ class CmsComponents
                         alignleft: { selector: 'img', styles: { 'float': 'left', 'margin': '0 1rem 1rem 0' } },
                         alignright: { selector: 'img', styles: { 'float': 'right', 'margin': '0 0 1rem 1rem' } }
                     }
-                });
+                };
+                if(typeof(tinymce_global_options)=='function'){
+                    tinymce_options = tinymce_global_options(tinymce_options);
+                }
+                tinyMCE.init(tinymce_options);
             });
         </script>
         <?php
