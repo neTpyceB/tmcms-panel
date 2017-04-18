@@ -272,7 +272,11 @@ class CmsComponents
                     );
             }
 
-            $tabs->addTab(rtrim(Converter::classWithNamespaceToUnqualifiedShort($entity), 'Entity'), $table);
+            $tab_name = Converter::classWithNamespaceToUnqualifiedShort($entity);
+            if(substr($tab_name, strlen($tab_name)-6, 6) == 'Entity'){
+                $tab_name = substr($tab_name, 0, strlen($tab_name) - 6);
+            };
+            $tabs->addTab($tab_name, $table);
         }
 
         echo $tabs;
