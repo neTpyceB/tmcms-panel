@@ -122,6 +122,11 @@ class CmsComponents
                 if(typeof(tinymce_global_options)=='function'){
                     tinymce_options = tinymce_global_options(tinymce_options);
                 }
+                <? if(!empty($_GET['options'])): ?>
+                if(typeof(<?= $_GET['options'] ?>)=='function'){
+                    tinymce_options = <?= $_GET['options'] ?>(tinymce_options);
+                }
+                <? endif ?>
                 tinyMCE.init(tinymce_options);
             });
         </script>
