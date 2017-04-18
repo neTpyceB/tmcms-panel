@@ -75,7 +75,7 @@ class CmsComponents
                     statusbar: true,
                     plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'media', 'table', 'contextmenu', 'image', 'link', 'hr', 'code', 'paste', 'save'],
                     toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-h2 style-h3 style-p hr | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist | table link image media code | save close'],
-                    content_css: '<?= DIR_ASSETS_URL . 'stylesheets/admin/tinymce.css' ?>', // TODO: Dynamic content_css loading
+                    content_css: '<?= DIR_ASSETS_URL . 'stylesheets/admin/tinymce.css' ?>',
                     setup: function (editor) {
                         editor.addButton('close', {
                             text: 'Close',
