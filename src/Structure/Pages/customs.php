@@ -257,7 +257,7 @@ foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
         continue; // Skip current opened page
     }
     if ($lng_page_id) {
-        $lqry = str_replace('&id=' . $page->getId(), '', QUERY) . '&id=' . $lng_page_id;
+        $lqry = str_replace('&id=' . $q['id'], '', QUERY) . '&id=' . $lng_page_id;
         $lurl = explode('?', SELF);
         $breadcrumbs->addAction(strtoupper($short) . ' version', $lurl[0].'?'.$lqry);
     }
