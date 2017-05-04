@@ -242,13 +242,10 @@ $breadcrumbs = BreadCrumbs::getInstance()
 // Links to other language versions
 foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
     $lng_page_id = Structure::getIdByLabel($page->getStringLabel(), $short);
-    if ($page->getId() == $lng_page_id) {
-        continue; // Skip current opened page
-    }
     if ($lng_page_id) {
         $lqry = str_replace('&id=' . $page->getId(), '', QUERY) . '&id=' . $lng_page_id;
         $lurl = explode('?', SELF);
-        $breadcrumbs->addAction(strtoupper($short) . ' version', $lurl[0].'?'.$lqry);
+        $breadcrumbs->addPills(strtoupper($short) . ' version', $lurl[0] . '?' . $lqry, $page->getId() == $lng_page_id);
     }
 }
 // To custom components

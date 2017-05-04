@@ -169,13 +169,10 @@ foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
 // Links to other language versions
 foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
     $lng_page_id = Structure::getIdByLabel($page_data['string_label'], $short);
-    if ($page_data['id'] == $lng_page_id) {
-        continue; // Skip current opened page
-    }
     if ($lng_page_id) {
         $lqry = str_replace('&id=' . $page_data['id'], '', QUERY) . '&id=' . $lng_page_id;
         $lurl = explode('?', SELF);
-        $breadcrumbs->addAction(strtoupper($short) . ' version', $lurl[0].'?'.$lqry);
+        $breadcrumbs->addPills(strtoupper($short) . ' version', $lurl[0] . '?' . $lqry, $page_data['id'] == $lng_page_id);
     }
 }
 // To custom components
@@ -185,7 +182,6 @@ $breadcrumbs->addAction('Components', '?p=structure&do=edit_components&id=' . $p
 
 echo CmsForm::getInstance()
     ->enableAjax()
-    ->setFormTitle('Edit page properties')
     ->addData($page)
     ->setAction('?p='. P .'&do=_edit_page&id='. $id)
     ->setSubmitButton(CmsButton::getInstance(__('Update')))
