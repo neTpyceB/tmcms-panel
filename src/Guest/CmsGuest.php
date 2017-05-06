@@ -29,7 +29,7 @@ class CmsGuest
     public function _default()
     {
         // If only unique access allowed
-        if (Settings::getInstance()->get('unique_admin_address')) {
+        if (Settings::get('unique_admin_address')) {
             // No correct key provided?
             if (!isset($_GET['admin_key']) || $_GET['admin_key'] != Configuration::getInstance()->get('cms')['unique_key']) {
                 back();
