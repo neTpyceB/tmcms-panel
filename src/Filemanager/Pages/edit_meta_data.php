@@ -3,6 +3,7 @@
 use TMCms\Admin\Filemanager\Entity\FilePropertyEntity;
 use TMCms\Admin\Filemanager\Entity\FilePropertyEntityRepository;
 use TMCms\HTML\Cms\CmsFormHelper;
+use TMCms\Routing\Languages;
 
 defined('INC') or exit;
 
@@ -11,9 +12,25 @@ $path = $_GET['path'];
 /** @var FilePropertyEntity $properties */
 $properties = new FilePropertyEntityRepository;
 $properties->setWherePath($path);
+$properties = $properties->getAsArrayOfObjectData(true);
+
+// Predefined alt columns for images
+if (!$properties) {
+    $is_image = in_array(pathinfo($path, PATHINFO_EXTENSION), ['jpg', 'png', 'bmp', 'gif']);
+    if ($is_image) {
+        $i = 0;
+        foreach (Languages::getPairs() as $short => $full) {
+            $properties[] = [
+                'id'    => ++$i,
+                'key'   => 'alt_' . $short,
+                'value' => '',
+            ];
+        }
+    }
+}
 
 $data = [
-    'properties' => $properties->getAsArrayOfObjectData(true),
+    'properties' => $properties,
 ];
 
 echo CmsFormHelper::outputForm(NULL, [
@@ -41,6 +58,4 @@ echo CmsFormHelper::outputForm(NULL, [
     'button'        => __('Update'),
 ]);
 
-if (IS_AJAX_REQUEST) {
-    die;
-}
+die;
