@@ -9,6 +9,9 @@ use TMCms\Orm\EntityRepository;
  * @package TMCms\Admin\Structure\Entity
  *
  * @method $this setWhereOldFullUrl(string $old_url)
+ * @method $this setWherePageId(int $page_id)
+ *
+ * @method $this setLast(int $flag)
  */
 class PageRedirectHistoryEntityRepository extends EntityRepository
 {

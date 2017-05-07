@@ -17,9 +17,12 @@ use TMCms\Routing\Entity\PageComponentsDisabledEntityRepository;
  * @method int getTemplateId()
  * @method string getTitle()
  *
+ * @method $this setGoLevelDown(int $flag)
  * @method $this setLastmodTs(int $ts)
+ * @method $this setLocation(string $location)
  * @method $this setPid(int $pid)
  * @method $this setRedirectUrl(string $url)
+ * @method $this setTransparentGet(int $flag)
  */
 class PageEntity extends Entity
 {
