@@ -17,6 +17,7 @@ use TMCms\Routing\Entity\PageComponentsDisabledEntityRepository;
  * @method int getTemplateId()
  * @method string getTitle()
  *
+ * @method $this setLastmodTs(int $ts)
  * @method $this setPid(int $pid)
  * @method $this setRedirectUrl(string $url)
  */
@@ -34,7 +35,7 @@ class PageEntity extends Entity
         $history->setWherePageId($this->getId());
         $history->deleteObjectCollection();
 
-        $components = new PageComponentRepository();
+        $components = new PageComponentEntityRepository();
         $components->setWherePageId($this->getId());
         $components->deleteObjectCollection();
 

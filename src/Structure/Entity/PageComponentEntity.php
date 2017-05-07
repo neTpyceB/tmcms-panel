@@ -16,7 +16,7 @@ use TMCms\Orm\Entity;
  * @method $this setData(string $data_content)
  * @method $this setPageId(int $page_id)
  */
-class PageComponent extends Entity
+class PageComponentEntity extends Entity
 {
     protected $db_table = 'cms_pages_components';
 }

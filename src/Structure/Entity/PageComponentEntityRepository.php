@@ -10,7 +10,7 @@ use TMCms\Orm\EntityRepository;
  *
  * @method $this setWherePageId(int $page_id)
  */
-class PageComponentRepository extends EntityRepository
+class PageComponentEntityRepository extends EntityRepository
 {
     protected $db_table = 'cms_pages_components';
     protected $table_structure = [

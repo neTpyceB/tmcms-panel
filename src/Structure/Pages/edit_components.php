@@ -2,7 +2,7 @@
 
 use TMCms\Admin\Structure\Entity\PageComponentCustomEntityRepository;
 use TMCms\Admin\Structure\Entity\PageComponentHistoryRepository;
-use TMCms\Admin\Structure\Entity\PageComponentRepository;
+use TMCms\Admin\Structure\Entity\PageComponentEntityRepository;
 use TMCms\Admin\Structure\Entity\PageEntity;
 use TMCms\Admin\Structure\Entity\PageTemplateEntity;
 use TMCms\Files\Finder;
@@ -27,7 +27,7 @@ if (!isset($_GET['id']) || !ctype_digit((string)$_GET['id'])) {
 $id = (int)$_GET['id'];
 
 // Ensure exists
-$components = new PageComponentRepository();
+$components = new PageComponentEntityRepository();
 $components = new PageComponentCustomEntityRepository();
 $components = new PageComponentsDisabledEntityRepository();
 $components = new PageComponentHistoryRepository();
