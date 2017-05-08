@@ -10,6 +10,11 @@ use TMCms\Orm\EntityRepository;
  *
  * @method $this setWhereName(string $name)
  * @method $this setWhereSearchword(int $flag)
+ *
+ * @method $this setHref(string $href)
+ * @method $this setName(string $name)
+ * @method $this setPageId(int $page_id)
+ * @method $this setSearchword(string $search_word)
  */
 class PageQuicklinkEntityRepository extends EntityRepository
 {
