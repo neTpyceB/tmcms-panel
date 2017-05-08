@@ -64,7 +64,7 @@ if ($redirect_url) {
 
 // If page location is changed - save path change history
 $old_location = '';
-if ($page['location'] != $location && $save_location_change_history) {
+if ($page->getLocation() != $location && $save_location_change_history) {
     // Current old path
     $old_location = Structure::getPathById($page->getId(), false);
 }
