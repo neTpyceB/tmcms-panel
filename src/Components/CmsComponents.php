@@ -55,8 +55,8 @@ class CmsComponents
                                 editor.execCommand('mceToggleFormat', false, name);
                             },
                             onPostRender: function () {
-                                var self = this, setup = function() {
-                                    editor.formatter.formatChanged(name, function(state) {
+                                var self = this, setup = function () {
+                                    editor.formatter.formatChanged(name, function (state) {
                                         self.active(state);
                                     });
                                 };
@@ -75,7 +75,9 @@ class CmsComponents
                     statusbar: true,
                     plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'media', 'table', 'contextmenu', 'image', 'link', 'hr', 'code', 'paste', 'save'],
                     toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-h2 style-h3 style-p hr | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist | table link image media code | save close'],
-                    content_css: '<?= DIR_ASSETS_URL . 'stylesheets/admin/tinymce.css' ?>',
+                    <?php /* ?>
+                    content_css: '<?= DIR_ASSETS_URL . 'css/main.css' ?>', // You can set ain frontend website css to make tinymce render text using that style
+                    <?php */ ?>
                     setup: function (editor) {
                         editor.addButton('close', {
                             text: 'Close',
@@ -115,18 +117,18 @@ class CmsComponents
                         }
                     },
                     formats: {
-                        alignleft: { selector: 'img', styles: { 'float': 'left', 'margin': '0 1rem 1rem 0' } },
-                        alignright: { selector: 'img', styles: { 'float': 'right', 'margin': '0 0 1rem 1rem' } }
+                        alignleft: {selector: 'img', styles: {'float': 'left', 'margin': '0 1rem 1rem 0'}},
+                        alignright: {selector: 'img', styles: {'float': 'right', 'margin': '0 0 1rem 1rem'}}
                     }
                 };
-                if(typeof(tinymce_global_options)=='function'){
+                if (typeof(tinymce_global_options) == 'function') {
                     tinymce_options = tinymce_global_options(tinymce_options);
                 }
-                <? if(!empty($_GET['options'])): ?>
-                if(typeof(<?= $_GET['options'] ?>)=='function'){
+                <?php if(!empty($_GET['options'])): ?>
+                if (typeof(<?= $_GET['options'] ?>) == 'function') {
                     tinymce_options = <?= $_GET['options'] ?>(tinymce_options);
                 }
-                <? endif ?>
+                <?php endif ?>
                 tinyMCE.init(tinymce_options);
             });
         </script>
@@ -273,7 +275,7 @@ class CmsComponents
             }
 
             $tab_name = Converter::classWithNamespaceToUnqualifiedShort($entity);
-            if(substr($tab_name, strlen($tab_name)-6, 6) == 'Entity'){
+            if (substr($tab_name, strlen($tab_name) - 6, 6) == 'Entity') {
                 $tab_name = substr($tab_name, 0, strlen($tab_name) - 6);
             };
             $tab_name = Converter::from_camel_case($tab_name, ' ');
