@@ -8,7 +8,12 @@ use TMCms\Routing\Structure;
 
 defined('INC') or exit;
 
-$_POST['urls'] = json_encode(explode("\n", $_POST['urls']));
+$urls = explode("\n", $_POST['urls']);
+foreach ($urls as & $v) {
+    $v = trim($v);
+}
+
+$_POST['urls'] = json_encode($urls);
 $_POST['languages'] = json_encode($_POST['languages']);
 
 $domain = new PagesDomainEntity($_GET['id']);
