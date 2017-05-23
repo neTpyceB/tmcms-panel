@@ -4,16 +4,39 @@ use TMCms\Admin\Entity\LanguageEntity;
 use TMCms\Admin\Messages;
 use TMCms\Log\App;
 use TMCms\Routing\Entity\PagesDomainEntity;
+use TMCms\Routing\Entity\PagesDomainLanguageEntity;
+use TMCms\Routing\Entity\PagesDomainLanguageEntityRepository;
+use TMCms\Routing\Entity\PagesDomainUrlEntity;
+use TMCms\Routing\Entity\PagesDomainUrlEntityRepository;
 use TMCms\Routing\Structure;
 
 defined('INC') or exit;
 
-$_POST['urls'] = json_encode(explode("\n", $_POST['urls']));
-$_POST['languages'] = json_encode($_POST['languages']);
-
 $domain = new PagesDomainEntity();
-$domain->loadDataFromArray($_POST);
+$domain->setName($_POST['name']);
 $domain->save();
+
+new PagesDomainUrlEntityRepository;
+new PagesDomainLanguageEntityRepository;
+
+if (isset($_POST['urls'])) {
+    $_POST['urls'] = explode("\n", $_POST['urls']);
+    foreach ($_POST['urls'] as $url) {
+        $url_entity = new PagesDomainUrlEntity();
+        $url_entity->setDomainId($domain->getId());
+        $url_entity->setUrl($url);
+        $url_entity->save();
+    }
+}
+
+if (isset($_POST['languages'])) {
+    foreach ($_POST['languages'] as $language) {
+        $lng_entity = new PagesDomainLanguageEntity();
+        $lng_entity->setDomainId($domain->getId());
+        $lng_entity->setLanguage($language);
+        $lng_entity->save();
+    }
+}
 
 Structure::clearCache();
 
