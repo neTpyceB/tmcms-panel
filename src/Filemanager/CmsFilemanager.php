@@ -142,8 +142,8 @@ class CmsFilemanager
                        onclick="multiple.paste(this)"><?= __('Paste') ?></a>
                     <hr>
                 </span>
-                <div style="position: fixed; top: 0; right: 0; width: 300px; z-index: 10">
-                    <img width="300" id="filemanager_current_image" style="display: none" src="<?= DIR_CMS_IMAGES_URL ?>_.gif">
+                <div style="position: fixed; top: 100px; right: 100px; width: 25%; z-index: 10; background: #bbb; border: 1px solid #bbb;">
+                    <img width="100%" id="filemanager_current_image" style="display: none" src="<?= DIR_CMS_IMAGES_URL ?>_.gif">
                 </div>
             </div>
         <?php endif; ?>
