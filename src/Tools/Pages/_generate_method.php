@@ -4,6 +4,14 @@ use TMCms\Files\FileSystem;
 
 defined('INC') or exit;
 
+if (!$_POST['component_class']) {
+    error('Class name require');
+}
+
+if (!$_POST['component_method']) {
+    $_POST['component_method'] = 'index';
+}
+
 // Check controller file exists
 $controller_file = DIR_FRONT_CONTROLLERS . $_POST['component_class'] . '.php';
 if (!file_exists($controller_file)) {
