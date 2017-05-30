@@ -15,7 +15,7 @@ if (!isset($_POST['from_id'], $_POST['to_branch'])) {
 $from_id = (int)$_POST['from_id'];
 $to_id = Structure::getIdByPath($_POST['to_branch']);
 
-if (!$from_id || $to_id === NULL) {
+if (!$from_id || ($_POST['to_branch'] && $to_id === NULL)) {
     error('Wrong path');
 }
 
