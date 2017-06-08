@@ -41,6 +41,8 @@ $customs->addSimpleSelectFields(['component', 'tab', 'name', 'value', 'order']);
 $customs->setWherePageId($id);
 $customs->addOrderByField();
 
+$lang = \TMCms\Routing\Languages::getShortByPageId($id);
+
 foreach ($customs->getAsArrayOfObjectData() as $v) {
     $data[$v['component']][$v['tab']][$v['order']][$v['name']] = $v;
 }
@@ -83,6 +85,9 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
             } else {
                 $count_of_existing_data = 0;
             }
+
+            if(!isset($field_data['lng']))
+                $field_data['lng'] = $lang;
 
             $field = $component_helper
                 ->setComponentName($key_name . '['. $count_of_existing_data .']')

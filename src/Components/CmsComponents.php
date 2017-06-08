@@ -213,6 +213,7 @@ class CmsComponents
         $data = [];
         $pages = new PageEntityRepository();
         $pages->addOrderByField();
+        $lng = !empty($_GET['lng']) ? $_GET['lng'] : LNG;
 
         foreach ($pages->getAsArrayOfObjectData() as $v) {
             // Main tree page
@@ -255,14 +256,14 @@ class CmsComponents
 
             if (method_exists($entity_repository, 'getLinksForSitemap')) {
                 // May be implemented in repository
-                $table = $entity_repository->getLinksForSitemap();
+                $table = $entity_repository->getLinksForSitemap($lng);
             } else {
                 // Or auto generated with entities
                 $data = [];
                 /** @var Entity $obj */
                 foreach ($entity_repository->getAsArrayOfObjects() as $obj) {
                     $data[] = [
-                        'link' => '<a style="cursor:pointer" onclick="selectLinkForSitemap(\'' . $obj->getLinkForSitemap() . '\'); return false;">' . $obj->getLinkForSitemap() . '</a>',
+                        'link' => '<a style="cursor:pointer" onclick="selectLinkForSitemap(\'' . $obj->getLinkForSitemap($lng) . '\'); return false;">' . $obj->getLinkForSitemap($lng) . '</a>',
                     ];
                 }
 

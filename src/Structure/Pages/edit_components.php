@@ -35,6 +35,8 @@ $components = new PageComponentHistoryRepository();
 $page = new PageEntity($id);
 $template = new PageTemplateEntity($page->getTemplateId());
 
+$lang = \TMCms\Routing\Languages::getShortByPageId($id);
+
 // Usual components
 $data = q_pairs('SELECT `component`, `data` FROM `cms_pages_components` WHERE `page_id` = "' . $id . '"');
 
@@ -98,6 +100,9 @@ foreach ($editable_elements as $v) {
                 $type = isset($element_data['type']) ? $element_data['type'] : 'text';
                 $edit = isset($element_data['edit']) ? $element_data['edit'] : '';
                 $component_name = $v['class'] . '_' . $element_key;
+
+                if(!isset($element_data['lng']))
+                    $element_data['lng'] = $lang;
 
                 $field = $component_helper
                     ->setComponentName($component_name)

@@ -507,13 +507,14 @@ class CmsFilemanager
             var filemanager_helpers = {
                 upload_object: null,
                 file_handlers: {},
-                current_url: '<?= SELF ?>',
+                current_url: '?<?= QUERY ?>',
                 removeFile: function(file_id) {
                     var file = filemanager_helpers.file_handlers[file_id];
                     filemanager_helpers.upload_object.removeFile(file);
                     $("#" + file_id).remove();
                 },
                 reloadFiles: function() {
+                    console.log(filemanager_helpers);
                     $('#file_list_zone').load(filemanager_helpers.current_url + '&for_reload');
                     setTimeout(function() {
                         events_on_checkboxes();
