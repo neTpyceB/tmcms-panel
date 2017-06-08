@@ -8,6 +8,8 @@ use TMCms\Orm\EntityRepository;
  * Class UserLogRepository
  * @package TMCms\Admin\Users\Entity
  *
+ * @method $this setWhereDo(string $p_do)
+ * @method $this setWhereP(string $p)
  * @method $this setWhereUserId(int $id)
  */
 class UserLogRepository extends EntityRepository

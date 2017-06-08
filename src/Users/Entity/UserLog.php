@@ -5,6 +5,8 @@ namespace TMCms\Admin\Users\Entity;
 use TMCms\Orm\Entity;
 
 /**
+ * @method int getUserId()
+ *
  * @method $this setAgent(string $agent)
  * @method $this setDo(string $do)
  * @method $this setIpLong(int $ip)

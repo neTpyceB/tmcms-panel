@@ -10,6 +10,7 @@ use TMCms\Orm\EntityRepository;
  *
  * @method $this setSeen(int $flag)
  * @method $this setWhereFromUserId(int $user_id)
+ * @method $this setWhereMessage(string $message)
  * @method $this setWhereSeen(int $flag)
  * @method $this setWhereToUserId(int $user_id)
  */
