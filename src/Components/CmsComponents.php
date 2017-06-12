@@ -96,7 +96,7 @@ class CmsComponents
                     file_picker_callback: function (callback, value, meta) {
                         if (meta.filetype == 'image') {
                             var imageModal = new PopupModal({
-                                url: '?p=filemanager&nomenu&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>'
+                                url: '?p=filemanager&nomenu&path=' + (typeof(tinymce_fm_path)!='undefined' ? tinymce_fm_path : '') + '&allowed_extensions=jpg,jpeg,bmp,tiff,tif,gif&cache=<?= NOW ?>'
                             });
 
                             imageModal.show();
