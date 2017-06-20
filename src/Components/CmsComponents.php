@@ -2,6 +2,7 @@
 
 namespace TMCms\Admin\Components;
 
+use TMCms\Admin\Structure\Entity\PageEntity;
 use TMCms\Admin\Structure\Entity\PageEntityRepository;
 use TMCms\Files\Finder;
 use TMCms\HTML\Cms\CmsTable;
@@ -214,14 +215,20 @@ class CmsComponents
         $pages = new PageEntityRepository();
         $pages->addOrderByField();
         $lng = !empty($_GET['lng']) ? $_GET['lng'] : LNG;
+        $return_ids = !empty($_GET['return_ids']) ? $_GET['return_ids'] : false;
+//        $return_ids = false;
 
         foreach ($pages->getAsArrayOfObjectData() as $v) {
+            $link = $return_ids ?
+                // First addslashes for js, second for php
+                '{\u0022class\u0022:\u0022' .addslashes(addslashes(PageEntity::class)). '\u0022,\u0022id\u0022:'.$v['id'].',\u0022title\u0022:\u0022'.$v['title'] . ' (' . $v['location'] . ')\u0022}' :
+                Structure::getPathById($v['id'], false);
             // Main tree page
             if (!$v['pid'] && $v['active'] && $v['in_menu']) {
                 $v['title'] = '<strong>' . $v['title'] . '</strong>';
             }
             // Make link
-            $v['title'] = '<a style="cursor:pointer" onclick="selectLinkForSitemap(\'' . Structure::getPathById($v['id'], false) . '\'); return false;">' . $v['title'] . ' (' . $v['location'] . ')</a>';
+            $v['title'] = '<a style="cursor:pointer" onclick="selectLinkForSitemap(\'' . $link . '\'); return false;">' . $v['title'] . ' (' . $v['location'] . ')</a>';
 
             $data[] = $v;
         }
@@ -256,7 +263,7 @@ class CmsComponents
 
             if (method_exists($entity_repository, 'getLinksForSitemap')) {
                 // May be implemented in repository
-                $table = $entity_repository->getLinksForSitemap($lng);
+                $table = $entity_repository->getLinksForSitemap($lng, $return_ids);
             } else {
                 // Or auto generated with entities
                 $data = [];
