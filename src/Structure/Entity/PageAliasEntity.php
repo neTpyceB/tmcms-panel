@@ -8,7 +8,9 @@ use TMCms\Orm\Entity;
  * Class PageAliasEntity
  * @package TMCms\Admin\Structure\Entity
  *
+ * @method string getHref()
  * @method string getName()
+ * @method int getPageId()
  *
  * @method $this setHref(string $link)
  * @method $this setIsLanding(int $flag)
