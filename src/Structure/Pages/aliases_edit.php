@@ -1,17 +1,13 @@
 <?php
 
 use TMCms\Admin\Structure\Entity\PageAliasEntity;
-use TMCms\Admin\Structure\Entity\PageAliasEntityRepository;
 use TMCms\HTML\BreadCrumbs;
 use TMCms\HTML\Cms\CmsFormHelper;
 
 defined('INC') or exit;
 
 /** @var PageAliasEntity $alias */
-$alias = PageAliasEntityRepository::findOneEntityByCriteria(['name' => $_GET['name']]);
-if (!$alias) {
-    return;
-}
+$alias = new PageAliasEntity($_GET['id']);
 
 BreadCrumbs::getInstance()
     ->addCrumb(ucfirst(P), '?p=' . P)
