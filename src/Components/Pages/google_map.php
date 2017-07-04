@@ -10,10 +10,17 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
     }
 </style>
 <div id="map"></div>
-<input type="text" readonly id="cms_map_coordinates" name="cms_map_coordinates" class="form-control" onkeyup="update_coords();">
+<input type="text" readonly id="cms_map_coordinates" name="cms_map_coordinates" class="form-control" onkeyup="update_coords();"/>
+<div class="input-group">
+    <input type="text" id="cms_map_address" name="cms_map_address" class="form-control" onblur="update_address();" placeholder="Address"/>
+    <span class="input-group-btn">
+        <button class="btn btn-default" type="button" id="cms_map_refresh" onclick="update_address();"><span class="fa fa-refresh"></span></button>
+    </span>
+</div><!-- /input-group -->
 <input class="btn btn-primary" type="button" onclick="done()" value="Set cms_map_coordinates">
 <script>
     var $coords = $('#cms_map_coordinates');
+    var $address = $('#cms_map_address');
 
     function done() {
         var input = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
@@ -27,7 +34,7 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
         var $block = $('#map');
         var $win = $('#modal-popup_inner');
 
-        $block.height($win.height() - 72);
+        $block.height($win.height() - 106);
     };
 
     setTimeout(function () {
@@ -38,6 +45,7 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
     });
 
     var update_coords;
+    var update_address;
 
     function initMap() {
         var initialLocation = false;
@@ -46,6 +54,8 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
         // Current value from input
         var $el = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
         var value = $el.val();
+        var address = <?= isset($_GET['address_source']) ? "$('#" . $_GET['address_source'] . "').val()" : "''" ?>;
+        console.log("<?= $_GET['address_source'] ?>");
 
         if (value) {
             $coords.val(value);
@@ -61,7 +71,7 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
 
         var mapDiv = document.getElementById('map');
         var map = new google.maps.Map(mapDiv, {
-            zoom: 6
+            zoom: 11
         });
 
         // Try to set current location
@@ -98,6 +108,16 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
             marker.setPosition(initialLocation);
         };
 
+        update_address = function(){
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': $("#cms_map_address").val() }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    $coords.val(results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng());
+                    update_coords();
+                }
+            });
+        };
+
         // function when changing value in marker
         var update_map = function() {
             // New location
@@ -109,9 +129,13 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
             // Set value to input
             $coords.val((initialLocation.lat()) + ',' + (initialLocation.lng()));
         };
-
-        // Set input update for current location on page load
-        $coords.val((initialLocation.lat()) + ',' + (initialLocation.lng()));
+        $address.val(address);
+        if(!existing_value && address) {
+            update_address();
+        }else{
+            // Set input update for current location on page load
+            $coords.val((initialLocation.lat()) + ',' + (initialLocation.lng()));
+        }
 
         // Change input value when dragging marker
         marker.addListener('dragend', update_map);
