@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use TMCms\Admin\Entity\LanguageEntity;
 use TMCms\HTML\BreadCrumbs;
@@ -14,7 +15,6 @@ BreadCrumbs::getInstance()
     ->addCrumb($language->getShort() . ' [' . $language->getFull() . ']');
 
 echo CmsFormHelper::outputForm($language->getDbTableName(), [
-    'title'  => __('Edit Language'),
     'data'   => $language,
     'action' => '?p=' . P . '&do=_edit_language&id=' . $language->getId(),
     'button' => __('Update'),
