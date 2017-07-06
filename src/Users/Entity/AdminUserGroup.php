@@ -17,7 +17,7 @@ use TMCms\Orm\Entity;
  * @method $this setDefault(bool $flag)
  * @method $this setFilemanagerLimited(bool $flag)
  * @method $this setFullAccess(bool $flag)
- * @method $this setStructurePermissions(bool $flag)
+ * @method $this setStructurePermissions(int $flag)
  */
 class AdminUserGroup extends Entity
 {
