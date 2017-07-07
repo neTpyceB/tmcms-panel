@@ -55,7 +55,6 @@ if (!isset($_GET['selector']) || !$_GET['selector']) {
         var $el = $('<?= isset($_GET['selector']) ? '#' . $_GET['selector'] : '' ?>');
         var value = $el.val();
         var address = <?= isset($_GET['address_source']) ? "$('#" . $_GET['address_source'] . "').val()" : "''" ?>;
-        console.log("<?= $_GET['address_source'] ?>");
 
         if (value) {
             $coords.val(value);
