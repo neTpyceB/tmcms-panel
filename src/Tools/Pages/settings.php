@@ -44,6 +44,7 @@ $form = CmsForm::getInstance()
             ['name' => 'Generate sitemap.xml', 'field' => CmsCheckbox::getInstance('autogenerate_sitemap_xml')->setHintText('Autogenerate sitemap.xml file when making changes in site Structure')],
             ['name' => 'Pages Clickmap', 'field' => CmsCheckbox::getInstance('clickmap')->setHintText('Vizualize user clicks on site. Requires jQuery using $() function, and according action files in ' . DIR_FRONT_API_URL)],
             ['name' => 'Permanent redirects', 'field' => CmsCheckbox::getInstance('permanent_redirects')->setHintText('When page location is changed - whether system should keep old location in Structure for redirecting users to new location')],
+            ['name' => 'Page aliases enabled', 'field' => CmsCheckbox::getInstance('page_aliases_enabled')->setHintText('Enable checking for page short alias every time user comes to website. Requires to have aliases created.')],
         ]
     )
     ->addFieldBlock('CMS',

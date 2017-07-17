@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace TMCms\Admin\Structure\Entity;
 
@@ -9,6 +10,8 @@ use TMCms\Orm\Entity;
 /**
  * Class PageComponentCustomEntity
  * @package TMCms\Admin\Structure\Entity
+ *
+ * @method int getOrder()
  *
  * @method $this setComponent(string $component)
  * @method $this setName(string $name)

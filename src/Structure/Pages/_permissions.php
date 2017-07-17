@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use TMCms\Admin\Messages;
 use TMCms\Admin\Structure\Entity\StructurePagePermissionEntity;
@@ -7,8 +8,10 @@ use TMCms\Admin\Users\Entity\AdminUserGroup;
 
 defined('INC') or exit;
 
+$full_access = isset($_POST['full_access']);
+
 $group = new AdminUserGroup($_POST['group_id']);
-$group->setStructurePermissions((int)isset($_POST['full_access']));
+$group->setStructurePermissions((int)$full_access);
 $group->save();
 
 $permissions = new StructurePagePermissionEntityRepository();
@@ -37,4 +40,4 @@ if (!$full_access) {
 
 Messages::sendGreenAlert('Permissions updated');
 
-go('?p=' . P);
+go('?p=' . P . '&do=permissions');

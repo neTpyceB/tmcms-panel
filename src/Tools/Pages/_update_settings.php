@@ -34,6 +34,7 @@ $checkboxes = [
     'lng_by_http_header',
     'lng_by_ip',
     'permanent_redirects',
+    'page_aliases_enabled',
     'save_location_change_history',
 ];
 

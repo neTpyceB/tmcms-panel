@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace TMCms\Admin\Structure\Entity;
 
@@ -9,7 +10,11 @@ use TMCms\Orm\EntityRepository;
  * @package TMCms\Admin\Structure\Entity
  *
  * @method $this setWhereComponent(string $component)
+ * @method $this setWhereOrder(int $order)
  * @method $this setWherePageId(int $page_id)
+ * @method $this setWhereTab(string $tab)
+ *
+ * @method $this setOrder(int $order)
  */
 class PageComponentCustomEntityRepository extends EntityRepository
 {

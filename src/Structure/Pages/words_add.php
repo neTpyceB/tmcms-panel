@@ -12,11 +12,11 @@ BreadCrumbs::getInstance()
 
 $words = new PagesWordEntityRepository();
 
-echo CmsFormHelper::outputForm($words->getDbTableName(), [
-    'title' => __('Add Word'),
-    'action' => '?p=' . P . '&do=_add_word',
+echo CmsFormHelper::outputForm([
+    'title'  => __('Add Word'),
+    'action' => '?p=' . P . '&do=_words_add',
     'button' => __('Add'),
-    'cancel' => __('Cancel'),
+    'cancel' => true,
     'fields' => [
         'name' => [
             'validate' => [
