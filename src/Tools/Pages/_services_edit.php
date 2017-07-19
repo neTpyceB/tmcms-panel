@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use TMCms\Admin\Messages;
 use TMCms\Log\App;
-use TMCms\Modules\Services\Entity\ServiceEntity;
+use TMCms\Services\Entity\ServiceEntity;
 
 defined('INC') or exit;
 
