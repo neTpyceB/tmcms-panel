@@ -30,7 +30,7 @@ $checkboxes = [
     'optimize_html',
     'production',
     'save_frontend_log',
-    'save_back_access_log',
+    'disable_cms_access_log',
     'unique_admin_address',
     'use_file_cache_for_all_pages',
 ];
