@@ -18,24 +18,19 @@ $pages_components_history = new PageComponentHistoryRepository();
 $users = new AdminUserRepository();
 
 $pages_components_history->addSimpleSelectFields(['id', 'version', 'ts']);
-$users->addSimpleSelectFieldsAsString('CONCAT(`u`.`name`, " ", `u`.`surname`) AS `user`');
+$users->addSimpleSelectFieldsAsString('CONCAT(`' . $users->getDbTableName() . '`.`name`, " ", `' . $users->getDbTableName() . '`.`surname`) AS `user`');
 
 $pages_components_history->setWherePageId($page->getId());
 
 $pages_components_history->mergeWithCollection($users, 'user_id');
-
-$data = $pages_components_history->getAsArrayOfObjects();
-
-if (!$data) {
-    error('No data');
-}
+$pages_components_history->addGroupBy('version');
 
 BreadCrumbs::getInstance()
     ->addCrumb('Page content history')
     ->addCrumb($page->getTitle());
 
 echo CmsTableHelper::outputTable([
-    'data'    => $data,
+    'data'    => $pages_components_history,
     'pager'   => false,
     'columns' => [
         'version'      => [
@@ -45,15 +40,16 @@ echo CmsTableHelper::outputTable([
             'title' => 'Date',
             'type'  => 'datetime',
         ],
-        'user'         => [
+        'user'         => [],
+        'view_on_site' => [
             'title'           => 'View on site',
             'value'           => 'View',
             'href_new_window' => true,
             'href'            => Structure::getPathById($page->getId()) . '?cms_content_version={%version%}',
         ],
-        'view_on_site' => [],
         'restore'      => [
-            'href' => '?p=' . P . '&do=_restore_page_history&version={%version%}&id=' . $page->getId(),
+            'value' => 'Restore',
+            'href'  => '?p=' . P . '&do=_restore_page_history&version={%version%}&id=' . $page->getId(),
         ],
     ],
 ]);
