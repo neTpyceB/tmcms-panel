@@ -28,7 +28,15 @@ ORDER BY `l`.`ts` DESC
 echo CmsTableHelper::outputTable([
     'data'              => $data_sql,
     'cut_long_strings'  => false,
-    'callback_function' => 'TMCms\Admin\Tools\CmsTools::app_log_callback',
+    'callback_function' => function ($data) {
+        foreach ($data as &$v) {
+            if ($v['user_id'] == USER_ID) {
+                $v['user'] = '<span style="color: green">' . $v['user'] . '</span>';
+            }
+        }
+
+        return $data;
+    },
     'columns'           => [
         'ts'   => [
             'title' => 'Date',

@@ -55,7 +55,7 @@ $form = CmsForm::getInstance()
         [
             ['name' => 'Frontend log [<a href="?p=' . P . '&do=front_log">View</a>]', 'field' => CmsCheckbox::getInstance('save_frontend_log')->setHintText('Saves all front site request. Warning - use only in dev-mode, because it generates a lot of DB entries')],
             ['name' => 'Disable CMS access log', 'field' => CmsCheckbox::getInstance('disable_cms_access_log')->setHintText('Disables saving all CMS user actions in log')],
-            ['name' => 'DB query analyzer', 'field' => CmsCheckbox::getInstance('analyze_db_queries')->setHintText('Stores all queries for analyze, helps to debug and optimize queries')],
+            ['name' => 'DB query analyzer [<a href="?p=' . P . '&do=analyze_db_queries">View</a>] ', 'field' => CmsCheckbox::getInstance('analyze_db_queries')->setHintText('Stores all queries for analyze, helps to debug and optimize queries')],
         ]
     )
     ->addFieldBlock('Debug',

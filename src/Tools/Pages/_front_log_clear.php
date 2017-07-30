@@ -4,17 +4,14 @@ declare(strict_types=1);
 use TMCms\Admin\Messages;
 use TMCms\Cache\Cacher;
 use TMCms\Log\App;
-use TMCms\Log\Entity\FrontLogEntityRepository;
+use TMCms\Log\Entity\ErrorLogEntityRepository;
 
-defined('INC') or exit;
+$error_log = new ErrorLogEntityRepository();
+$error_log->deleteObjectCollection();
 
-$log = new FrontLogEntityRepository();
-$log->deleteObjectCollection();
-
-// Clear db usage size in cache because it changes after log clear
 Cacher::getInstance()->getDefaultCacher()->delete('cms_tools_disk_and_db_usage');
 
-App::add('Front site log cleared');
-Messages::sendMessage('Log cleared');
+App::add('Error log cleared');
+Messages::sendGreenAlert('Log cleared');
 
 back();
