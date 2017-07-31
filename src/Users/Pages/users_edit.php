@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use TMCms\Admin\Users\Entity\AdminUser;
 use TMCms\HTML\BreadCrumbs;
@@ -20,6 +21,6 @@ BreadCrumbs::getInstance()
     ->addCrumb(__('Edit User'))
     ->addCrumb($user->getLogin());
 
-echo $this->__users_add_edit_form($data)
+echo $this->_users_add_edit_form($data)
     ->setAction('?p=' . P . '&do=_users_edit&id=' . $id)
     ->setSubmitButton('Update');

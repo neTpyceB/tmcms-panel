@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use TMCms\Admin\Entity\UsersSessionEntityRepository;
 use TMCms\Admin\Messages;
