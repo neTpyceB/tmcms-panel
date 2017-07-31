@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace TMCms\Admin\Users\Entity;
 
@@ -13,15 +14,15 @@ use TMCms\Orm\Entity;
  * @method bool getFullAccess()
  * @method string getTitle()
  * @method bool getUndeletable()
- * @method $this setCanSetPermissions(bool $flag)
- * @method $this setDefault(bool $flag)
- * @method $this setFilemanagerLimited(bool $flag)
- * @method $this setFullAccess(bool $flag)
+ * @method $this setCanSetPermissions(int $flag)
+ * @method $this setDefault(int $flag)
+ * @method $this setFilemanagerLimited(int $flag)
+ * @method $this setFullAccess(int $flag)
  * @method $this setStructurePermissions(int $flag)
  */
 class AdminUserGroup extends Entity
 {
-    public $is_superadmin = false; // Required for first site install
+    public $is_super_admin = false; // Required for first site install
     protected $db_table = 'cms_users_groups';
 
     /**
@@ -32,7 +33,7 @@ class AdminUserGroup extends Entity
         $can_set_permission = 0;
 
         // If user is super-admin with all privileges granted
-        if ($this->is_superadmin) {
+        if ($this->is_super_admin) {
             $can_set_permission = 1;
         }
 

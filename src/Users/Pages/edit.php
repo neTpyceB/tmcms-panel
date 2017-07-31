@@ -22,5 +22,5 @@ BreadCrumbs::getInstance()
     ->addCrumb($user->getLogin());
 
 echo $this->_users_add_edit_form($data)
-    ->setAction('?p=' . P . '&do=_users_edit&id=' . $id)
+    ->setAction('?p=' . P . '&do=_edit&id=' . $id)
     ->setSubmitButton('Update');
