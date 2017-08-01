@@ -28,8 +28,7 @@ Menu::getInstance()
 $words = new PagesWordEntityRepository();
 $words->addOrderByField('name');
 $words->addSimpleSelectFields(['word']);
-$words->addSimpleSelectFieldsAsAlias('name', 'id');
-$words->addSimpleSelectFieldsAsString('SUBSTRING(`name`, 1, LENGTH(`name`) - 3) AS `name`');
+$words->addSimpleSelectFieldsAsString('SUBSTRING(`name`, 1, LENGTH(`name`) - 3) AS `id`');
 $words->addWhereFieldAsString('SUBSTRING(`name`, -3) = "_' . LNG . '"');
 
 if (isset($_GET['name'])) {
@@ -37,12 +36,12 @@ if (isset($_GET['name'])) {
 }
 
 foreach ($words->getAsArrayOfObjectData() as $word) {
-    if (isset($used_words[$word['name']])) {
+    if (isset($used_words[$word['id']])) {
         $word['used'] = 1;
     }
 
     $word_data[] = $word;
-    $word_pairs[] = $word['name'];
+    $word_pairs[] = $word['id'];
 }
 
 // _words_callback
@@ -53,7 +52,8 @@ if ($used_words) {
         'type' => 'done',
     ];
 }
-$columns['name'] = [
+$columns['id'] = [
+    'title' => 'Name',
     'html'  => true,
     'order' => true,
 ];
