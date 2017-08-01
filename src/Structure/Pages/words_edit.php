@@ -13,7 +13,8 @@ if (!$languages) {
     error('No languages.');
 }
 
-$name = sql_prepare($_GET['name']);
+// Id is the name
+$name = sql_prepare($_GET['id']);
 $data = [
     'name' => $name,
     'word' => [],
