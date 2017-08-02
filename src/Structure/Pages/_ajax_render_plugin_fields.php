@@ -44,12 +44,12 @@ if ($selected) {
         // Provided simple strings
         if (!is_array($comp_data)) {
             $comp_key = $comp_data;
-            $comp_data = ['title' => Converter::symb2Ttl($comp_data)];
+            $comp_data = ['title' => Converter::charsToNormalTitle($comp_data)];
         }
 
         // Title for row
         if (!isset($comp_data['title'])) {
-            $comp_data['title'] = Converter::symb2Ttl($comp_key);
+            $comp_data['title'] = Converter::charsToNormalTitle($comp_key);
         }
 
         // Defaults

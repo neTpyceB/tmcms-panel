@@ -71,7 +71,7 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                 dump('Field "' . $field_data . '" must be array');
             }
             if (!isset($field_data['title'])) {
-                $field_data['title'] = Converter::symb2Ttl($field_key);
+                $field_data['title'] = Converter::charsToNormalTitle($field_key);
             }
 
             // Defaults

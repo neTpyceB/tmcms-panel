@@ -84,12 +84,12 @@ foreach ($editable_elements as $v) {
                 // Provided simple strings
                 if (!is_array($element_data)) {
                     $element_key = $element_data;
-                    $element_data = ['title' => Converter::symb2Ttl($element_data)];
+                    $element_data = ['title' => Converter::charsToNormalTitle($element_data)];
                 }
 
                 // Title for row
                 if (!isset($element_data['title'])) {
-                    $element_data['title'] = Converter::symb2Ttl($element_key);
+                    $element_data['title'] = Converter::charsToNormalTitle($element_key);
                 }
 
                 // Defaults
@@ -149,7 +149,7 @@ foreach ($editable_elements as $v) {
 
                 // Title for row
                 if (!isset($element_data['title'])) {
-                    $element_data['title'] = Converter::symb2Ttl($element_key);
+                    $element_data['title'] = Converter::charsToNormalTitle($element_key);
                 }
 
                 $field = $component_helper
@@ -187,12 +187,12 @@ foreach ($editable_elements as $v) {
                         // Provided simple strings
                         if (!is_array($comp_data)) {
                             $comp_key = $comp_data;
-                            $comp_data = ['title' => Converter::symb2Ttl($comp_data)];
+                            $comp_data = ['title' => Converter::charsToNormalTitle($comp_data)];
                         }
 
                         // Title for row
                         if (!isset($comp_data['title'])) {
-                            $comp_data['title'] = Converter::symb2Ttl($comp_key);
+                            $comp_data['title'] = Converter::charsToNormalTitle($comp_key);
                         }
 
                         // Defaults
@@ -235,7 +235,7 @@ foreach ($editable_elements as $v) {
     // Add created field to form
     if ($fields) {
         $have_any_field = true;
-        $form->addFieldBlock('<strong>' . Converter::symb2Ttl($v['class']) . '</strong>', $fields);
+        $form->addFieldBlock('<strong>' . Converter::charsToNormalTitle($v['class']) . '</strong>', $fields);
     }
 }
 

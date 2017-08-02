@@ -250,8 +250,8 @@ class CmsFilemanager
         <?php
 
         // Get maximum allowed size of chunk of uploaded file
-        $max_upload_file = $max_post = Converter::formatIniSize(ini_get('post_max_size'));
-        $max_upload = Converter::formatIniSize(ini_get('upload_max_filesize'));
+        $max_upload_file = $max_post = Converter::formatIniParamSize(ini_get('post_max_size'));
+        $max_upload = Converter::formatIniParamSize(ini_get('upload_max_filesize'));
         if ($max_upload < $max_upload_file) {
             $max_upload_file = $max_upload;
         }
@@ -877,7 +877,7 @@ class CmsFilemanager
         }
 
 //        $fileName = strtolower($fileName);
-        $fileName = Converter::data2words(strtolower($fileName), ['@', '-', '_', '.']);
+        $fileName = Converter::removeOddFileNameSymbols(strtolower($fileName), ['@', '-', '_', '.']);
 
         $filePath = $targetDir . $fileName;
 
