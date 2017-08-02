@@ -514,7 +514,6 @@ class CmsFilemanager
                     $("#" + file_id).remove();
                 },
                 reloadFiles: function() {
-                    console.log(filemanager_helpers);
                     $('#file_list_zone').load(filemanager_helpers.current_url + '&for_reload');
                     setTimeout(function() {
                         events_on_checkboxes();
