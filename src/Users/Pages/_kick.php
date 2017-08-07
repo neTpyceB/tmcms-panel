@@ -13,9 +13,6 @@ if (!isset($_GET['sid'])) {
 }
 
 $sid = $_GET['sid'];
-if (!UID::is_uid32($sid)) {
-    return;
-}
 
 $sessions = new UsersSessionEntityRepository;
 $sessions->setWhereSid($sid);

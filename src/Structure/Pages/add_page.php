@@ -148,4 +148,4 @@ echo CmsForm::getInstance()
     )
 ;
 
-UID::text2uidJS(true, ['title' => 'location'], 50, 0, true);
+UID::textToUidJs(true, ['title' => 'location'], 50, 0, true);
