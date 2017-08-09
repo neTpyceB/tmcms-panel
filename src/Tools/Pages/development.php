@@ -30,7 +30,7 @@ BreadCrumbs::getInstance()
 $form = CmsForm::getInstance()
     ->setAction('?p=' . P . '&do=_development')
     ->addData($settings)
-    ->setSubmitButton(CmsButton::getInstance('Update'))
+    ->setButtonSubmit(CmsButton::getInstance('Update'))
     ->addFieldBlock('Site',
         [
             ['name' => 'Production state', 'field' => CmsCheckbox::getInstance('production')->setHintText('Disables showing errors, disables db auto-checks, etc.')],

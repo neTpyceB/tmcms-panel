@@ -34,7 +34,7 @@ $date_select = [
 $form = CmsForm::getInstance()
     ->setAction('?p=' . P . '&do=_update_settings')
     ->addData($data)
-    ->setSubmitButton(CmsButton::getInstance('Update'))
+    ->setButtonSubmit(CmsButton::getInstance('Update'))
     ->addFieldBlock('Site',
         [
             ['name' => 'Common email', 'field' => CmsInputText::getInstance('common_email')],

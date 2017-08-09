@@ -266,8 +266,8 @@ if (!$have_any_field) {
 echo $form
     ->enableAjax()
     ->setAction('?p=' . P . '&do=_edit_components&id=' . $id)
-    ->setCancelButton(CmsButton::getInstance(__('Cancel')))
-    ->setSubmitButton(CmsButton::getInstance(__('Update')));
+    ->setButtonCancel(CmsButton::getInstance(__('Cancel')))
+    ->setButtonSubmit(CmsButton::getInstance(__('Update')));
 
 if ($need_to_load_plugin_scripts) {
     // Include script for plugins

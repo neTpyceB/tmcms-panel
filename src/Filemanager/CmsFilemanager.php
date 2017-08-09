@@ -259,7 +259,7 @@ class CmsFilemanager
         // Modern upload form with multiple file selects and large file uploads
         $upload_form = CmsForm::getInstance()
             ->disableFullView()
-            ->setSubmitButton(CmsButton::getInstance('Upload')
+            ->setButtonSubmit(CmsButton::getInstance('Upload')
                 ->setElementIdAttribute('upload_files'))
             ->setEnctype(CmsForm::ENCTYPE_MULTIPART)
             ->setAction('?p=' . P . '&do=_upload')

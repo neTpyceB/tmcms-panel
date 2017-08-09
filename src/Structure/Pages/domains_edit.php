@@ -25,4 +25,4 @@ BreadCrumbs::getInstance()
 
 echo CmsStructure::getInstance()->_domains_add_edit_form($domain)
     ->setAction('?p=' . P . '&do=_domains_edit&id=' . $domain->getId())
-    ->setSubmitButton('Edit');
+    ->setButtonSubmit('Edit');
