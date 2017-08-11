@@ -129,7 +129,7 @@ foreach ($access_repo->getAsArrayOfObjectData() as $v) {
 }
 
 $form = CmsForm::getInstance()
-//    ->setSubmitButton(new CmsButton('Update'))
+//    ->setButtonSubmit(new CmsButton('Update'))
 //    ->setAction('?p=' . P . '&do=_groups_permissions&id=' . $id)
 ;
 

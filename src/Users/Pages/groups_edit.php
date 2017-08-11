@@ -14,7 +14,7 @@ BreadCrumbs::getInstance()
 
 $form = $this->_groups_form($group)
     ->setAction('?p=' . P . '&do=_groups_edit&id=' . $id . $id)
-    ->setSubmitButton('Update');
+    ->setButtonSubmit('Update');
 
 if (Users::getInstance()->getGroupData('can_set_permissions')) {
     $form->addField('Can set permissions', CmsCheckbox::getInstance('can_set_permissions')->setHintText('Can set permission to other groups'));
