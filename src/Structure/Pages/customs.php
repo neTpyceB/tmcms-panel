@@ -1,4 +1,19 @@
 <?php
+declare(strict_types=1);
+
+use TMCms\Admin\Structure\Entity\PageComponentCustomEntityRepository;
+use TMCms\HTML\BreadCrumbs;
+use TMCms\HTML\Cms\CmsForm;
+use TMCms\HTML\Cms\CmsFormHelper;
+use TMCms\HTML\Cms\CmsTabs;
+use TMCms\HTML\Cms\Element\CmsButton;
+use TMCms\HTML\Cms\Element\CmsCheckbox;
+use TMCms\HTML\Cms\Element\CmsRow;
+use TMCms\Routing\Languages;
+use TMCms\Routing\Structure;
+use TMCms\Strings\Converter;
+use TMCms\Templates\Components;
+use TMCms\Templates\RenderComponentHelper;
 
 defined('INC') or exit;
 
@@ -17,23 +32,9 @@ WHERE `p`.`id` = "'. $id .'"
 ');
 if (!$q) return;
 
-use TMCms\Admin\Structure\Entity\PageComponentCustomEntityRepository;
-use TMCms\HTML\BreadCrumbs;
-use TMCms\HTML\Cms\CmsForm;
-use TMCms\HTML\Cms\CmsTabs;
-use TMCms\HTML\Cms\Element\CmsButton;
-use TMCms\HTML\Cms\Element\CmsRow;
-use TMCms\Routing\Structure;
-use TMCms\Strings\Converter;
-use TMCms\Templates\Components;
-use TMCms\Templates\RenderComponentHelper;
-
 $component_helper = new RenderComponentHelper();
 $template_to_render = DIR_FRONT_TEMPLATES . $q['file'];
-$tabs = [];
-$tab_origin_fields = [];
-$origin_field_data = [];
-$data = [];
+$tabs = $tab_origin_fields = $data = $origin_field_data = [];
 $count_of_existing_data = 0;
 
 $customs = new PageComponentCustomEntityRepository();
@@ -41,7 +42,7 @@ $customs->addSimpleSelectFields(['component', 'tab', 'name', 'value', 'order']);
 $customs->setWherePageId($id);
 $customs->addOrderByField();
 
-$lang = \TMCms\Routing\Languages::getShortByPageId($id);
+$lang = Languages::getShortByPageId($id);
 
 foreach ($customs->getAsArrayOfObjectData() as $v) {
     $data[$v['component']][$v['tab']][$v['order']][$v['name']] = $v;
@@ -56,38 +57,43 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
     // Iterate all components
     foreach ($component['elements'] as $element_name => $element) {
         // If component is not custom
-        if (!isset($element['type'], $element['fields']) || $element['type'] != 'custom') {
+        if (!isset($element['type'], $element['fields']) || $element['type'] !== 'custom') {
             continue;
         }
 
-        $form = CmsForm::getInstance();
-        $form->outputTagForm(false);
-        $form->disableFullView();
+        $form = CmsForm::getInstance()
+            ->disableFormTagOutput()
+            ->disableFullView();
 
         // Iterate fields
         foreach ($element['fields'] as $field_key => $field_data) {
             // Title for row
             if (!is_array($field_data)) {
-                dump('Field "' . $field_data . '" must be array');
+                throw new RuntimeException('Field "' . $field_data . '" must be array');
             }
+
+            // Obligate title
             if (!isset($field_data['title'])) {
                 $field_data['title'] = Converter::charsToNormalTitle($field_key);
             }
 
             // Defaults
-            $field_type = isset($field_data['type']) ? $field_data['type'] : 'text';
-            $field_edit = isset($field_data['edit']) ? $field_data['edit'] : '';
+            $field_type = $field_data['type'] ?? 'text';
+            $field_edit = $field_data['edit'] ?? '';
 
+            // Short key
             $key_name = $component_name .'['. $element_name . '][' . $field_key .']';
 
+            // Count of elements
+            $count_of_existing_data = 0;
             if (isset($data[$component_name][$element_name])) {
                 $count_of_existing_data = count($data[$component_name][$element_name]);
-            } else {
-                $count_of_existing_data = 0;
             }
 
-            if(!isset($field_data['lng']))
+            // Language
+            if (!isset($field_data['lng'])) {
                 $field_data['lng'] = $lang;
+            }
 
             $field = $component_helper
                 ->setComponentName($key_name . '['. $count_of_existing_data .']')
@@ -104,8 +110,8 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                 'data' => $field_data,
             ];
 
-            // Add to form
-            $tab_origin_fields[$element_name][$field_key] = array('name' => $field_data['title'], 'field' => $field);
+            // Add to form tab
+            $tab_origin_fields[$element_name][$field_key] = ['name' => $field_data['title'], 'field' => $field];
 
             if (isset($data[$component_name][$element_name])) {
                 foreach ($data[$component_name][$element_name] as $key => $data_element) {
@@ -161,12 +167,15 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                     if (!isset($field_origin['type'])) {
                         $field_origin['type'] = 'text';
                     }
+
                     if (!isset($field_origin['widget'])) {
                         $field_origin['widget'] = '';
                     }
+
                     if (isset($field_data['value'])) {
                         $field_origin['data']['selected'] = $field_data['value'];
                     }
+
                     if (!isset($field_origin['data'])) {
                         $field_origin['data'] = [];
                     }
@@ -182,16 +191,16 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                     // Current data of input
                     $field->setValue($field_data['value']);
 
-                    if ($field_origin['type'] == 'checkbox') {
-                        if ($field_data['value'] == '1') {
-                            $field->setChecked(1);
-                            $field->setValue(1);
-                        }
+                    if ($field_origin['type'] === 'checkbox' && $field_data['value'] === '1') {
+                        /** @var CmsCheckbox $field */
+                        $field->setChecked(1);
+                        $field->setValue(1);
                     }
 
-                    $all_fields[$field_name] = array('name' => $origin_field_data[$key_name]['title'], 'field' => $field);
+                    $all_fields[$field_name] = ['name' => $origin_field_data[$key_name]['title'], 'field' => $field];
                 }
 
+                // Have anything to render for existing data
                 if ($all_fields) {
 
                     // Link to order blocks
@@ -202,7 +211,7 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                     } else {
                         $order_links .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                     }
-                    if ($i != ($count_of_existing_data - 1)) { // Not last
+                    if ($i !== ($count_of_existing_data - 1)) { // Not last
                         $order_links .= '<a href="?p=' . P . '&do=_customs_order&page_id=' . $q['id'] . '&component=' . $component_name . '&tab=' . $element_name . '&order=' . $i . '&direct=down" class="nounderline"><i class="fa fa-long-arrow-down"></i></a>&nbsp;&nbsp;&nbsp;';
                     } else {
                         $order_links .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -256,14 +265,15 @@ $breadcrumbs = BreadCrumbs::getInstance()
 ;
 
 // Links to other language versions
-foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
+foreach (Languages::getPairs() as $short => $full) {
     $lng_page_id = Structure::getIdByLabel($q['string_label'], $short);
     if ($lng_page_id) {
-        $lqry = str_replace('&id=' . $q['id'], '', QUERY) . '&id=' . $lng_page_id;
-        $lurl = explode('?', SELF);
-        $breadcrumbs->addPills(strtoupper($short) . ' version', $lurl[0] . '?' . $lqry, $q['id'] == $lng_page_id);
+        $language_query = str_replace('&id=' . $q['id'], '', QUERY) . '&id=' . $lng_page_id;
+        $language_url = explode('?', SELF);
+        $breadcrumbs->addPills(strtoupper($short) . ' version', $language_url[0] . '?' . $language_query, $q['id'] === $lng_page_id);
     }
 }
+
 // To components
 $breadcrumbs->addAction('Components', '?p=structure&do=edit_components&id=' . $q['id']);
 // To properties
@@ -280,12 +290,18 @@ if (!$tabs_to_render->getTabs()) {
     return;
 }
 
-echo CmsForm::getInstance()
-    ->showSubmitOnTop(true)
-    ->setAction('?p='. P .'&do=_customs&id='. $id)
-    ->setButtonSubmit(CmsButton::getInstance('Update All'))
-    ->addField('', CmsRow::getInstance('form')->setValue($tabs_to_render))
-;
+echo CmsFormHelper::outputForm([
+    'submit_on_top' => true,
+    'action'        => '?p=' . P . '&do=_customs&id=' . $id,
+    'button'        => 'Update all',
+    'fields'        => [
+        'form' => [
+            'type'  => 'row',
+            'value' => $tabs_to_render,
+        ],
+    ],
+]);
+
 ?>
 <script>
     // Set all checkboxex checked property
