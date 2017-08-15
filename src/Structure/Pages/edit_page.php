@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use TMCms\Admin\Structure\Entity\PageEntity;
 use TMCms\Config\Settings;
@@ -28,7 +29,7 @@ Structure::refreshTemplatesInDb();
 if (!isset($_GET['id']) || !ctype_digit((string)$_GET['id'])) return;
 $id = (int)$_GET['id'];
 
-$templates = array();
+$templates = [];
 foreach (q_assoc_iterator('
 SELECT
 	`tm`.`id`,
@@ -57,7 +58,7 @@ $page = new PageEntity($id);
 
 if (ctype_digit((string)$page->getRedirectUrl())) {
     $redirect_url = Structure::getPathById($page->getRedirectUrl());
-    if ($redirect_url && $redirect_url != $page->getRedirectUrl()) {
+    if ($redirect_url && $redirect_url !== $page->getRedirectUrl()) {
         $page->setRedirectUrl($redirect_url);
     }
 	unset($redirect_url);
@@ -85,7 +86,7 @@ $form1 = CmsForm::getInstance()
         ->validateRequired()
 //        ->setHintText('Page title for browser heading')
     )
-    ->outputTagForm(false)
+    ->disableFormTagOutput()
 ;
 
 if ($page->getPid()) {
@@ -110,7 +111,7 @@ $form2 = CmsForm::getInstance()
     ->addField('Browser Title', CmsInputText::getInstance('browser_title')->setHintText('Title for browser tab'))
     ->addField('META Description', CmsTextarea::getInstance('description'))
     ->addField('META Keywords', CmsTextarea::getInstance('keywords'))
-    ->outputTagForm(false)
+    ->disableFormTagOutput()
 ;
 
 $form3 = CmsForm::getInstance()
@@ -139,7 +140,7 @@ $form3 = CmsForm::getInstance()
     ->addField('Menu name', CmsInputText::getInstance('menu_name')
         ->validateAlphaNumeric()
         ->setHintText('Menu identifier. Use "main" by default'))
-    ->outputTagForm(false)
+    ->disableFormTagOutput()
 ;
 
 $tabs = CmsTabs::getInstance()
@@ -154,25 +155,25 @@ $breadcrumbs = BreadCrumbs::getInstance()
     ->addCrumb($page_data['title'])
 ;
 
-foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
+foreach (Languages::getPairs() as $short => $full) {
     $lng_page_id = Structure::getIdByLabel($page->getStringLabel(), $short);
-    if ($id == $lng_page_id) {
+    if ($id === $lng_page_id) {
 		continue; // Skip current opened page
 	}
 	if ($lng_page_id) {
-        $lqry = str_replace('&id=' . $id, '', QUERY) . '&id=' . $lng_page_id;
-        $lurl = explode('?', SELF);
-        $breadcrumbs->addCrumb('[' . $short . ' version]', $lurl[0].'?'.$lqry);
+        $language_query = str_replace('&id=' . $id, '', QUERY) . '&id=' . $lng_page_id;
+        $language_url = explode('?', SELF);
+        $breadcrumbs->addCrumb('[' . $short . ' version]', $language_url[0] . '?' . $language_query);
 	}
 }
 
 // Links to other language versions
-foreach (\TMCms\Routing\Languages::getPairs() as $short => $full) {
+foreach (Languages::getPairs() as $short => $full) {
     $lng_page_id = Structure::getIdByLabel($page_data['string_label'], $short);
     if ($lng_page_id) {
-        $lqry = str_replace('&id=' . $page_data['id'], '', QUERY) . '&id=' . $lng_page_id;
-        $lurl = explode('?', SELF);
-        $breadcrumbs->addPills(strtoupper($short) . ' version', $lurl[0] . '?' . $lqry, $page_data['id'] == $lng_page_id);
+        $language_query = str_replace('&id=' . $page_data['id'], '', QUERY) . '&id=' . $lng_page_id;
+        $language_url = explode('?', SELF);
+        $breadcrumbs->addPills(strtoupper($short) . ' version', $language_url[0] . '?' . $language_query, $page_data['id'] === $lng_page_id);
     }
 }
 // To custom components
