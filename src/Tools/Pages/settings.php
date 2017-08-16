@@ -41,6 +41,8 @@ $form = CmsForm::getInstance()
             ['name' => 'Default date format', 'field' => CmsSelect::getInstance('common_date_format')->setOptions($date_select)->setHintText('Use function date() format units')],
             ['name' => 'Google Analytics ID', 'field' => CmsInputText::getInstance('google_analytics_code')->setHintText('Identificator of web resource<br>without UA-')],
             ['name' => 'Google API key', 'field' => CmsInputText::getInstance('google_api_key')->setHintText('API key for requests')],
+            ['name' => 'Facebook Pixel key', 'field' => CmsInputText::getInstance('facebook_pixel_key')->setHintText('Facebook Pixel key for requests')],
+            ['name' => 'Yandex.Metrika key', 'field' => CmsInputText::getInstance('yandex_metrika_key')->setHintText('Yandex.Metrika key for requests')],
             ['name' => 'Generate sitemap.xml', 'field' => CmsCheckbox::getInstance('autogenerate_sitemap_xml')->setHintText('Autogenerate sitemap.xml file when making changes in site Structure')],
             ['name' => 'Pages Clickmap', 'field' => CmsCheckbox::getInstance('clickmap')->setHintText('Vizualize user clicks on site. Requires jQuery using $() function, and according action files in ' . DIR_FRONT_API_URL)],
             ['name' => 'Permanent redirects', 'field' => CmsCheckbox::getInstance('permanent_redirects')->setHintText('When page location is changed - whether system should keep old location in Structure for redirecting users to new location')],
