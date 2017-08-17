@@ -78,7 +78,7 @@ if ($selected) {
 
     if ($plugin_fields) {
         $plugin_form = CmsForm::getInstance();
-        $plugin_form->outputTagForm(false);
+        $plugin_form->disableFormTagOutput();
         $plugin_form->addFieldBlock('Fields', $plugin_fields);
         echo $plugin_form;
     }

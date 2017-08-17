@@ -83,7 +83,7 @@ $form1 = CmsForm::getInstance()
         ->validateRequired()
         ->setHintText('Part of URL')
     )
-    ->outputTagForm(false);
+    ->disableFormTagOutput();
 if ($to_copy_lngs) {
     $form1
         ->addField('Duplicate', CmsCheckboxList::getInstance('duplicates')
@@ -99,7 +99,7 @@ $form2 = CmsForm::getInstance()
     ->addField('Browser Title', CmsInputText::getInstance('browser_title')->setHintText('Title for browser tab'))
     ->addField('META Description', CmsTextarea::getInstance('description'))
     ->addField('META Keywords', CmsTextarea::getInstance('keywords'))
-    ->outputTagForm(false)
+    ->disableFormTagOutput()
 ;
 
 $form3 = CmsForm::getInstance()
@@ -128,7 +128,7 @@ $form3 = CmsForm::getInstance()
     ->addField('Menu name', CmsInputText::getInstance('menu_name')
         ->validateAlphaNumeric()
         ->setHintText('Menu identifier. Use "main" by default'))
-    ->outputTagForm(false)
+    ->disableFormTagOutput()
 ;
 
 $tabs = CmsTabs::getInstance()

@@ -220,7 +220,7 @@ foreach ($editable_elements as $v) {
 
                     if ($plugin_fields) {
                         $plugin_form = CmsForm::getInstance();
-                        $plugin_form->outputTagForm(false);
+                        $plugin_form->isFormTagOutputEnabled(false);
                         $plugin_form->addFieldBlock('Fields', $plugin_fields);
 
                         // Add plugin fields in own field set
