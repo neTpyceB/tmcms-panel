@@ -56,7 +56,7 @@ $file_size_quota = Settings::get('file_size_quota');
 if ($file_size_quota) {
     $file_size_quota = $file_size_quota * 1024 * 1024;
     if ($data['file_size'] > $file_size_quota) {
-        Errors::notify_devs('Exceeded quota of ' . $file_size_quota . ' MB', 'Exceeded quota of ' . $file_size_quota . ' MB');
+        Errors::sendErrorToDevelopers('Exceeded quota of ' . $file_size_quota . ' MB', 'Exceeded quota of ' . $file_size_quota . ' MB');
     }
 }
 
