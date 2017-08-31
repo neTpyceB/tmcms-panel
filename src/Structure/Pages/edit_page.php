@@ -188,6 +188,6 @@ echo CmsForm::getInstance()
     ->setButtonSubmit(CmsButton::getInstance(__('Update')))
     ->setButtonCancel(CmsButton::getInstance(__('Cancel')))
     ->addField('', CmsRow::getInstance('form')
-        ->setValue($tabs)
+        ->setValue((string)$tabs)
     )
 ;
