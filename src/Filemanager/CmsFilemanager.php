@@ -218,7 +218,7 @@ class CmsFilemanager
                                data-name="<?= basename($v) ?>"><?= basename($v) ?></a>
                         </td>
                         <td></td>
-                        <td><?= Converter::formatDataSize(filesize(DIR_BASE . $v)) ?></td>
+                        <td><?= Converter::formatDataSizeFromBytes(filesize(DIR_BASE . $v)) ?></td>
                         <td align="center">
                             <a href="?p=<?= P ?>&do=_delete&path=<?= $v ?>" onclick="if (confirm('<?= __('Are you sure?') ?>')) filemanager_helpers.delete_files('<?= $v ?>'); return false;">x</a>
                         </td>

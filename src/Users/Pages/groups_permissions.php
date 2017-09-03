@@ -42,9 +42,9 @@ $all_menu_items = array_merge($custom_items, $all_menu_items);
 
 // For every main menu item search for module and submenu
 foreach ($all_menu_items as $main_menu_key => $main_menu_data) {
-    $menu_class = 'TMCms\Admin\\' . Converter::to_camel_case($main_menu_key) . '\\Cms' . Converter::to_camel_case($main_menu_key);
+    $menu_class = 'TMCms\Admin\\' . Converter::toCamelCase($main_menu_key) . '\\Cms' . Converter::toCamelCase($main_menu_key);
     if (!class_exists($menu_class)) {
-        $menu_class = 'TMCms\Modules\\' . Converter::to_camel_case($main_menu_key) . '\\Cms' . Converter::to_camel_case($main_menu_key);
+        $menu_class = 'TMCms\Modules\\' . Converter::toCamelCase($main_menu_key) . '\\Cms' . Converter::toCamelCase($main_menu_key);
     }
     ModuleManager::requireModule($main_menu_key);
     if (class_exists($menu_class)) {
@@ -80,14 +80,14 @@ foreach ($all_menu_items as $line => $line_data) {
     ModuleManager::requireModule($name);
 
     // Try to load module from Vendor
-    $class = '\TMCms\Modules\\' . Converter::to_camel_case($name) . '\Cms' . Converter::to_camel_case($name);
+    $class = '\TMCms\Modules\\' . Converter::toCamelCase($name) . '\Cms' . Converter::toCamelCase($name);
 
     // If autoloaded from modules
     if (class_exists($class)) {
         $methods = get_class_methods($class);
     } else {
         // Load main admin panel pages
-        $class = '\TMCms\Admin\\' . Converter::to_camel_case($name) . '\Cms' . Converter::to_camel_case($name);
+        $class = '\TMCms\Admin\\' . Converter::toCamelCase($name) . '\Cms' . Converter::toCamelCase($name);
         if (class_exists($class)) {
             $methods = get_class_methods($class);
         }

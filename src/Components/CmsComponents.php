@@ -286,7 +286,7 @@ class CmsComponents
             if (substr($tab_name, strlen($tab_name) - 6, 6) == 'Entity') {
                 $tab_name = substr($tab_name, 0, strlen($tab_name) - 6);
             };
-            $tab_name = Converter::from_camel_case($tab_name, ' ');
+            $tab_name = Converter::fromCamelCase($tab_name, ' ');
             $tabs->addTab($tab_name, $table);
         }
 
