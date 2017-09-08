@@ -27,8 +27,8 @@ foreach ($tables as $table) {
 }
 
 $res['tables'] = count($tables);
-$res['index'] = Converter::formatDataSize($res['index']);
-$res['size'] = Converter::formatDataSize($res['size']);
+$res['index'] = Converter::formatDataSizeFromBytes($res['index']);
+$res['size'] = Converter::formatDataSizeFromBytes($res['size']);
 $res['ratio'] = $res['size'] / $res['index'] < 25 ? 'Normal proportion' : 'Index seems to be too small';
 
 BreadCrumbs::getInstance()

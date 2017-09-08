@@ -90,11 +90,11 @@ echo CmsFormHelper::outputForm([
         ],
         'file_size'       => [
             'type'  => 'html',
-            'value' => Converter::formatDataSize($data['file_size']) . ($file_size_quota && $data['file_size'] > $file_size_quota ? ' <small style="color: red">(Soft quota is ' . Settings::get('file_size_quota') . ' MB)</small>' : ''),
+            'value' => Converter::formatDataSizeFromBytes($data['file_size']) . ($file_size_quota && $data['file_size'] > $file_size_quota ? ' <small style="color: red">(Soft quota is ' . Settings::get('file_size_quota') . ' MB)</small>' : ''),
         ],
         'database_size'   => [
             'type'  => 'html',
-            'value' => Converter::formatDataSize($data['db_size']),
+            'value' => Converter::formatDataSizeFromBytes($data['db_size']),
         ],
         'backup_files'    => [
             'type'  => 'html',
