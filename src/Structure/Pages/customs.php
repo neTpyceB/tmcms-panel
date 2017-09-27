@@ -189,7 +189,7 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
                     ;
 
                     // Current data of input
-                    $field->setValue($field_data['value']);
+                    $field->setValue((string)$field_data['value']);
 
                     if ($field_origin['type'] === 'checkbox' && $field_data['value'] === '1') {
                         /** @var CmsCheckbox $field */
