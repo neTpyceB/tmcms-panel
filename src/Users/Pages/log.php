@@ -14,12 +14,10 @@ $users = Users::getInstance()->getUsersPairs();
 if (USER_ID !== 1) {
     unset($users[1]);
 }
-
 BreadCrumbs::getInstance()
     ->addCrumb('Admin User logs');
 
-echo CmsTableHelper::outputTable([
-    'data'              => '
+$sql = '
 SELECT
 	`l`.`id`,
 	`l`.`ts`,
@@ -36,7 +34,10 @@ FROM `cms_users_log` AS `l`
 JOIN `cms_users` AS `u` ON `u`.`id` = `l`.`user_id`
 WHERE IF("' . ((int)USER_ID === 1) . '", 1, `u`.`id` != "1")
 ORDER BY `l`.`ts` DESC
-		',
+';
+
+echo CmsTableHelper::outputTable([
+    'data'              => $sql,
     'callback_function' => function ($data) {
         foreach ($data as &$v) {
             // Self is green

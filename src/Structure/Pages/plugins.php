@@ -10,7 +10,7 @@ defined('INC') or exit;
 $data = [];
 
 foreach (Finder::getInstance()->getPathFolders(Finder::TYPE_PLUGINS) as $folder) {
-    $folder = DIR_BASE . $folder;
+    $folder = rtrim(DIR_BASE, '/') . $folder;
     // Create dir if not found already
     FileSystem::mkDir($folder);
 
