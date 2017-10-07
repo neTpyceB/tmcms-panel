@@ -15,7 +15,7 @@ use TMCms\Orm\Entity;
  * @method bool getSeen()
  * @method $this setFromUserId(int $user_id)
  * @method $this setMessage(string $message)
- * @method $this setNotify(bool $flag)
+ * @method $this setNotify(int $type_number)
  * @method $this setToUserId(int $user_id)
  * @method $this setTs(int $int)
  * @method $this setSeen(bool $flag)
