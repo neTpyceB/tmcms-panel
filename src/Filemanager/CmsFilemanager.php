@@ -946,20 +946,22 @@ class CmsFilemanager
 
         }
 
-        $extention = pathinfo($filePath, PATHINFO_EXTENSION);
-        // Resizeimages and remove EXIF meta
-        if (in_array($extention, ['jpg', 'jpeg', 'png', 'gif'])) {
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+        // Resize images and remove EXIF meta
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
             $image = new Image();
             $image->open($filePath);
             list($width, $height) = getimagesize($filePath);
-            if ($width > 4096) { // Maximim is for 4k screens 4096x3072
+            if ($width > 4096) { // Maximum is for 4k screens 4096x3072
                 $w = 4096;
 
                 $ratio = $width / $w;
                 $h = $height / $ratio;
 
+                $w = (int)$w;
+                $h = (int)$h;
                 $image->resize($w, $h);
-                $image->save($filePath, $extention, 90);
+                $image->save($filePath, $extension, 90);
             }
         }
 
