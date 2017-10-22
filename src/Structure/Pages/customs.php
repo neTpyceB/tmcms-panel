@@ -193,7 +193,7 @@ foreach (Components::outputForCms($template_to_render) as $component_name => $co
 
                     if ($field_origin['type'] === 'checkbox' && $field_data['value'] === '1') {
                         /** @var CmsCheckbox $field */
-                        $field->setChecked(1);
+                        $field->setChecked((bool)1);
                         $field->setValue(1);
                     }
 

@@ -28,7 +28,7 @@ foreach ($messages as $message): /** @var UsersMessageEntity $message */
                 </div>
                 <small class="chat-time">
                     <i class="ti-time mr5"></i>
-                    <b><?= Converter::getTimeFromEventAgo($message->getTs()) ?></b>
+                    <b><?= Converter::getTimeFromEventAgo((int)$message->getTs()) ?></b>
                 </small>
             </div>
         </div>
@@ -45,7 +45,7 @@ foreach ($messages as $message): /** @var UsersMessageEntity $message */
                 </div>
                 <small class="chat-time">
                     <i class="ti-time mr5"></i>
-                    <b><?= Converter::getTimeFromEventAgo($message->getTs()) ?></b>
+                    <b><?= Converter::getTimeFromEventAgo((int)$message->getTs()) ?></b>
                 </small>
             </div>
         </div>
