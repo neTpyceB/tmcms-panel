@@ -83,7 +83,7 @@ echo CmsTableHelper::outputTable([
     ],
     'callback_function' => function ($data) {
         foreach ($data as & $v) {
-            $v['online'] = Users::getInstance()->isOnline($v['user_id']);
+            $v['online'] = Users::getInstance()->isOnline((int)$v['user_id']);
         }
 
         return $data;
