@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace TMCms\Admin\Tools\Entity;
 
 use TMCms\Orm\EntityRepository;
+use TMCms\Orm\TableStructure;
 
 class MaxMindGeoIpRangeEntityRepository extends EntityRepository
 {
@@ -15,10 +16,10 @@ class MaxMindGeoIpRangeEntityRepository extends EntityRepository
                 'length' => 2,
             ],
             'start'        => [
-                'type' => 'ts',
+                'type' => TableStructure::FIELD_TYPE_UNSIGNED_INTEGER,
             ],
             'end'          => [
-                'type' => 'ts',
+                'type' => TableStructure::FIELD_TYPE_UNSIGNED_INTEGER,
             ],
         ],
         'indexes' => [

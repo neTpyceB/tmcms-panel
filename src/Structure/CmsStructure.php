@@ -28,11 +28,11 @@ $language_count = Languages::getTotalCountOfLanguage();
 
 if (!$pages_count) {
     Menu::getInstance()
-        ->addLabelForMenuItem($pages_count, '_default', 'structure');
+        ->addLabelForMenuItem((string)$pages_count, '_default', 'structure');
 }
 if (!$language_count) {
     Menu::getInstance()
-        ->addLabelForMenuItem($language_count, 'languages', 'structure');
+        ->addLabelForMenuItem((string)$language_count, 'languages', 'structure');
 }
 
 
