@@ -7,10 +7,10 @@ use TMCms\Log\App;
 
 defined('INC') or exit;
 
-if (SQL::tableExists('cms_db_queries_analyzer')) {
+if (SQL::getInstance()->tableExists('cms_db_queries_analyzer')) {
     q('TRUNCATE TABLE `cms_db_queries_analyzer`');
 }
-if (SQL::tableExists('cms_db_queries_analyzer_data')) {
+if (SQL::getInstance()->tableExists('cms_db_queries_analyzer_data')) {
     q('TRUNCATE TABLE `cms_db_queries_analyzer_data`');
 }
 

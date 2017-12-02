@@ -40,7 +40,7 @@ class CmsTools implements IModule
         }
 
         // Check Geo IP is loaded
-        if (!SQL::tableExists('cms_maxmind_geoip_c')) {
+        if (!SQL::getInstance()->tableExists('cms_maxmind_geoip_c')) {
             $geo_ip_status = '<span style="color:red">Not loaded</span> <small>[<span><a href="?p=' . P . '&do=_update_maxmind_geoip" class="nounderline">Load</a></span>]</small>';
         } else {
             $geo_ip_status = '<span style="color:green">Loaded</span> <small>[<span><a href="?p=' . P . '&do=_update_maxmind_geoip" class="nounderline">Update</a></span>]</small> ' . ($last_geo_ip_ts ? '<small>[' . date(CFG_CMS_DATETIME_FORMAT, $last_geo_ip_ts) . ']</small>' : '');
