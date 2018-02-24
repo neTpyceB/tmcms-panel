@@ -12,6 +12,9 @@ if (!$_POST['component_method']) {
     $_POST['component_method'] = 'index';
 }
 
+FileSystem::mkDir(DIR_FRONT_CONTROLLERS);
+FileSystem::mkDir(DIR_FRONT_VIEWS);
+
 // Check controller file exists
 $controller_file = DIR_FRONT_CONTROLLERS . $_POST['component_class'] . '.php';
 if (!file_exists($controller_file)) {
@@ -96,6 +99,7 @@ if (!file_exists(DIR_FRONT_VIEWS . $_POST['component_class'] . '/' . $_POST['com
     touch(DIR_FRONT_VIEWS . $_POST['component_class'] . '/' . $_POST['component_method'] . '.php');
 
     $view_file_content = '<?php
+declare(strict_types=1);
 
 use TMCms\Routing\MVC;
 

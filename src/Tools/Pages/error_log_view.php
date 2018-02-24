@@ -24,7 +24,7 @@ echo CmsFormHelper::outputForm([
         ],
         'ip'    => [
             'type'  => 'datetime',
-            'value' => long2ip($error->getIpLong()),
+            'value' => long2ip((int)$error->getIpLong()),
         ],
         'agent' => [
             'type' => 'html',

@@ -72,7 +72,7 @@ $form = CmsForm::getInstance()
         ->setValue(Users::getInstance()->getGroupData('title', $group_id))
     )
     ->addField('Full Access', CmsCheckbox::getInstance('full_access')
-        ->setChecked($full_access)
+        ->setChecked((bool)$full_access)
         ->setOnclick('structure_permissions.checkAll(this);')
     )
     ->addField('', CmsHtml::getInstance('')
@@ -89,7 +89,7 @@ foreach (TableTree::getInstance('cms_pages')->setTitleColumn('title')->setOrderC
     if ($full_access) {
         $permissions[$page_k]['edit'] = $permissions[$page_k]['properties'] = $permissions[$page_k]['active'] = $permissions[$page_k]['delete'] = true;
     }
-    $form->addField('<a class="jsButton" onclick="structure_permissions.checkRow(' . $page_k . ');return false">' . $page_v . '</a>', CmsHtml::getInstance($page_k)->setValue(permissions_get_inputs($page_k, $permissions[$page_k] ?? [])));
+    $form->addField('<a class="jsButton" onclick="structure_permissions.checkRow(' . $page_k . ');return false">' . $page_v . '</a>', CmsHtml::getInstance((string)$page_k)->setValue(permissions_get_inputs($page_k, $permissions[$page_k] ?? [])));
 }
 
 echo $form;
