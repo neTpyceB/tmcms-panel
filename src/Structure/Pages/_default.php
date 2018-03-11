@@ -65,14 +65,14 @@ $context_menu = [
 
 $sql = '
 SELECT
-	`p`.`id`,
-	`p`.`pid`,
-	`p`.`location`,
-	`p`.`title`,
-	`p`.`in_menu`,
-	`p`.`active`
+    `id`,
+    `pid`,
+    `location`,
+    `title`,
+    `in_menu`,
+    `active`
 FROM `cms_pages` AS `p`
-ORDER BY `p`.`order`
+ORDER BY `order`
 ';
 
 echo CmsTableHelper::outputTable([
