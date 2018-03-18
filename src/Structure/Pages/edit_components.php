@@ -27,10 +27,10 @@ if (!isset($_GET['id']) || !ctype_digit((string)$_GET['id'])) {
 $id = (int)$_GET['id'];
 
 // Ensure exists
-$components = new PageComponentEntityRepository();
-$components = new PageComponentCustomEntityRepository();
-$components = new PageComponentsDisabledEntityRepository();
-$components = new PageComponentHistoryRepository();
+new PageComponentEntityRepository();
+new PageComponentCustomEntityRepository();
+new PageComponentsDisabledEntityRepository();
+new PageComponentHistoryRepository();
 
 $page = new PageEntity($id);
 $template = new PageTemplateEntity($page->getTemplateId());
