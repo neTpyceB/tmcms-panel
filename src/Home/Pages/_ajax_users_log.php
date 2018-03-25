@@ -4,6 +4,7 @@ defined('INC') or exit;
 
 use TMCms\Admin\Users\Entity\AdminUserRepository;
 use TMCms\Admin\Users\Entity\UserLogRepository;
+use TMCms\Config\Constants;
 
 if (IS_AJAX_REQUEST) {
     ob_start();
@@ -22,7 +23,7 @@ $access_log->mergeWithCollection($users, 'user_id');
 
 $res = [];
 foreach ($access_log->getAsArrayOfObjectData() as $v) {
-    $res[] = date(CFG_CMS_DATETIME_FORMAT, $v['ts']) . ': ' . $v['user'] . ' - ' . $v['request_uri'];
+    $res[] = date(Constants::FORMAT_CMS_DATETIME_FORMAT, $v['ts']) . ': ' . $v['user'] . ' - ' . $v['request_uri'];
 }
 
 echo '<b>User log</b><br>';

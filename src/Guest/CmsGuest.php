@@ -9,6 +9,7 @@ use TMCms\Admin\Users\Entity\AdminUser;
 use TMCms\Admin\Users\Entity\AdminUserRepository;
 use TMCms\Admin\Users\Entity\AdminUserGroupRepository;
 use TMCms\Config\Configuration;
+use TMCms\Config\Constants;
 use TMCms\Config\Settings;
 use TMCms\Strings\Verify;
 use TMCms\Templates\PageHead;
@@ -226,7 +227,7 @@ class CmsGuest
             <!--
         <?php endif; ?>
         <div class="copyright">
-            2007 - <?= Y ?> &copy; <?= CMS_NAME ?> | <a href="<?= CMS_SITE ?>" target="_blank"><?= CMS_SITE ?></a>
+            2007 - <?= Y ?> &copy; <?= Constants::ADMIN_CMS_NAME ?> | <a href="<?= CMS_SITE ?>" target="_blank"><?= CMS_SITE ?></a>
         </div>
         <?php if ($hide_license): ?>
             -->

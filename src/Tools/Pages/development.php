@@ -1,6 +1,7 @@
 <?php
 
 use TMCms\Config\Configuration;
+use TMCms\Config\Constants;
 use TMCms\Config\Settings;
 use TMCms\HTML\BreadCrumbs;
 use TMCms\HTML\Cms\CmsForm;
@@ -73,7 +74,7 @@ $form = CmsForm::getInstance()
             ['name' => 'File size quota, in MB', 'field' => CmsInputText::getInstance('file_size_quota')->setHintText('Send notification when total file size exceeded quota. Leave empty or 0 to disable')],
             ['name' => 'Locked Structure', 'field' => CmsCheckbox::getInstance('locked_structure')->setHintText('Locks Structure pages. No one will be able to delete or activate\deactivate pages, modify page contents and properties, change order')],
             ['name' => 'Unique admin address', 'field' => CmsCheckbox::getInstance('unique_admin_address')->setHintText('Can access admin panel log-in form only using ' . DIR_CMS_URL . '?admin_key=' . Configuration::getInstance()->get('cms')['unique_key'])],
-            ['name' => 'Do not expose Generator', 'field' => CmsCheckbox::getInstance('do_not_expose_generator')->setHintText('Disable showing in META tags that site generator is ' . CMS_NAME)],
+            ['name' => 'Do not expose Generator', 'field' => CmsCheckbox::getInstance('do_not_expose_generator')->setHintText('Disable showing in META tags that site generator is ' . Constants::ADMIN_CMS_NAME)],
             ['name' => 'Generate code', 'field' => CmsHtml::getInstance('cms_generate_code')->setValue('<a href="?p=' . P . '&do=code_generator">Go to code generator</a>')],
         ]
     );

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use TMCms\Config\Constants;
 use TMCms\HTML\BreadCrumbs;
 use TMCms\HTML\Cms\CmsFormHelper;
 
@@ -14,11 +15,11 @@ echo CmsFormHelper::outputForm([
     'fields' => [
         'cms' => [
             'type' => 'html',
-            'value' => CMS_NAME,
+            'value' => Constants::ADMIN_CMS_NAME,
         ],
         'version' => [
             'type' => 'html',
-            'value' => CMS_VERSION,
+            'value' => Constants::ADMIN_CMS_VERSION,
         ],
         'support_email' => [
             'title' => 'Support e-mail',
@@ -27,7 +28,7 @@ echo CmsFormHelper::outputForm([
         ],
         'copyright' => [
             'type' => 'html',
-            'value' => 'Copy or usage of CMS or it\'s non opensource code parts without permissions from Developers and owner Company (<a target="_blank" href="'. CMS_SITE .'">' . CMS_OWNER_COMPANY . '</a>) is prohibited.
+            'value' => 'Copy or usage of CMS or it\'s non opensource code parts without permissions from Developers and owner Company (<a target="_blank" href="'. CMS_SITE .'">' . Constants::ADMIN_CMS_OWNER_COMPANY . '</a>) is prohibited.
         <br> Appropriate license agreements exist.',
         ],
     ],
