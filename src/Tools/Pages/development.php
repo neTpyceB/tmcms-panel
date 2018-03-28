@@ -35,7 +35,6 @@ $form = CmsForm::getInstance()
     ->addFieldBlock('Site',
         [
             ['name' => 'Production state', 'field' => CmsCheckbox::getInstance('production')->setHintText('Disables showing errors, disables db auto-checks, etc.')],
-            ['name' => 'Visual edit', 'field' => CmsCheckbox::getInstance('enable_visual_edit')->setHintText('Enable visual edit mode on frontend')],
             ['name' => 'Enable email anti-bot', 'field' => CmsCheckbox::getInstance('enable_anti_email_bot')->setHintText('Rewrites emails with script')],
             ['name' => 'Components placeholders', 'field' => CmsCheckbox::getInstance('show_components_placeholders')->setHintText('Show keys instead of empty places for non-filled components')],
             ['name' => 'Allowed sizes for ImageProcessor', 'field' => CmsInputText::getInstance('image_processor_allowed_sizes')->setHintText('Coma-separated value pairs, eg 200x200,350x100,450x100')],

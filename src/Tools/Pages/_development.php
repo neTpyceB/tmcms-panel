@@ -25,7 +25,6 @@ $checkboxes = [
     'do_not_send_js_errors',
     'do_not_send_php_errors',
     'debug_panel',
-    'enable_visual_edit',
     'enable_anti_email_bot',
     'show_components_placeholders',
     'locked_structure',
