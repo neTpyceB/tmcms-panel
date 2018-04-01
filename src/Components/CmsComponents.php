@@ -126,6 +126,9 @@ class CmsComponents
                 if (typeof(tinymce_global_options) == 'function') {
                     tinymce_options = tinymce_global_options(tinymce_options);
                 }
+                if (typeof(tinymce_local_options) == 'function') {
+                    tinymce_options = tinymce_local_options(tinymce_options);
+                }
                 <?php if(!empty($_GET['options'])): ?>
                 if (typeof(<?= $_GET['options'] ?>) == 'function') {
                     tinymce_options = <?= $_GET['options'] ?>(tinymce_options);
