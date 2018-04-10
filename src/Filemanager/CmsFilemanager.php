@@ -204,7 +204,7 @@ class CmsFilemanager
                         <td>
                             <input class="cb_hide" type="checkbox" name="<?= $v ?>" value="">
                             &nbsp;
-                            <a oncontextmenu="context_menus.files(this); return false;" id="file_<?= $k ?>"
+                            <a oncontextmenu="context_menus.files(this); return false;" id="file_<?= /*$k*/ preg_replace('~[/\.\s]~', '-', $v) ?>"
                                class="file_context<?= $type_by_extension ?>" href=""
                                onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="done();"
                                 <?php if ($type_by_extension == '_img'): ?>
