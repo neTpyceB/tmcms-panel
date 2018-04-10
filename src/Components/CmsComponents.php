@@ -68,6 +68,7 @@ class CmsComponents
                 });
 
                 var tinymce_options = {
+                    fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
                     selector: 'textarea#tinymce_<?= NOW ?>',
                     element_format: 'html',
                     relative_urls: false,
@@ -75,7 +76,7 @@ class CmsComponents
                     menubar: false,
                     statusbar: true,
                     plugins: ['stylebuttons', 'textcolor', 'colorpicker', 'media', 'table', 'contextmenu', 'image', 'link', 'hr', 'code', 'paste', 'save'],
-                    toolbar: ['undo redo | styleselect | bold italic underline | style-h1 style-h2 style-h3 style-p hr | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist | table link image media code | save close'],
+                    toolbar: ['undo redo | styleselect | fontsizeselect | bold italic underline | style-h1 style-h2 style-h3 style-p hr | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist | table link image media code | save close'],
                     <?php /* ?>
                     content_css: '<?= DIR_ASSETS_URL . 'css/main.css' ?>', // You can set ain frontend website css to make tinymce render text using that style
                     <?php */ ?>

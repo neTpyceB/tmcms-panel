@@ -4,6 +4,7 @@ namespace TMCms\Admin\Tools;
 
 use TMCms\Admin\Menu;
 use TMCms\Cache\Cacher;
+use TMCms\Config\Constants;
 use TMCms\Config\Entity\SettingEntity;
 use TMCms\Config\Entity\SettingEntityRepository;
 use TMCms\Config\Settings;
@@ -43,7 +44,7 @@ class CmsTools implements IModule
         if (!SQL::getInstance()->tableExists('cms_maxmind_geoip_c')) {
             $geo_ip_status = '<span style="color:red">Not loaded</span> <small>[<span><a href="?p=' . P . '&do=_update_maxmind_geoip" class="nounderline">Load</a></span>]</small>';
         } else {
-            $geo_ip_status = '<span style="color:green">Loaded</span> <small>[<span><a href="?p=' . P . '&do=_update_maxmind_geoip" class="nounderline">Update</a></span>]</small> ' . ($last_geo_ip_ts ? '<small>[' . date(CFG_CMS_DATETIME_FORMAT, $last_geo_ip_ts) . ']</small>' : '');
+            $geo_ip_status = '<span style="color:green">Loaded</span> <small>[<span><a href="?p=' . P . '&do=_update_maxmind_geoip" class="nounderline">Update</a></span>]</small> ' . ($last_geo_ip_ts ? '<small>[' . date(Constants::FORMAT_CMS_DATETIME_FORMAT, $last_geo_ip_ts) . ']</small>' : '');
         }
         unset($last_geo_ip_ts);
 
@@ -119,10 +120,10 @@ class CmsTools implements IModule
                         ->setValue('<a href="http://www.google.com/search?q=site%3A' . urlencode(CFG_DOMAIN) . '" target="_blank">Show</a>'),
                     ],
                     ['name' => 'Generate Structure XML', 'field' => CmsHtml::getInstance('')
-                        ->setValue('<a href="?p=' . P . '&do=_generate_structure_xml">Generate</a>' . ($xml ? ' (' . date(CFG_CMS_DATETIME_FORMAT, $xml) . ')' : NULL)),
+                        ->setValue('<a href="?p=' . P . '&do=_generate_structure_xml">Generate</a>' . ($xml ? ' (' . date(Constants::FORMAT_CMS_DATETIME_FORMAT, $xml) . ')' : NULL)),
                     ],
                     ['name' => 'Structure XML to Google', 'field' => CmsHtml::getInstance('')
-                        ->setValue('<a href="?p=' . P . '&do=_submit_structure_xml">Submit</a>' . ($submit_xml ? ' (' . date(CFG_CMS_DATETIME_FORMAT, $submit_xml) . ')' : NULL)),
+                        ->setValue('<a href="?p=' . P . '&do=_submit_structure_xml">Submit</a>' . ($submit_xml ? ' (' . date(Constants::FORMAT_CMS_DATETIME_FORMAT, $submit_xml) . ')' : NULL)),
                     ],
                     ['name' => 'GEO IP database', 'field' => CmsHtml::getInstance('')
                         ->setValue($geo_ip_status),

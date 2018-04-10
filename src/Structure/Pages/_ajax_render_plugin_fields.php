@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use TMCms\Files\Finder;
 use TMCms\HTML\Cms\CmsForm;
@@ -30,11 +31,10 @@ if ($selected) {
     require_once DIR_BASE . $file_with_plugin;
 
     // Create plugin object
-    $plugin_class_name = str_replace('.php', '', $selected);
-    $plugin_class_name = str_replace('plugin', 'Plugin', $plugin_class_name); // Just in case
+    $plugin_class_name = str_replace(['.php', 'plugin'], ['', 'Plugin'], $selected); // Just in case
     /** @var Plugin $plugin_object */
     $plugin_object = new $plugin_class_name;
-    $plugin_components = $plugin_object->getComponents();
+    $plugin_components = $plugin_object::getComponents();
 
     $plugin_fields = [];
 
@@ -53,8 +53,8 @@ if ($selected) {
         }
 
         // Defaults
-        $type = isset($comp_data['type']) ? $comp_data['type'] : 'text';
-        $edit = isset($comp_data['edit']) ? $comp_data['edit'] : '';
+        $type = $comp_data['type'] ?? 'text';
+        $edit = $comp_data['edit'] ?? '';
 
         // Add prefix for plugin fields
         $component_name = $parent_name .'_'. $comp_key;
@@ -80,8 +80,8 @@ if ($selected) {
         $plugin_form = CmsForm::getInstance();
         $plugin_form->disableFormTagOutput();
         $plugin_form->addFieldBlock('Fields', $plugin_fields);
+
         echo $plugin_form;
     }
-
 }
 die;

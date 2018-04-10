@@ -5,13 +5,14 @@ defined('INC') or exit;
 use TMCms\Admin\Messages;
 use TMCms\Cache\Cacher;
 use TMCms\Config\Configuration;
+use TMCms\Config\Constants;
 use TMCms\Log\App;
 use TMCms\Network\Mailer;
 
 Mailer::getInstance()
     ->setSubject('Message from ' . Configuration::getInstance()->get('site')['name'] . ' (' . CFG_DOMAIN . ')')
     ->setSender(Configuration::getInstance()->get('site')['email'], Configuration::getInstance()->get('site')['name'])
-    ->setRecipient(CMS_SUPPORT_EMAIL, CMS_NAME)
+    ->setRecipient(CMS_SUPPORT_EMAIL, Constants::ADMIN_CMS_NAME)
     ->setMessage($_POST['message'])
     ->send()
 ;

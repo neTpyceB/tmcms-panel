@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use TMCms\Config\Constants;
 use TMCms\HTML\BreadCrumbs;
 use TMCms\HTML\Cms\CmsFormHelper;
 use TMCms\Log\Entity\ErrorLogEntity;
@@ -20,7 +21,7 @@ echo CmsFormHelper::outputForm([
         ],
         'date'  => [
             'type'  => 'datetime',
-            'value' => date(CFG_CMS_DATETIME_FORMAT, $error->getTs()),
+            'value' => date(Constants::FORMAT_CMS_DATETIME_FORMAT, $error->getTs()),
         ],
         'ip'    => [
             'type'  => 'datetime',
