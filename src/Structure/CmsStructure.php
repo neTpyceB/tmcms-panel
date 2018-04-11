@@ -262,7 +262,7 @@ class CmsStructure
 
         unset($data['id']);
         $data['pid'] = (int)$pid;
-        $new_id = q('INSERT INTO `cms_pages` (`' . implode('`,`', array_keys($data)) . '`) VALUES ("' . implode('","', $data) . '")', 1, 1);
+        $new_id = q('INSERT INTO `cms_pages` (`' . implode('`,`', array_keys($data)) . '`) VALUES ("' . implode('","', $data) . '")', true);
         $this->copy_components($id, $new_id);
         foreach (q_assoc_iterator('SELECT `id` FROM `cms_pages` WHERE `pid` = "' . $id . '"') as $v) {
             $this->copy_pages($v['id'], $new_id);
