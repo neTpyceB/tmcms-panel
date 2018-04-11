@@ -31,6 +31,9 @@ declare(strict_types=1);
 
 use TMCms\Routing\Controller;
 
+/**
+ * Class ' . $controller_class . '
+ */
 class ' . $controller_class . ' extends Controller
 {
     
@@ -69,6 +72,9 @@ declare(strict_types=1);
 
 use TMCms\Routing\View;
 
+/**
+ * Class ' . $view_class . '
+ */
 class ' . $view_class . ' extends View
 {
     
