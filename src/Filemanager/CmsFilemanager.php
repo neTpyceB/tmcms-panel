@@ -578,13 +578,13 @@ class CmsFilemanager
                         console.info(e.text);
                         toastr.success(e.text+'<br/> is copied to clipboard');
                         clipboard.destroy();
-                        trigger.remove()
+                        trigger.remove();
                     });
                     clipboard.on('error', function(e) {
                         console.error(e.text);
                         toastr.error(e.text+'<br/> is not copied.');
                         clipboard.destroy();
-                        trigger.remove()
+                        trigger.remove();
                     });
                     trigger.click();
 
