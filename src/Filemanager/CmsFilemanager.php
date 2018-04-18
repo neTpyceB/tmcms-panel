@@ -206,7 +206,7 @@ class CmsFilemanager
                             &nbsp;
                             <a oncontextmenu="context_menus.files(this); return false;" id="file_<?= /*$k*/ preg_replace('~[/\.\s]~', '-', $v) ?>"
                                class="file_context<?= $type_by_extension ?>" href=""
-                               onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" ondblclick="done();"
+                               onclick="return setSelectedToInput(this);" data-path="<?= $v ?>" data-url="<?= BASE_URL.$v ?>"  ondblclick="done();"
                                 <?php if ($type_by_extension == '_img'): ?>
                                     onmouseover="$('#filemanager_current_image').attr('src', '<?= $v ?>').show()"
                                     onmouseout="$('#filemanager_current_image').attr('src', '<?= DIR_CMS_IMAGES_URL ?>_.gif').hide()"
@@ -569,6 +569,25 @@ class CmsFilemanager
                     _.con.close();
                     _.con.open();
                     _.con.request_view('?p=<?= P ?>&do=edit_meta_data&nomenu&path=' + file_path);
+                },
+                copyFileUrl: function (el) {
+                    var url = $(el).data('url');
+                    var trigger = $('<span data-clipboard-text="'+url+'"></span>');
+                    var clipboard = new ClipboardJS(trigger[0]);
+                    clipboard.on('success', function(e) {
+                        console.info(e.text);
+                        toastr.success(e.text+'<br/> is copied to clipboard');
+                        clipboard.destroy();
+                        trigger.remove()
+                    });
+                    clipboard.on('error', function(e) {
+                        console.error(e.text);
+                        toastr.error(e.text+'<br/> is not copied.');
+                        clipboard.destroy();
+                        trigger.remove()
+                    });
+                    trigger.click();
+
                 }
             };
 
@@ -676,6 +695,15 @@ class CmsFilemanager
                             'popup': 0,
                             'js': function () {
                                 filemanager_helpers.editMetaData($el.data('path'));
+                            }
+                        },
+                        6: {
+                            'name': 'Copy link to file',
+                            'href': '',
+                            'confirm': 0,
+                            'popup': 0,
+                            'js': function () {
+                                filemanager_helpers.copyFileUrl($el);
                             }
                         }
                     };
