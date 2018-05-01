@@ -1,0 +1,4 @@
+hello world
+<?php
+die;
+?>

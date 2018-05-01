@@ -375,4 +375,14 @@ class CmsTools implements IModule
     {
         require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
     }
+
+    public function _generate_entity_field()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
+    }
+
+    public function _ajax_get_module_entities()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
+    }
 }
