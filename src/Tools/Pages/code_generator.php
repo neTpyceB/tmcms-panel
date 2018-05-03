@@ -94,6 +94,10 @@ echo CmsFormHelper::outputForm('entity_field', [
 
         $.ajax({
             url: '?p=<?= P ?>&do=_ajax_get_module_entities',
+            data: {
+                ajax: 1,
+                selected_module_name: selected_module_name
+            },
             success: function (data) {
                 console.log(data);
             }
