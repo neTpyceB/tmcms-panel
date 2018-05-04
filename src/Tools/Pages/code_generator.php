@@ -60,7 +60,8 @@ echo CmsFormHelper::outputForm('', [
 ]);
 
 // Module entities
-echo CmsFormHelper::outputForm('entity_field', [
+echo CmsFormHelper::outputForm([
+    'id' => 'entity_field_form',
     'action' => '?p=' . P . '&do=_generate_entity_field',
     'title'  => 'Generate new field in Entity TODO',
     'fields' => [
@@ -72,6 +73,7 @@ echo CmsFormHelper::outputForm('entity_field', [
         'entity_name'  => [
             'title'   => 'Entity name',
             'options' => [],
+            'disabled' => 1,
         ],
         'field_type'  => [
             'title'   => 'Field type',
@@ -82,7 +84,7 @@ echo CmsFormHelper::outputForm('entity_field', [
         ],
     ],
     'button' => 'Generate',
-    'collapsed' => true,
+//    'collapsed' => true,
 ]);
 
 ?>
@@ -98,8 +100,13 @@ echo CmsFormHelper::outputForm('entity_field', [
                 ajax: 1,
                 selected_module_name: selected_module_name
             },
+            dataType: "json",
             success: function (data) {
-                console.log(data);
+                var $select =  $("#entity_field_form").find("#entity_name");
+                $select.find('option').remove();
+                $.each(data, function(k, v) {
+                    $select.append('<option value="'+ k +'">'+ v +'</option>');
+                });
             }
         });
     }
