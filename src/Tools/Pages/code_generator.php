@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use TMCms\HTML\Cms\CmsFormHelper;
 use TMCms\Modules\ModuleManager;
+use TMCms\Orm\TableStructure;
 
 defined('INC') or exit;
 
@@ -72,12 +73,11 @@ echo CmsFormHelper::outputForm([
         ],
         'entity_name'  => [
             'title'   => 'Entity name',
-            'options' => [],
-            'disabled' => 1,
+            'options' => [-1 => ' - Choose Module -'],
         ],
         'field_type'  => [
             'title'   => 'Field type',
-            'options' => [],
+            'options' => TableStructure::FIELD_TYPES_AVAILABLE,
         ],
         'field_name'  => [
             'title'   => 'Field name',
@@ -103,7 +103,10 @@ echo CmsFormHelper::outputForm([
             dataType: "json",
             success: function (data) {
                 var $select =  $("#entity_field_form").find("#entity_name");
+                // Empty and disable
                 $select.find('option').remove();
+
+                // Add new options
                 $.each(data, function(k, v) {
                     $select.append('<option value="'+ k +'">'+ v +'</option>');
                 });
