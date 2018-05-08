@@ -30,6 +30,18 @@ if (!$_POST['field_name']) {
 
 $field_name = $_POST['field_name'];
 
-// TODO 
+$entity_file = DIR_MODULES . $module_name . '/Entity/' . $entity_name;
+
+$content = file_get_contents($entity_file);
+
+$position_of_field_array = $content;
+
+$const_definition = "const FIELD_AMOUNT_IN_STOCK = 'amount_in_stock';";
+$field_definition = "
+            self::FIELD_CATEGORY_ID => [
+                'type' => 'index',
+            ],";
+
+dump($position_of_field_array);
 
 back();
