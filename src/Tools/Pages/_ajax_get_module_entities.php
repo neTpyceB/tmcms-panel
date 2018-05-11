@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 $selected_module_name = $_GET['selected_module_name'];
 
-$entities = [-1 => ' - Choose Module -'];
+$entities = [-1 => '---'];
 
 $folder_to_scan = DIR_MODULES . $selected_module_name . '/Entity/';
 

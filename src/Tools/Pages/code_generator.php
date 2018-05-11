@@ -68,16 +68,16 @@ echo CmsFormHelper::outputForm([
     'fields' => [
         'module_name'  => [
             'title'   => 'Module name',
-            'options' => [-1 => ' - - '] + array_combine(ModuleManager::getListOfCustomModuleNames(), ModuleManager::getListOfCustomModuleNames()),
+            'options' => [-1 => '---'] + array_combine(ModuleManager::getListOfCustomModuleNames(), ModuleManager::getListOfCustomModuleNames()),
             'onchange' => 'load_module_entities(this)',
         ],
         'entity_name'  => [
             'title'   => 'Entity name',
-            'options' => [-1 => ' - Choose Module -'],
+            'options' => [0 => '---'],
         ],
         'field_type'  => [
             'title'   => 'Field type',
-            'options' => TableStructure::FIELD_TYPES_AVAILABLE,
+            'options' => [0 => '---'] + TableStructure::FIELD_TYPES_AVAILABLE,
         ],
         'field_name'  => [
             'title'   => 'Field name',
