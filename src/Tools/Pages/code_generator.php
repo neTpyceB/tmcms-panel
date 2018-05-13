@@ -64,7 +64,7 @@ echo CmsFormHelper::outputForm('', [
 echo CmsFormHelper::outputForm([
     'id' => 'entity_field_form',
     'action' => '?p=' . P . '&do=_generate_entity_field',
-    'title'  => 'Generate new field in Entity TODO',
+    'title'  => 'Generate new field in Entity',
     'fields' => [
         'module_name'  => [
             'title'   => 'Module name',
@@ -84,7 +84,7 @@ echo CmsFormHelper::outputForm([
         ],
     ],
     'button' => 'Generate',
-//    'collapsed' => true,
+    'collapsed' => true,
 ]);
 
 ?>
