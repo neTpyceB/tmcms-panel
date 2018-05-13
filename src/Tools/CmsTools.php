@@ -385,4 +385,9 @@ class CmsTools implements IModule
     {
         require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
     }
+
+    public function entity_editor()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
+    }
 }
