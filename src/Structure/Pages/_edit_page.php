@@ -99,7 +99,7 @@ if ($old_location && $save_location_change_history) {
     // Make sure db exists
     new PageRedirectHistoryEntityRepository();
 
-    $new_location = Structure::getPathById($page->getId(), false);
+    $new_location = Structure::getPathById($page->getId(), false, false, false);
 
     if ($old_location != $new_location) {
         // Set as not last in history
@@ -116,6 +116,7 @@ if ($old_location && $save_location_change_history) {
             'new_full_url' => $new_location,
             'last'         => 1,
         ]);
+        $redirect_history->save();
     }
 }
 
