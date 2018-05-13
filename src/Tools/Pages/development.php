@@ -75,7 +75,7 @@ $form = CmsForm::getInstance()
             ['name' => 'Unique admin address', 'field' => CmsCheckbox::getInstance('unique_admin_address')->setHintText('Can access admin panel log-in form only using ' . DIR_CMS_URL . '?admin_key=' . Configuration::getInstance()->get('cms')['unique_key'])],
             ['name' => 'Do not expose Generator', 'field' => CmsCheckbox::getInstance('do_not_expose_generator')->setHintText('Disable showing in META tags that site generator is ' . Constants::ADMIN_CMS_NAME)],
             ['name' => 'Generate code', 'field' => CmsHtml::getInstance('cms_generate_code')->setValue('<a href="?p=' . P . '&do=code_generator">Go to code generator</a>')],
-            ['name' => 'Entity editor', 'field' => CmsHtml::getInstance('entity_editor')->setValue('<a href="?p=' . P . '&do=entity_editor">Go to </a>')->setHintText('Edit any existing Entity object using DB table fields')],
+            ['name' => 'Entity editor', 'field' => CmsHtml::getInstance('entity_editor')->setValue('<a href="?p=' . P . '&do=entity_editor">Go to Entity editor</a>')->setHintText('Edit any existing Entity object using DB table fields')],
         ]
     );
 
