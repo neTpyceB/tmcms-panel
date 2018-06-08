@@ -261,6 +261,7 @@ class CmsComponents
             $repo_class = $entity_class . 'Repository';
             /** @var EntityRepository $entity_repository */
             $entity_repository = new $repo_class;
+            $entity_repository->applyFiltersForSitemap();
 
             if (method_exists($entity_repository, 'getLinksForSitemap')) {
                 // May be implemented in repository
@@ -272,15 +273,17 @@ class CmsComponents
                 foreach ($entity_repository->getAsArrayOfObjects() as $obj) {
                     $data[] = [
                         'link' => '<a style="cursor:pointer" onclick="selectLinkForSitemap(\'' . $obj->getLinkForSitemap($lng) . '\'); return false;">' . $obj->getLinkForSitemap($lng) . '</a>',
+
+                        'title' => $obj->getTitle(),
                     ];
                 }
 
                 $table = CmsTable::getInstance()
                     ->addData($data)
                     ->disablePager()
-                    ->addColumn(ColumnData::getInstance('link')
-                        ->allowHtml()
-                    );
+                    ->addColumn(ColumnData::getInstance('title'))
+                    ->addColumn(ColumnData::getInstance('link')->allowHtml())
+                ;
             }
 
             $tab_name = Converter::classWithNamespaceToUnqualifiedShort($entity);
