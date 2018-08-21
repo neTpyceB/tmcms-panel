@@ -66,6 +66,8 @@ class CmsFilemanager
         if ($dir[0] === '/') {
             $dir = substr($dir, 1);
         }
+        // To make it work on Windows;
+        $dir = str_replace('\\', '/', $dir);
         // Create requested directory if not exists
         if (!file_exists(DIR_BASE . $dir)) {
             FileSystem::mkDir(DIR_BASE . $dir);
