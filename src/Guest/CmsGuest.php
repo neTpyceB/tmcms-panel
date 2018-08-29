@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace TMCms\Admin\Guest;
 
@@ -16,8 +17,13 @@ use TMCms\Templates\PageHead;
 use TMCms\Templates\PageTail;
 use TMCms\Traits\singletonInstanceTrait;
 
-defined('INC') or exit;
+\defined('INC') or exit;
 
+/**
+ * Class CmsGuest
+ *
+ * @package TMCms\Admin\Guest
+ */
 class CmsGuest
 {
     use singletonInstanceTrait;
@@ -32,7 +38,7 @@ class CmsGuest
         // If only unique access allowed
         if (Settings::get('unique_admin_address')) {
             // No correct key provided?
-            if (!isset($_GET['admin_key']) || $_GET['admin_key'] != Configuration::getInstance()->get('cms')['unique_key']) {
+            if (!isset($_GET['admin_key']) || $_GET['admin_key'] !== Configuration::getInstance()->get('cms')['unique_key']) {
                 back();
             }
         }
@@ -111,7 +117,7 @@ class CmsGuest
                     <label class="control-label visible-ie8 visible-ie9">Username</label>
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
-                        <input class="form-control placeholder-no-fix" type="text" autofocus placeholder="Username" name="login" <?= isset($_GET['login']) ? $_GET['login'] : '' ?>>
+                        <input class="form-control placeholder-no-fix" type="text" autofocus placeholder="Username" name="login" <?= $_GET['login'] ?? '' ?>>
                     </div>
                 </div>
                 <div class="form-group">
@@ -129,7 +135,7 @@ class CmsGuest
                 <input type="hidden" name="go" value="<?= SELF ?>">
                 <div class="forget-password">
                     <h4>Forgot your password ?</h4>
-                    <p>no worries, click <a href="javascript:;" id="forget-password">
+                    <p>no worries, click <a href="javascript:" id="forget-password">
                             here </a>
                         to reset your password.
                     </p>
@@ -137,7 +143,7 @@ class CmsGuest
                 <?php if ($registration_allowed): ?>
                     <div class="create-account">
                         <p>Don't have an account yet?&nbsp;
-                            <a href="javascript:;" id="register-btn">Create an account </a>
+                            <a href="javascript:" id="register-btn">Create an account </a>
                         </p>
                     </div>
                 <?php endif; ?>
@@ -236,12 +242,13 @@ class CmsGuest
 
     public function _login()
     {
-        if (!$_POST || !isset($_POST['login'], $_POST['password']) || trim($_POST['login']) == '') {
+        if (!$_POST || !isset($_POST['login'], $_POST['password']) || trim($_POST['login']) === '') {
             back();
         }
 
         //Check ban and log-in attempts
         $attempts_repo = new AdminUsersAttemptsEntityRepository();
+        $attempts_repo->setGenerateOutputWithIterator(false);
         $attempts_repo->setWhereIp(IP_LONG);
         $attempts_obj = $attempts_repo->getFirstObjectFromCollection();
 
@@ -251,7 +258,9 @@ class CmsGuest
             if ($attempts && $attempts['failed_attempts']) {
                 if ($attempts['failed_attempts'] > self::MAX_FAILED_ATTEMPTS && $attempts['last_attempt_ts'] + self::MAX_BAN_TIME > NOW) {
                     die('IP banned, wait till ' . date('H:i:s', $attempts['last_attempt_ts'] + self::MAX_BAN_TIME));
-                } elseif ($attempts['failed_attempts'] > self::FIRST_FAILED_ATTEMPTS && $attempts['last_attempt_ts'] + self::FIRST_BAN_TIME > NOW) {
+                }
+
+                if ($attempts['failed_attempts'] > self::FIRST_FAILED_ATTEMPTS && $attempts['last_attempt_ts'] + self::FIRST_BAN_TIME > NOW) {
                     die('IP banned, wait till ' . date('H:i:s', $attempts['last_attempt_ts'] + self::FIRST_BAN_TIME));
                 }
             }
@@ -301,12 +310,12 @@ class CmsGuest
 
         Users::getInstance()->setUserLoggedIn($user);
 
-        go(isset($_POST['go']) ? $_POST['go'] : '/cms/?p=home');
+        go($_POST['go'] ?? '/cms/?p=home');
     }
 
     public function _register()
     {
-        if (!$_POST || !isset($_POST['login'], $_POST['email'], $_POST['password']) || trim($_POST['login']) == '') {
+        if (!$_POST || !isset($_POST['login'], $_POST['email'], $_POST['password']) || trim($_POST['login']) === '') {
             sleep(5);
             go('/');
         }
@@ -323,7 +332,7 @@ class CmsGuest
         $default_group_id = 1;
 
         $group_collection = new AdminUserGroupRepository();
-        $group_collection->setWhereDefault(true);
+        $group_collection->setWhereDefault(1);
 
         /** @var AdminUser $user */
         $group = $group_collection->getFirstObjectFromCollection();
