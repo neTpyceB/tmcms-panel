@@ -1,11 +1,16 @@
 <?php
 declare(strict_types=1);
 
+use TMCms\Files\FileSystem;
 use TMCms\HTML\Cms\CmsFormHelper;
 use TMCms\Modules\ModuleManager;
 use TMCms\Orm\TableStructure;
 
 defined('INC') or exit;
+
+// Make sure folders exist
+FileSystem::mkDir(DIR_FRONT_CONTROLLERS);
+FileSystem::mkDir(DIR_FRONT_VIEWS);
 
 // MVC parts
 $existing_component_classes = array_map(function ($value) {
