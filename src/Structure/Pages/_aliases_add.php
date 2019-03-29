@@ -12,7 +12,7 @@ $_POST = sql_prepare($_POST);
 $_POST['name'] = str_replace('/', '', $_POST['name']);
 if (!$_POST['name'] || !$_POST['href']) back();
 
-if (!PageAliasEntityRepository::findOneEntityByCriteria(['name' => $_POST['name']])) {
+if (PageAliasEntityRepository::findOneEntityByCriteria(['name' => $_POST['name']])) {
     error('Link name exists.');
 }
 
