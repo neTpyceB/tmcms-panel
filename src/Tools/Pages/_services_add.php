@@ -27,7 +27,7 @@ $service = new ServiceEntity();
 $service->loadDataFromArray([
     'title'      => $_POST['title'],
     'file'       => $f,
-    'last_ts'    => NOW,
+    'last_ts'    => 0, // Never run before
     'period'     => $_POST['period'],
     'auto_start' => (int)isset($_POST['auto_start']),
 ]);
