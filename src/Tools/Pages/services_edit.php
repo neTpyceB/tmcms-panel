@@ -29,7 +29,7 @@ echo CmsFormHelper::outputForm([
         'period'  => [
             'options' => $periods,
         ],
-        'autorun' => [
+        'auto_start' => [
             'type' => 'checkbox',
         ],
     ],

@@ -23,7 +23,7 @@ $services->getAsArrayOfObjects();
 
 BreadCrumbs::getInstance()
     ->addAction('Add Service', '?p=' . P . '&do=services_add')
-    ->addNotes('Run /cms/index.php?cms_is_running_background=1 to start services<br><br>');
+    ->addNotes('Run "php cms/index.php cms_is_running_background" in terminal to start services');
 
 FileSystem::mkDir(DIR_FRONT_SERVICES);
 

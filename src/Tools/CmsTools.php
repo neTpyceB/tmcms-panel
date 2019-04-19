@@ -201,6 +201,11 @@ class CmsTools implements IModule
         require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
     }
 
+    public function _services_run()
+    {
+        require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
+    }
+
     public function _run_service()
     {
         require_once __DIR__ . '/Pages/' . __FUNCTION__ . '.php';
